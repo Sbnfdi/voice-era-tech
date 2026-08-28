@@ -5,219 +5,169 @@ import Link from 'next/link';
 
 const services = [
   {
-    category: 'Dialer Technology',
+    category: 'Dialer Infrastructure',
     icon: '📡',
-    color: '#0066FF',
-    items: ['Predictive Dialer', 'Power Dialer', 'Progressive Dialer', 'Preview Dialer', 'VoIP Infrastructure', 'SIP Trunking', 'Call Routing', 'Campaign Management'],
+    items: ['Predictive Dialer Engine', 'High-Speed Power Dialers', 'Progressive & Preview Modes', 'Global VoIP / SIP Trunking', 'Multi-Tenant Architecture', 'Custom Dialer Development'],
     href: '/dialer-systems',
   },
   {
-    category: 'AI & Intelligence',
+    category: 'Call Center Platforms',
+    icon: '🏢',
+    items: ['Skills-Based ACD & IVR', 'Outbound Sales Campaigns', 'Dynamic Queue Blending', 'Omnichannel Contact Center', 'Supervisor Live Floor HUD', 'Real-Time Floor Telemetry'],
+    href: '/call-center',
+  },
+  {
+    category: 'Conversational Voice AI',
     icon: '🤖',
-    color: '#8B5CF6',
-    items: ['AI Voice Agents', 'Conversational AI', 'AI Lead Qualification', 'Sentiment Analysis', 'Automated Calling', 'AI Appointment Agents', 'Call Transcription', 'Predictive Analytics'],
+    items: ['Sub-600ms Voice Agents', 'Autonomous Outbound Calling', '24/7 AI Customer Support', 'Dynamic BANT Lead Scoring', 'Calendar Appointment AI', 'Automated Post-Call ACW'],
     href: '/ai-solutions',
   },
   {
-    category: 'Cloud Infrastructure',
+    category: 'Cloud Architecture',
     icon: '☁️',
-    color: '#4A9EFF',
-    items: ['Cloud Architecture', 'Server Deployment', 'Cloud Migration', 'Auto-Scaling', 'Multi-Region Setup', 'Disaster Recovery', 'Monitoring', 'DevOps Pipelines'],
+    items: ['Multi-Region High Availability', 'Zero-Downtime Migration', 'Bare-Metal Server Fleet', 'SOC-2 / HIPAA Security', '24/7 MOS Telemetry NOC', 'DevOps & Kubernetes CI/CD'],
     href: '/cloud-it',
   },
   {
-    category: 'Software Development',
+    category: 'Software Engineering',
     icon: '💻',
-    color: '#00E5A0',
-    items: ['Website Development', 'SaaS Development', 'Custom Software', 'Web Applications', 'CRM Development', 'API Development', 'UI/UX Design', 'Mobile-First Design'],
+    items: ['Enterprise Web Engineering', 'Scalable Web Applications', 'B2B SaaS Development', 'Bespoke Business Software', 'Custom CRM Systems', 'REST & GraphQL APIs'],
     href: '/development',
   },
   {
-    category: 'Automation',
-    icon: '⚙️',
-    color: '#FF6B35',
-    items: ['Workflow Automation', 'Business Process Automation', 'API Integrations', 'CRM Automation', 'Lead Routing', 'Reporting Automation', 'Alert Systems', 'Data Pipelines'],
-    href: '/cloud-it',
-  },
-  {
-    category: 'IT Infrastructure',
-    icon: '🖥️',
-    color: '#FFB800',
-    items: ['Server Management', 'Network Infrastructure', 'Security Architecture', 'VPN Configuration', 'Backup Systems', 'Infrastructure Monitoring', 'Technical Support', 'IT Consulting'],
-    href: '/cloud-it',
+    category: 'CRM & Integrations',
+    icon: '🔗',
+    items: ['Salesforce OpenCTI Sync', 'HubSpot & Zoho Integration', 'Bi-directional Webhooks', 'Embedded Softphone CTI', 'Custom ETL Data Pipelines', 'Legacy PBX Bridges'],
+    href: '/call-center/crm',
   },
 ];
 
 export default function ServicesMatrix() {
-  const [expanded, setExpanded] = useState<string | null>(null);
+  const [expanded, setExpanded] = useState<string | null>(services[0].category);
 
   return (
-    <section className="section-padding" style={{
-      background: 'var(--c-bg)',
-      position: 'relative',
-      overflow: 'hidden',
-    }}>
-      <div className="grid-pattern" style={{ position: 'absolute', inset: 0, opacity: 0.35 }} />
-
-      <div className="container-xl" style={{ position: 'relative' }}>
-        {/* Header */}
+    <section
+      style={{
+        background: '#0B0F14',
+        padding: '6.5rem 0',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      <div className="container-xl" style={{ position: 'relative', zIndex: 1 }}>
+        {/* Section Header */}
         <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-          <div className="eyebrow" style={{ marginBottom: '1rem' }}>Complete Technology Services</div>
-          <h2 className="text-display-md" style={{ color: '#E8EEFF', marginBottom: '1rem' }}>
-            Everything Your<br />
-            <span className="gradient-text-blue">Business Needs</span>
+          <div className="eyebrow" style={{ marginBottom: '1rem' }}>Full-Stack Ecosystem</div>
+          <h2 className="text-display-md" style={{ color: '#F4F6F8', marginBottom: '1rem' }}>
+            Comprehensive Enterprise <span className="gradient-text-blue">Technology Services</span>
           </h2>
-          <p className="text-body-lg" style={{ color: '#8BA3CC', maxWidth: 480, margin: '0 auto' }}>
-            From dialer infrastructure to custom software, cloud architecture to AI — Voice Era Tech delivers complete technology solutions.
+          <p className="text-body-lg" style={{ color: '#9AA6B2', maxWidth: 540, margin: '0 auto' }}>
+            From high-throughput dialer clusters to bespoke software and cloud architecture — Voice Era Tech delivers unified engineering.
           </p>
         </div>
 
-        {/* Grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '1.25rem',
-        }}>
-          {services.map(svc => {
+        {/* Matrix Grid */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+            gap: '1.25rem',
+          }}
+        >
+          {services.map((svc) => {
             const isExpanded = expanded === svc.category;
             return (
               <div
                 key={svc.category}
                 style={{
-                  background: isExpanded ? `${svc.color}0A` : 'rgba(7,13,28,0.8)',
-                  border: `1px solid ${isExpanded ? svc.color + '35' : 'rgba(0,102,255,0.1)'}`,
-                  borderRadius: 20,
+                  background: isExpanded ? '#202B38' : '#151D27',
+                  border: `1px solid ${isExpanded ? 'rgba(76, 141, 255, 0.28)' : 'rgba(76, 141, 255, 0.1)'}`,
+                  borderRadius: 16,
                   padding: '1.75rem',
-                  backdropFilter: 'blur(12px)',
-                  cursor: 'none',
-                  transition: 'all 0.35s cubic-bezier(0.16,1,0.3,1)',
-                  boxShadow: isExpanded ? `0 20px 40px rgba(0,0,0,0.25), 0 0 40px ${svc.color}12` : 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                  boxShadow: isExpanded ? '0 16px 40px rgba(0,0,0,0.4)' : 'none',
                 }}
                 onClick={() => setExpanded(isExpanded ? null : svc.category)}
-                onMouseEnter={e => {
-                  if (!isExpanded) {
-                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(0,212,255,0.2)';
-                    (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)';
-                  }
-                }}
-                onMouseLeave={e => {
-                  if (!isExpanded) {
-                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(0,102,255,0.1)';
-                    (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-                  }
-                }}
-                data-cursor="EXPLORE"
               >
                 {/* Header */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.875rem', marginBottom: '1rem' }}>
-                  <div style={{
-                    width: 48,
-                    height: 48,
-                    borderRadius: 13,
-                    background: `${svc.color}15`,
-                    border: `1px solid ${svc.color}30`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '1.25rem',
-                    boxShadow: isExpanded ? `0 0 20px ${svc.color}30` : 'none',
-                    transition: 'box-shadow 0.3s',
-                    flexShrink: 0,
-                  }}>
-                    {svc.icon}
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{
-                      fontFamily: '"Plus Jakarta Sans", sans-serif',
-                      fontWeight: 700,
-                      fontSize: '1rem',
-                      color: '#E8EEFF',
-                      marginBottom: '2px',
-                    }}>
-                      {svc.category}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.875rem' }}>
+                    <div
+                      style={{
+                        width: 44,
+                        height: 44,
+                        borderRadius: 10,
+                        background: '#0B0F14',
+                        border: '1px solid rgba(49, 87, 213, 0.25)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '1.25rem',
+                      }}
+                    >
+                      {svc.icon}
                     </div>
-                    <div style={{
-                      fontFamily: '"JetBrains Mono", monospace',
-                      fontSize: '0.6rem',
-                      letterSpacing: '0.08em',
-                      color: '#4A6A99',
-                    }}>
-                      {svc.items.length} services
+                    <div>
+                      <h3
+                        style={{
+                          fontFamily: '"Plus Jakarta Sans", sans-serif',
+                          fontWeight: 700,
+                          fontSize: '1.0625rem',
+                          color: '#F4F6F8',
+                          marginBottom: '2px',
+                        }}
+                      >
+                        {svc.category}
+                      </h3>
+                      <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '0.625rem', color: '#4C8DFF' }}>
+                        {svc.items.length} Capabilities
+                      </span>
                     </div>
                   </div>
-                  <svg
-                    width="16" height="16" viewBox="0 0 16 16" fill="none"
-                    style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.3s', color: svc.color, flexShrink: 0 }}
-                  >
-                    <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                  </svg>
+
+                  <span style={{ color: '#4C8DFF', fontSize: '1rem', transform: isExpanded ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s' }}>
+                    ▼
+                  </span>
                 </div>
 
                 {/* Items */}
-                {isExpanded && (
-                  <div style={{ animation: 'fade-up 0.3s cubic-bezier(0.16,1,0.3,1)' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '1.25rem' }}>
-                      {svc.items.map((item, i) => (
-                        <div key={item} style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '0.625rem',
-                          padding: '0.5rem 0.75rem',
-                          borderRadius: 9,
-                          background: 'rgba(0,102,255,0.04)',
-                          animation: `fade-up 0.25s cubic-bezier(0.16,1,0.3,1) ${i * 0.04}s both`,
-                        }}>
-                          <div style={{ width: 5, height: 5, borderRadius: '50%', background: svc.color, flexShrink: 0 }} />
-                          <span style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontSize: '0.875rem', color: '#8BA3CC' }}>{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <Link
-                      href={svc.href}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1rem' }}>
+                  {svc.items.map((item) => (
+                    <div
+                      key={item}
                       style={{
-                        display: 'inline-flex',
+                        display: 'flex',
                         alignItems: 'center',
-                        gap: '0.375rem',
-                        color: svc.color,
-                        textDecoration: 'none',
-                        fontFamily: '"Plus Jakarta Sans", sans-serif',
-                        fontWeight: 600,
-                        fontSize: '0.875rem',
+                        gap: '0.625rem',
+                        padding: '0.45rem 0.625rem',
+                        borderRadius: 6,
+                        background: isExpanded ? 'rgba(11, 15, 20, 0.4)' : 'transparent',
                       }}
-                      onClick={e => e.stopPropagation()}
                     >
-                      View all services →
-                    </Link>
-                  </div>
-                )}
-
-                {!isExpanded && (
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.375rem' }}>
-                    {svc.items.slice(0, 3).map(item => (
-                      <span key={item} style={{
-                        padding: '0.2rem 0.5rem',
-                        borderRadius: '100px',
-                        background: 'rgba(0,102,255,0.06)',
-                        fontFamily: '"JetBrains Mono", monospace',
-                        fontSize: '0.6rem',
-                        letterSpacing: '0.04em',
-                        color: '#4A6A99',
-                      }}>
+                      <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#4C8DFF' }} />
+                      <span style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontSize: '0.8125rem', color: '#9AA6B2' }}>
                         {item}
                       </span>
-                    ))}
-                    <span style={{
-                      padding: '0.2rem 0.5rem',
-                      borderRadius: '100px',
-                      background: 'rgba(0,102,255,0.06)',
-                      fontFamily: '"JetBrains Mono", monospace',
-                      fontSize: '0.6rem',
-                      color: '#4A6A99',
-                    }}>
-                      +{svc.items.length - 3} more
-                    </span>
-                  </div>
-                )}
+                    </div>
+                  ))}
+                </div>
+
+                <div style={{ marginTop: '1.25rem', paddingTop: '0.75rem', borderTop: '1px solid rgba(76, 141, 255, 0.08)' }}>
+                  <Link
+                    href={svc.href}
+                    style={{
+                      fontFamily: '"Plus Jakarta Sans", sans-serif',
+                      fontWeight: 600,
+                      fontSize: '0.8125rem',
+                      color: '#4C8DFF',
+                      textDecoration: 'none',
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    View Category Architecture →
+                  </Link>
+                </div>
               </div>
             );
           })}

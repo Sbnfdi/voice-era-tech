@@ -8,67 +8,67 @@ const products = [
     id: 'predictive',
     name: 'Predictive Dialer',
     icon: '🎯',
-    color: '#0066FF',
-    tagline: 'Maximize agent productivity with AI-driven pacing',
-    description: 'Automatically calculates the optimal dial rate based on agent availability, answer rates and campaign goals. Minimizes idle time between calls.',
-    benefits: ['Automated pacing algorithms', 'Real-time answer rate analysis', 'Campaign-level controls', 'Agent skill-based routing', 'Drop rate management'],
+    badge: 'AI Core',
+    tagline: 'Maximize agent productivity with statistical pacing',
+    description: 'Automatically calculates the optimal dial rate based on real-time agent availability, carrier answer rates, and queue objectives. Minimizes idle time while enforcing strict TCPA compliance.',
+    benefits: ['Statistical pacing algorithms', 'Sub-450ms Answering Machine Detection', 'Campaign-level drop rate controls', 'Agent skill-based routing', 'Real-time DNC list scrubbing'],
     href: '/dialer-systems/predictive',
-    ideal: 'High-volume outbound call centers',
+    ideal: 'High-volume outbound call centers & sales teams',
   },
   {
     id: 'power',
     name: 'Power Dialer',
     icon: '⚡',
-    color: '#00D4FF',
-    tagline: 'High-speed dialing with full agent control',
-    description: 'Dials one or more leads per available agent simultaneously. Agents take control the moment a connection is made — no idle prediction needed.',
-    benefits: ['1:1 or N:1 dialing ratios', 'Instant agent connection', 'Call scripts & dispositions', 'Lead preview capability', 'CRM field push/pull'],
+    badge: 'Zero Drop',
+    tagline: 'High-speed automated dialing with guaranteed live presence',
+    description: 'Dials one or more leads per available agent the instant their prior call finishes. Agents take control the moment a connection is made — eliminating silent pauses and abandonment risk.',
+    benefits: ['1:1 to 3:1 dialing ratios', 'Instant agent connection', '1-Click call dispositions & notes', 'Automated voicemail drop', 'Local presence caller ID'],
     href: '/dialer-systems/power',
-    ideal: 'Sales teams and direct response campaigns',
+    ideal: 'Inside sales teams & direct outreach campaigns',
   },
   {
     id: 'progressive',
     name: 'Progressive Dialer',
     icon: '📈',
-    color: '#00E5A0',
-    tagline: 'Controlled dialing that waits for agent readiness',
-    description: 'Initiates the next call only when an agent becomes available, ensuring every connected call has an agent ready to speak — no dropped calls.',
-    benefits: ['Zero abandoned call risk', 'Agent-readiness triggers', 'Regulated industry compliant', 'Custom wait-time rules', 'DNC list scrubbing'],
+    badge: 'Compliant',
+    tagline: 'Controlled automated dialing waiting strictly for agent readiness',
+    description: 'Initiates the next outbound call only when an agent is verified available in the queue, ensuring every connected call has an agent ready to speak with zero dropped calls.',
+    benefits: ['Zero abandoned call guarantee', 'FDCPA & regulatory compliance', 'Dual-channel PCI-DSS recording', 'Automated cadence retry logic', 'CRM contact timeline sync'],
     href: '/dialer-systems/progressive',
-    ideal: 'Compliance-sensitive industries',
+    ideal: 'Collections, healthcare & financial services',
   },
   {
     id: 'preview',
     name: 'Preview Dialer',
     icon: '👁️',
-    color: '#8B5CF6',
-    tagline: 'Full lead context before every call',
-    description: 'Presents agents with complete lead information — prior interactions, CRM history, notes — before initiating the call. Perfect for relationship-driven sales.',
-    benefits: ['Full lead profile display', 'CRM history before dial', 'Agent-controlled timing', 'Custom disposition flows', 'Call recording & notes'],
+    badge: 'Context First',
+    tagline: 'Comprehensive lead intelligence before every dial',
+    description: 'Presents agents with complete lead intelligence — prior conversation history, CRM notes, and custom playbooks — before initiating the call. Perfect for relationship-driven consultative selling.',
+    benefits: ['Full CRM profile display', 'Configurable preview countdown timers', 'Agent-controlled dial timing', 'Skip & reschedule logic', 'Historical interaction logs'],
     href: '/dialer-systems/preview',
-    ideal: 'Complex sales and account management',
+    ideal: 'Enterprise B2B sales & account management',
   },
   {
     id: 'voip',
-    name: 'VoIP / SIP Dialer',
+    name: 'VoIP & SIP Telephony',
     icon: '🌐',
-    color: '#FFB800',
-    tagline: 'Internet-based calling infrastructure',
-    description: 'Deploy professional telephony over IP networks using enterprise-grade SIP trunking. Manage DIDs, call routing, failover and carrier redundancy.',
-    benefits: ['Multi-carrier SIP trunking', 'DID number management', 'Failover routing', 'Call quality monitoring', 'Global coverage options'],
+    badge: 'Tier-1 Core',
+    tagline: 'Carrier-grade Voice-over-IP cloud infrastructure',
+    description: 'Deploy professional telephony over global IP networks using enterprise SIP trunking. Manage international DIDs, call routing, carrier failover, and real-time MOS audio scoring.',
+    benefits: ['Multi-carrier Tier-1 redundancy', 'Global DID number management', 'Sub-35ms low-latency audio', 'TLS/SRTP end-to-end encryption', 'Real-time MOS jitter tracking'],
     href: '/dialer-systems/voip',
-    ideal: 'Organizations requiring VoIP infrastructure',
+    ideal: 'Telecom operators & global enterprise networks',
   },
   {
     id: 'multitenant',
     name: 'Multi-Tenant Dialer',
     icon: '🏢',
-    color: '#FF6B35',
-    tagline: 'Scalable dialer infrastructure for multiple organizations',
-    description: 'Host multiple independent call center environments on a single platform with full data isolation, custom branding and per-tenant controls.',
-    benefits: ['Full data isolation', 'Per-tenant campaign controls', 'Custom branding support', 'Centralized admin panel', 'Usage-based billing support'],
+    badge: 'White-Label',
+    tagline: 'Scalable dialer infrastructure for BPOs and agencies',
+    description: 'Host multiple independent client call centers on a single unified platform with complete data isolation, white-label branding, custom domains, and automated usage billing.',
+    benefits: ['Strict database & media isolation', 'Per-tenant campaign controls', 'Full white-label portal & branding', 'Automated per-minute/seat billing', '4-tier role-based access control'],
     href: '/dialer-systems/multi-tenant',
-    ideal: 'BPOs and service providers',
+    ideal: 'BPOs, contact center agencies & service providers',
   },
 ];
 
@@ -77,210 +77,188 @@ export default function DialerProducts() {
   const product = products[active];
 
   return (
-    <section className="section-padding" style={{ background: 'rgba(7,13,28,0.95)', position: 'relative', overflow: 'hidden' }}>
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        background: 'radial-gradient(ellipse 50% 60% at 80% 50%, rgba(0,102,255,0.07) 0%, transparent 70%)',
-        pointerEvents: 'none',
-      }} />
-
-      <div className="container-xl" style={{ position: 'relative' }}>
-        {/* Header */}
+    <section
+      id="dialer-products"
+      style={{
+        background: '#151D27',
+        padding: '6.5rem 0',
+        position: 'relative',
+        overflow: 'hidden',
+        borderTop: '1px solid rgba(76, 141, 255, 0.08)',
+        borderBottom: '1px solid rgba(76, 141, 255, 0.08)',
+      }}
+    >
+      <div className="container-xl" style={{ position: 'relative', zIndex: 1 }}>
+        {/* Section Header */}
         <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-          <div className="eyebrow" style={{ marginBottom: '1rem' }}>Dialer Products</div>
-          <h2 className="text-display-md" style={{ color: '#E8EEFF', marginBottom: '1rem' }}>
-            The Right Dialer for<br />
-            <span className="gradient-text-blue">Every Campaign</span>
+          <div className="eyebrow" style={{ marginBottom: '1rem' }}>Dialer Portfolio</div>
+          <h2 className="text-display-md" style={{ color: '#F4F6F8', marginBottom: '1rem' }}>
+            The Right Dialer for <span className="gradient-text-blue">Every Campaign</span>
           </h2>
-          <p className="text-body-lg" style={{ color: '#8BA3CC', maxWidth: 520, margin: '0 auto' }}>
-            Six specialized dialer types. Each built for specific calling strategies, compliance requirements and team structures.
+          <p className="text-body-lg" style={{ color: '#9AA6B2', maxWidth: 540, margin: '0 auto' }}>
+            Six specialized dialer architectures engineered for specific pacing requirements, compliance rules, and team structures.
           </p>
         </div>
 
-        {/* Product selector tabs */}
-        <div style={{
-          display: 'flex',
-          gap: '0.5rem',
-          marginBottom: '3rem',
-          overflowX: 'auto',
-          paddingBottom: '0.5rem',
-          scrollbarWidth: 'none',
-        }}>
-          {products.map((p, i) => (
-            <button
-              key={p.id}
-              onClick={() => setActive(i)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.625rem 1.125rem',
-                borderRadius: '100px',
-                border: `1px solid ${i === active ? p.color + '55' : 'rgba(0,102,255,0.12)'}`,
-                background: i === active ? `${p.color}15` : 'rgba(0,102,255,0.04)',
-                color: i === active ? p.color : '#8BA3CC',
-                fontFamily: '"Plus Jakarta Sans", sans-serif',
-                fontWeight: 500,
-                fontSize: '0.875rem',
-                cursor: 'none',
-                whiteSpace: 'nowrap',
-                transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
-                boxShadow: i === active ? `0 0 20px ${p.color}20` : 'none',
-              }}
-            >
-              <span>{p.icon}</span>
-              {p.name}
-            </button>
-          ))}
+        {/* Product Selector Tabs */}
+        <div
+          style={{
+            display: 'flex',
+            gap: '0.625rem',
+            marginBottom: '2.5rem',
+            overflowX: 'auto',
+            paddingBottom: '0.5rem',
+            scrollbarWidth: 'none',
+          }}
+        >
+          {products.map((p, i) => {
+            const isSelected = i === active;
+            return (
+              <button
+                key={p.id}
+                onClick={() => setActive(i)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.625rem',
+                  padding: '0.6875rem 1.25rem',
+                  borderRadius: 10,
+                  border: `1px solid ${isSelected ? '#3157D5' : 'rgba(76, 141, 255, 0.12)'}`,
+                  background: isSelected ? '#202B38' : 'rgba(11, 15, 20, 0.6)',
+                  color: isSelected ? '#F4F6F8' : '#9AA6B2',
+                  fontFamily: '"Plus Jakarta Sans", sans-serif',
+                  fontWeight: 600,
+                  fontSize: '0.875rem',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                  transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                  boxShadow: isSelected ? '0 4px 16px rgba(49, 87, 213, 0.2)' : 'none',
+                }}
+              >
+                <span>{p.icon}</span>
+                {p.name}
+              </button>
+            );
+          })}
         </div>
 
-        {/* Active product detail */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '3rem',
-          background: 'rgba(7,13,28,0.8)',
-          border: `1px solid ${product.color}22`,
-          borderRadius: 24,
-          padding: '3rem',
-          backdropFilter: 'blur(20px)',
-          animation: 'fade-up 0.35s cubic-bezier(0.16,1,0.3,1)',
-        }}>
-          {/* Left */}
+        {/* Active Product Showcase Surface */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1.1fr 1fr',
+            gap: '3.5rem',
+            background: '#202B38',
+            border: '1px solid rgba(76, 141, 255, 0.16)',
+            borderRadius: 20,
+            padding: '3rem',
+            boxShadow: '0 24px 60px rgba(0, 0, 0, 0.4)',
+          }}
+        >
+          {/* Left Column — Architecture & Detail */}
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-              <div style={{
-                width: 64,
-                height: 64,
-                borderRadius: 18,
-                background: `${product.color}18`,
-                border: `1px solid ${product.color}33`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.75rem',
-                boxShadow: `0 0 30px ${product.color}25`,
-              }}>
+              <div
+                style={{
+                  width: 58,
+                  height: 58,
+                  borderRadius: 14,
+                  background: '#151D27',
+                  border: '1px solid rgba(49, 87, 213, 0.3)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '1.75rem',
+                }}
+              >
                 {product.icon}
               </div>
               <div>
-                <h3 style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontWeight: 800, fontSize: '1.5rem', color: '#E8EEFF', marginBottom: '4px' }}>
-                  {product.name}
-                </h3>
-                <span style={{
-                  fontFamily: '"JetBrains Mono", monospace',
-                  fontSize: '0.65rem',
-                  letterSpacing: '0.1em',
-                  color: '#4A6A99',
-                  textTransform: 'uppercase',
-                }}>
-                  Ideal for: {product.ideal}
-                </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2px' }}>
+                  <h3 style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontWeight: 800, fontSize: '1.375rem', color: '#F4F6F8' }}>
+                    {product.name}
+                  </h3>
+                  <span
+                    style={{
+                      padding: '0.2rem 0.5rem',
+                      borderRadius: '100px',
+                      background: 'rgba(76, 141, 255, 0.1)',
+                      border: '1px solid rgba(76, 141, 255, 0.25)',
+                      fontFamily: '"JetBrains Mono", monospace',
+                      fontSize: '0.625rem',
+                      color: '#4C8DFF',
+                    }}
+                  >
+                    {product.badge}
+                  </span>
+                </div>
+                <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '0.6875rem', color: '#9AA6B2' }}>
+                  Target: {product.ideal}
+                </div>
               </div>
             </div>
 
-            <p style={{
-              fontFamily: '"Plus Jakarta Sans", sans-serif',
-              fontSize: '1rem',
-              fontWeight: 600,
-              color: product.color,
-              marginBottom: '0.75rem',
-              fontStyle: 'italic',
-            }}>
+            <p style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontSize: '1rem', fontWeight: 600, color: '#4C8DFF', marginBottom: '0.75rem' }}>
               &ldquo;{product.tagline}&rdquo;
             </p>
 
-            <p style={{ color: '#8BA3CC', fontSize: '0.9375rem', lineHeight: 1.75, fontFamily: '"Plus Jakarta Sans", sans-serif', marginBottom: '2rem' }}>
+            <p style={{ color: '#9AA6B2', fontSize: '0.9375rem', lineHeight: 1.75, marginBottom: '2.5rem' }}>
               {product.description}
             </p>
 
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <Link href={product.href} className="btn-magnetic btn-primary" style={{ textDecoration: 'none', fontSize: '0.875rem' }}>
-                <span style={{ position: 'relative', zIndex: 1 }}>Learn More</span>
+              <Link href={product.href} className="btn-primary" style={{ fontSize: '0.875rem' }}>
+                View Architecture Specs →
               </Link>
-              <Link href="/contact" className="btn-magnetic btn-secondary" style={{ textDecoration: 'none', fontSize: '0.875rem' }}>
-                Request Demo
+              <Link href="/contact" className="btn-secondary" style={{ fontSize: '0.875rem' }}>
+                Request Live Demo
               </Link>
             </div>
           </div>
 
-          {/* Right — benefits */}
+          {/* Right Column — Key Capabilities */}
           <div>
-            <div style={{
-              fontFamily: '"JetBrains Mono", monospace',
-              fontSize: '0.65rem',
-              letterSpacing: '0.15em',
-              color: '#4A6A99',
-              textTransform: 'uppercase',
-              marginBottom: '1.25rem',
-            }}>
-              Key Capabilities
+            <div
+              style={{
+                fontFamily: '"JetBrains Mono", monospace',
+                fontSize: '0.6875rem',
+                letterSpacing: '0.14em',
+                color: '#4C8DFF',
+                textTransform: 'uppercase',
+                marginBottom: '1.25rem',
+              }}
+            >
+              Enterprise Capabilities
             </div>
+
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              {product.benefits.map((b, i) => (
+              {product.benefits.map((b) => (
                 <div
                   key={b}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.875rem',
-                    padding: '0.875rem 1rem',
-                    borderRadius: 12,
-                    background: 'rgba(0,102,255,0.04)',
-                    border: '1px solid rgba(0,102,255,0.08)',
-                    animation: `fade-up 0.3s cubic-bezier(0.16,1,0.3,1) ${i * 0.06}s both`,
+                    padding: '0.875rem 1.25rem',
+                    borderRadius: 10,
+                    background: '#151D27',
+                    border: '1px solid rgba(76, 141, 255, 0.1)',
                   }}
                 >
-                  <div style={{
-                    width: 6, height: 6, borderRadius: '50%',
-                    background: product.color,
-                    boxShadow: `0 0 8px ${product.color}`,
-                    flexShrink: 0,
-                  }} />
-                  <span style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontSize: '0.9375rem', color: '#E8EEFF', fontWeight: 500 }}>
+                  <div
+                    style={{
+                      width: 6,
+                      height: 6,
+                      borderRadius: '50%',
+                      background: '#3AAFA9',
+                      flexShrink: 0,
+                    }}
+                  />
+                  <span style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontSize: '0.875rem', color: '#F4F6F8', fontWeight: 500 }}>
                     {b}
                   </span>
                 </div>
               ))}
-            </div>
-
-            {/* Visual dial selector */}
-            <div style={{
-              marginTop: '2rem',
-              padding: '1.25rem',
-              borderRadius: 16,
-              background: `${product.color}08`,
-              border: `1px solid ${product.color}15`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
-              <div>
-                <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '0.625rem', letterSpacing: '0.1em', color: '#4A6A99', textTransform: 'uppercase', marginBottom: '4px' }}>
-                  Dialer Mode
-                </div>
-                <div style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontWeight: 700, color: product.color, fontSize: '1rem' }}>
-                  {product.name.replace(' Dialer', '')}
-                </div>
-              </div>
-              <div style={{ display: 'flex', gap: '0.375rem' }}>
-                {products.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setActive(i)}
-                    style={{
-                      width: i === active ? 24 : 8,
-                      height: 8,
-                      borderRadius: 4,
-                      background: i === active ? product.color : 'rgba(0,102,255,0.2)',
-                      border: 'none',
-                      cursor: 'none',
-                      transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
-                    }}
-                  />
-                ))}
-              </div>
             </div>
           </div>
         </div>

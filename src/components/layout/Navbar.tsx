@@ -11,19 +11,19 @@ const navItems = [
       {
         title: 'Dialer Products',
         items: [
-          { label: 'Predictive Dialer', href: '/dialer-systems/predictive', desc: 'AI-optimized outbound calling' },
-          { label: 'Power Dialer', href: '/dialer-systems/power', desc: 'High-speed agent-driven calling' },
-          { label: 'Progressive Dialer', href: '/dialer-systems/progressive', desc: 'Controlled automated dialing' },
-          { label: 'Preview Dialer', href: '/dialer-systems/preview', desc: 'Agent-reviewed lead calling' },
+          { label: 'Predictive Dialer', href: '/dialer-systems/predictive', desc: 'Statistical pacing optimization' },
+          { label: 'Power Dialer', href: '/dialer-systems/power', desc: 'Agent-driven rapid calling' },
+          { label: 'Progressive Dialer', href: '/dialer-systems/progressive', desc: 'Zero-abandonment compliance' },
+          { label: 'Preview Dialer', href: '/dialer-systems/preview', desc: 'Account context-first dialing' },
         ],
       },
       {
         title: 'Infrastructure',
         items: [
-          { label: 'VoIP Dialer', href: '/dialer-systems/voip', desc: 'Internet-based calling' },
-          { label: 'SIP Dialer', href: '/dialer-systems/sip', desc: 'Session initiation protocol' },
-          { label: 'Multi-Tenant Dialer', href: '/dialer-systems/multi-tenant', desc: 'Scalable multi-org infrastructure' },
-          { label: 'Custom Dialer Solutions', href: '/dialer-systems/custom', desc: 'Purpose-built dialer development' },
+          { label: 'VoIP Dialer', href: '/dialer-systems/voip', desc: 'Carrier-grade IP telephony' },
+          { label: 'SIP Dialer', href: '/dialer-systems/sip', desc: 'High-density SIP trunking' },
+          { label: 'Multi-Tenant Dialer', href: '/dialer-systems/multi-tenant', desc: 'BPO & agency architecture' },
+          { label: 'Custom Dialer Solutions', href: '/dialer-systems/custom', desc: 'Bespoke telephony development' },
         ],
       },
     ],
@@ -35,19 +35,19 @@ const navItems = [
       {
         title: 'Operations',
         items: [
-          { label: 'Inbound Call Centers', href: '/call-center/inbound', desc: 'Customer support infrastructure' },
-          { label: 'Outbound Call Centers', href: '/call-center/outbound', desc: 'Sales & campaign calling' },
-          { label: 'Blended Call Centers', href: '/call-center/blended', desc: 'Combined in/outbound operations' },
-          { label: 'Contact Center Solutions', href: '/call-center/contact-center', desc: 'Unified communication hub' },
+          { label: 'Inbound Call Centers', href: '/call-center/inbound', desc: 'ACD & multi-level IVR' },
+          { label: 'Outbound Call Centers', href: '/call-center/outbound', desc: 'High-velocity sales campaigns' },
+          { label: 'Blended Call Centers', href: '/call-center/blended', desc: 'Dynamic queue balancing' },
+          { label: 'Contact Center Solutions', href: '/call-center/contact-center', desc: 'Voice, SMS & digital hub' },
         ],
       },
       {
         title: 'Management',
         items: [
-          { label: 'Agent Management', href: '/call-center/agent-management', desc: 'Agent performance & scheduling' },
-          { label: 'Campaign Management', href: '/call-center/campaigns', desc: 'End-to-end campaign control' },
-          { label: 'Call Analytics', href: '/call-center/analytics', desc: 'Performance intelligence' },
-          { label: 'CRM Integration', href: '/call-center/crm', desc: 'Connected customer data' },
+          { label: 'Agent Management', href: '/call-center/agent-management', desc: 'Live HUD, whisper & AI QA' },
+          { label: 'Campaign Management', href: '/call-center/campaigns', desc: 'Segmentation & scheduling' },
+          { label: 'Call Analytics', href: '/call-center/analytics', desc: 'Real-time telemetry & BI' },
+          { label: 'CRM Integration', href: '/call-center/crm', desc: 'Embedded CTI & 2-way sync' },
         ],
       },
     ],
@@ -59,18 +59,18 @@ const navItems = [
       {
         title: 'Voice AI',
         items: [
-          { label: 'AI Voice Agents', href: '/ai-solutions/voice-agents', desc: 'Conversational voice automation' },
-          { label: 'AI Call Agents', href: '/ai-solutions/call-agents', desc: 'Intelligent calling automation' },
-          { label: 'AI Customer Support', href: '/ai-solutions/customer-support', desc: '24/7 automated support' },
+          { label: 'AI Voice Agents', href: '/ai-solutions/voice-agents', desc: 'Conversational voice synthesis' },
+          { label: 'AI Call Agents', href: '/ai-solutions/call-agents', desc: 'Autonomous outbound calling' },
+          { label: 'AI Customer Support', href: '/ai-solutions/customer-support', desc: '24/7 Tier-1 resolution' },
         ],
       },
       {
         title: 'Intelligence',
         items: [
-          { label: 'AI Lead Qualification', href: '/ai-solutions/lead-qualification', desc: 'Intelligent prospect scoring' },
-          { label: 'AI Appointment Agents', href: '/ai-solutions/appointments', desc: 'Automated scheduling' },
-          { label: 'AI Automation', href: '/ai-solutions/automation', desc: 'Workflow intelligence' },
-          { label: 'Custom AI Solutions', href: '/ai-solutions/custom', desc: 'Purpose-built AI systems' },
+          { label: 'AI Lead Qualification', href: '/ai-solutions/lead-qualification', desc: 'Dynamic BANT scoring' },
+          { label: 'AI Appointment Agents', href: '/ai-solutions/appointments', desc: 'Calendar scheduling' },
+          { label: 'AI Automation', href: '/ai-solutions/automation', desc: 'After-call work automation' },
+          { label: 'Custom AI Architecture', href: '/ai-solutions/custom', desc: 'Private models & fine-tuning' },
         ],
       },
     ],
@@ -82,18 +82,18 @@ const navItems = [
       {
         title: 'Cloud',
         items: [
-          { label: 'Cloud Configuration', href: '/cloud-it/configuration', desc: 'Expert cloud setup' },
-          { label: 'Cloud Migration', href: '/cloud-it/migration', desc: 'Seamless infrastructure moves' },
-          { label: 'Server Deployment', href: '/cloud-it/servers', desc: 'Managed server infrastructure' },
+          { label: 'Cloud Configuration', href: '/cloud-it/configuration', desc: 'High-availability multi-region' },
+          { label: 'Cloud Migration', href: '/cloud-it/migration', desc: 'Zero-downtime telephony PBX' },
+          { label: 'Server Deployment', href: '/cloud-it/servers', desc: 'Dedicated bare-metal compute' },
         ],
       },
       {
         title: 'Infrastructure',
         items: [
-          { label: 'Security', href: '/cloud-it/security', desc: 'Enterprise security posture' },
-          { label: 'Monitoring', href: '/cloud-it/monitoring', desc: 'Real-time infrastructure visibility' },
-          { label: 'DevOps', href: '/cloud-it/devops', desc: 'CI/CD & automation pipelines' },
-          { label: 'API Infrastructure', href: '/cloud-it/api', desc: 'Scalable API architecture' },
+          { label: 'Security & Defense', href: '/cloud-it/security', desc: 'SOC-2 & encryption standards' },
+          { label: 'Telemetry Monitoring', href: '/cloud-it/monitoring', desc: '24/7 MOS voice tracking' },
+          { label: 'DevOps & CI/CD', href: '/cloud-it/devops', desc: 'Automated Kubernetes pipeline' },
+          { label: 'API Infrastructure', href: '/cloud-it/api', desc: 'High-throughput gateways' },
         ],
       },
     ],
@@ -105,18 +105,18 @@ const navItems = [
       {
         title: 'Web & Software',
         items: [
-          { label: 'Website Development', href: '/development/websites', desc: 'Premium web experiences' },
-          { label: 'Web Applications', href: '/development/web-apps', desc: 'Complex web platforms' },
-          { label: 'SaaS Development', href: '/development/saas', desc: 'Software-as-a-service products' },
-          { label: 'Custom Software', href: '/development/custom', desc: 'Purpose-built solutions' },
+          { label: 'Website Development', href: '/development/websites', desc: 'Enterprise web engineering' },
+          { label: 'Web Applications', href: '/development/web-apps', desc: 'Scalable cloud platforms' },
+          { label: 'SaaS Development', href: '/development/saas', desc: 'Multi-tenant subscription apps' },
+          { label: 'Custom Software', href: '/development/custom', desc: 'Bespoke business engines' },
         ],
       },
       {
-        title: 'Integrations',
+        title: 'Integrations & UX',
         items: [
           { label: 'CRM Development', href: '/development/crm', desc: 'Custom CRM systems' },
           { label: 'API Development', href: '/development/api', desc: 'RESTful & GraphQL APIs' },
-          { label: 'UI/UX Design', href: '/development/design', desc: 'Premium interface design' },
+          { label: 'UI/UX Design', href: '/development/design', desc: 'Design systems & Figma' },
         ],
       },
     ],
@@ -128,19 +128,19 @@ const navItems = [
       {
         title: 'Company',
         items: [
-          { label: 'About Voice Era Tech', href: '/about', desc: 'Our story & mission' },
-          { label: 'Our Technology', href: '/technology', desc: 'The systems we build on' },
-          { label: 'Industry Verticals', href: '/industries', desc: 'Sector-specific solutions' },
-          { label: 'Case Studies', href: '/case-studies', desc: 'Real-world implementations' },
+          { label: 'About Voice Era Tech', href: '/about', desc: 'Mission & engineering culture' },
+          { label: 'Our Technology', href: '/technology', desc: 'Multi-tier system architecture' },
+          { label: 'Industry Verticals', href: '/industries', desc: 'BPO, Finance, Healthcare' },
+          { label: 'Case Studies', href: '/case-studies', desc: 'Enterprise implementations' },
         ],
       },
       {
         title: 'Trust & Careers',
         items: [
-          { label: 'Security & Trust', href: '/security', desc: 'Enterprise security standards' },
+          { label: 'Security & Trust', href: '/security', desc: 'Data governance & standards' },
           { label: 'Compliance & TCPA', href: '/compliance', desc: 'Telecommunications adherence' },
           { label: 'Careers', href: '/careers', desc: 'Join our engineering team' },
-          { label: 'Contact', href: '/contact', desc: 'Start a conversation' },
+          { label: 'Contact Command Center', href: '/contact', desc: 'Speak with our architects' },
         ],
       },
     ],
@@ -154,321 +154,363 @@ export default function Navbar() {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => setScrolled(window.scrollY > 30);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   const handleMouseEnter = (label: string) => {
-    clearTimeout(timeoutRef.current);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setActiveMenu(label);
   };
 
   const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => setActiveMenu(null), 150);
+    timeoutRef.current = setTimeout(() => {
+      setActiveMenu(null);
+    }, 120);
   };
 
   return (
-    <>
-      <nav
+    <header
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 100,
+        transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+        background: scrolled
+          ? 'rgba(11, 15, 20, 0.94)'
+          : 'rgba(11, 15, 20, 0.75)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        borderBottom: `1px solid ${scrolled ? 'rgba(76, 141, 255, 0.12)' : 'rgba(76, 141, 255, 0.06)'}`,
+      }}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div
+        className="container-xl"
         style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 500,
-          padding: scrolled ? '0.75rem 0' : '1.25rem 0',
-          background: scrolled
-            ? 'rgba(5, 10, 20, 0.95)'
-            : 'transparent',
-          backdropFilter: scrolled ? 'blur(20px)' : 'none',
-          borderBottom: scrolled ? '1px solid rgba(0,102,255,0.1)' : 'none',
-          transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          height: '4.5rem',
         }}
       >
-        <div className="container-xl" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          {/* Logo */}
-          <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            {/* Dialer-inspired logo mark */}
-            <div style={{ position: 'relative', width: 38, height: 38 }}>
-              <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: '100%' }}>
-                <circle cx="19" cy="19" r="18" stroke="url(#logoGrad)" strokeWidth="1.5"/>
-                <circle cx="19" cy="19" r="6" fill="url(#logoGrad2)" opacity="0.9"/>
-                {/* Keypad dots */}
-                {[0,1,2,3,4,5,6,7,8].map(i => {
-                  const row = Math.floor(i / 3);
-                  const col = i % 3;
-                  return (
-                    <circle
-                      key={i}
-                      cx={11 + col * 4}
-                      cy={8 + row * 4}
-                      r="1.2"
-                      fill={`rgba(0,212,255,${0.3 + (i * 0.08)})`}
-                    />
-                  );
-                })}
-                <defs>
-                  <linearGradient id="logoGrad" x1="0" y1="0" x2="38" y2="38">
-                    <stop stopColor="#0066FF"/>
-                    <stop offset="1" stopColor="#00D4FF"/>
-                  </linearGradient>
-                  <radialGradient id="logoGrad2" cx="50%" cy="50%" r="50%">
-                    <stop stopColor="#00D4FF"/>
-                    <stop offset="1" stopColor="#0066FF"/>
-                  </radialGradient>
-                </defs>
-              </svg>
-            </div>
-            <div>
-              <div style={{
+        {/* Brand Logo */}
+        <Link
+          href="/"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            textDecoration: 'none',
+          }}
+        >
+          {/* Logo Mark - Precision Telecom Symbol */}
+          <div
+            style={{
+              width: 34,
+              height: 34,
+              borderRadius: 8,
+              background: '#151D27',
+              border: '1px solid rgba(49, 87, 213, 0.35)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
+            }}
+          >
+            <div
+              style={{
+                width: 10,
+                height: 10,
+                borderRadius: '50%',
+                background: '#3157D5',
+              }}
+            />
+            <div
+              style={{
+                position: 'absolute',
+                top: 5,
+                right: 5,
+                width: 5,
+                height: 5,
+                borderRadius: '50%',
+                background: '#3AAFA9',
+              }}
+            />
+          </div>
+
+          <div>
+            <div
+              style={{
                 fontFamily: '"Plus Jakarta Sans", sans-serif',
                 fontWeight: 800,
                 fontSize: '1.0625rem',
-                color: '#E8EEFF',
                 letterSpacing: '-0.02em',
+                color: '#F4F6F8',
                 lineHeight: 1.1,
-              }}>
-                Voice Era <span style={{ color: '#00D4FF' }}>Tech</span>
-              </div>
-              <div style={{
-                fontFamily: '"JetBrains Mono", monospace',
-                fontSize: '0.5rem',
-                letterSpacing: '0.15em',
-                color: '#4A6A99',
-                textTransform: 'uppercase',
-              }}>
-                LLC
-              </div>
+              }}
+            >
+              VOICE ERA <span style={{ color: '#4C8DFF', fontWeight: 600 }}>TECH</span>
             </div>
-          </Link>
+            <div
+              style={{
+                fontFamily: '"JetBrains Mono", monospace',
+                fontSize: '0.5625rem',
+                color: '#9AA6B2',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+              }}
+            >
+              Enterprise Telephony
+            </div>
+          </div>
+        </Link>
 
-          {/* Desktop nav */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }} className="hidden-mobile">
-            {navItems.map(item => (
+        {/* Desktop Nav Links */}
+        <nav
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.25rem',
+          }}
+          className="hidden md:flex"
+        >
+          {navItems.map(item => {
+            const isActive = activeMenu === item.label;
+            return (
               <div
                 key={item.label}
                 style={{ position: 'relative' }}
                 onMouseEnter={() => handleMouseEnter(item.label)}
-                onMouseLeave={handleMouseLeave}
               >
-                <button
+                <Link
+                  href={item.href}
                   style={{
-                    background: 'none',
-                    border: 'none',
-                    color: activeMenu === item.label ? 'var(--c-cyan)' : 'var(--c-text-secondary)',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                    padding: '0.5rem 0.875rem',
+                    borderRadius: 6,
+                    color: isActive ? '#F4F6F8' : '#9AA6B2',
+                    background: isActive ? 'rgba(76, 141, 255, 0.08)' : 'transparent',
+                    textDecoration: 'none',
                     fontFamily: '"Plus Jakarta Sans", sans-serif',
                     fontSize: '0.875rem',
                     fontWeight: 500,
-                    padding: '0.5rem 0.875rem',
-                    borderRadius: '8px',
-                    cursor: 'none',
-                    transition: 'color 0.2s',
-                    whiteSpace: 'nowrap',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px',
+                    transition: 'all 0.15s ease',
                   }}
                 >
                   {item.label}
-                  <svg width="10" height="6" viewBox="0 0 10 6" fill="none" style={{
-                    transform: activeMenu === item.label ? 'rotate(180deg)' : 'rotate(0deg)',
-                    transition: 'transform 0.2s',
-                    opacity: 0.5,
-                  }}>
-                    <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                  </svg>
-                </button>
-
-                {/* Mega Menu */}
-                {activeMenu === item.label && (
-                  <div
-                    className="mega-menu"
+                  <svg
+                    width="10"
+                    height="6"
+                    viewBox="0 0 10 6"
+                    fill="none"
                     style={{
-                      animation: 'fade-up 0.25s cubic-bezier(0.16,1,0.3,1) both',
-                      minWidth: item.columns.length === 1 ? '320px' : '640px',
+                      transform: isActive ? 'rotate(180deg)' : 'rotate(0)',
+                      transition: 'transform 0.2s ease',
+                      opacity: 0.6,
                     }}
-                    onMouseEnter={() => handleMouseEnter(item.label)}
-                    onMouseLeave={handleMouseLeave}
                   >
-                    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${item.columns.length}, 1fr)`, gap: '2rem' }}>
-                      {item.columns.map(col => (
-                        <div key={col.title}>
-                          <div style={{
+                    <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </Link>
+
+                {/* Mega Menu Dropdown */}
+                {isActive && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: 'calc(100% + 0.5rem)',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      width: item.columns.length > 1 ? 580 : 320,
+                      background: '#151D27',
+                      border: '1px solid rgba(76, 141, 255, 0.14)',
+                      borderRadius: 14,
+                      padding: '1.25rem',
+                      boxShadow: '0 24px 60px rgba(0,0,0,0.6), 0 0 20px rgba(49,87,213,0.06)',
+                      display: 'grid',
+                      gridTemplateColumns: `repeat(${item.columns.length}, 1fr)`,
+                      gap: '1.25rem',
+                      zIndex: 200,
+                      animation: 'fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                    }}
+                  >
+                    {item.columns.map(col => (
+                      <div key={col.title}>
+                        <div
+                          style={{
                             fontFamily: '"JetBrains Mono", monospace',
-                            fontSize: '0.65rem',
-                            letterSpacing: '0.15em',
-                            color: '#4A6A99',
+                            fontSize: '0.625rem',
+                            letterSpacing: '0.14em',
+                            color: '#4C8DFF',
                             textTransform: 'uppercase',
-                            marginBottom: '1rem',
-                            paddingBottom: '0.5rem',
-                            borderBottom: '1px solid rgba(0,102,255,0.1)',
-                          }}>
-                            {col.title}
-                          </div>
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                            {col.items.map(navItem => (
-                              <Link
-                                key={navItem.label}
-                                href={navItem.href}
-                                onClick={() => setActiveMenu(null)}
+                            marginBottom: '0.75rem',
+                            paddingBottom: '0.35rem',
+                            borderBottom: '1px solid rgba(76, 141, 255, 0.08)',
+                          }}
+                        >
+                          {col.title}
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                          {col.items.map(subItem => (
+                            <Link
+                              key={subItem.label}
+                              href={subItem.href}
+                              style={{
+                                display: 'block',
+                                padding: '0.5rem 0.625rem',
+                                borderRadius: 8,
+                                background: '#202B38',
+                                border: '1px solid transparent',
+                                textDecoration: 'none',
+                                transition: 'all 0.15s ease',
+                              }}
+                              onMouseEnter={e => {
+                                const el = e.currentTarget as HTMLElement;
+                                el.style.borderColor = 'rgba(76, 141, 255, 0.3)';
+                                el.style.background = '#283747';
+                              }}
+                              onMouseLeave={e => {
+                                const el = e.currentTarget as HTMLElement;
+                                el.style.borderColor = 'transparent';
+                                el.style.background = '#202B38';
+                              }}
+                            >
+                              <div
                                 style={{
-                                  display: 'flex',
-                                  flexDirection: 'column',
-                                  padding: '0.625rem 0.75rem',
-                                  borderRadius: '10px',
-                                  textDecoration: 'none',
-                                  transition: 'background 0.2s',
-                                  gap: '2px',
-                                }}
-                                onMouseEnter={e => {
-                                  (e.currentTarget as HTMLElement).style.background = 'rgba(0,102,255,0.08)';
-                                }}
-                                onMouseLeave={e => {
-                                  (e.currentTarget as HTMLElement).style.background = 'transparent';
+                                  fontFamily: '"Plus Jakarta Sans", sans-serif',
+                                  fontWeight: 600,
+                                  fontSize: '0.8125rem',
+                                  color: '#F4F6F8',
+                                  marginBottom: '1px',
                                 }}
                               >
-                                <span style={{
-                                  fontFamily: '"Plus Jakarta Sans", sans-serif',
-                                  fontWeight: 500,
-                                  fontSize: '0.875rem',
-                                  color: '#E8EEFF',
-                                }}>
-                                  {navItem.label}
-                                </span>
-                                <span style={{
-                                  fontFamily: '"Plus Jakarta Sans", sans-serif',
-                                  fontSize: '0.75rem',
-                                  color: '#4A6A99',
-                                }}>
-                                  {navItem.desc}
-                                </span>
-                              </Link>
-                            ))}
-                          </div>
+                                {subItem.label}
+                              </div>
+                              <div
+                                style={{
+                                  fontSize: '0.6875rem',
+                                  color: '#9AA6B2',
+                                  lineHeight: 1.35,
+                                }}
+                              >
+                                {subItem.desc}
+                              </div>
+                            </Link>
+                          ))}
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
-            ))}
-          </div>
+            );
+          })}
+        </nav>
 
-          {/* CTA buttons */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }} className="hidden-mobile">
-            <Link href="/contact" className="btn-magnetic btn-secondary" style={{ fontSize: '0.875rem', padding: '0.625rem 1.25rem' }}>
-              Talk to an Expert
-            </Link>
-            <Link href="/contact" className="btn-magnetic btn-primary" style={{ fontSize: '0.875rem', padding: '0.625rem 1.25rem' }} data-cursor="CONNECT">
-              <span style={{ position: 'relative', zIndex: 1 }}>Get Started</span>
-            </Link>
-          </div>
+        {/* Right CTA */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <Link
+            href="/contact"
+            className="btn-primary"
+            style={{
+              padding: '0.5625rem 1.25rem',
+              fontSize: '0.875rem',
+              borderRadius: 6,
+            }}
+          >
+            Talk to an Expert
+          </Link>
 
-          {/* Mobile hamburger */}
+          {/* Mobile menu hamburger toggle */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
+            className="md:hidden"
             style={{
-              display: 'none',
-              background: 'none',
-              border: '1px solid rgba(0,102,255,0.2)',
-              borderRadius: '8px',
+              background: '#151D27',
+              border: '1px solid rgba(76, 141, 255, 0.2)',
+              borderRadius: 6,
               padding: '0.5rem',
+              color: '#F4F6F8',
               cursor: 'pointer',
             }}
-            className="show-mobile"
-            aria-label="Toggle navigation"
+            aria-label="Toggle menu"
           >
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               {mobileOpen ? (
-                <path d="M4 4L18 18M18 4L4 18" stroke="#00D4FF" strokeWidth="1.5" strokeLinecap="round"/>
+                <path d="M4 4L16 16M16 4L4 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
               ) : (
-                <>
-                  <line x1="3" y1="6" x2="19" y2="6" stroke="#E8EEFF" strokeWidth="1.5" strokeLinecap="round"/>
-                  <line x1="3" y1="11" x2="19" y2="11" stroke="#E8EEFF" strokeWidth="1.5" strokeLinecap="round"/>
-                  <line x1="3" y1="16" x2="19" y2="16" stroke="#E8EEFF" strokeWidth="1.5" strokeLinecap="round"/>
-                </>
+                <path d="M3 5H17M3 10H17M3 15H17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
               )}
             </svg>
           </button>
         </div>
-      </nav>
+      </div>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Drawer */}
       {mobileOpen && (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          zIndex: 490,
-          background: 'rgba(5,10,20,0.98)',
-          backdropFilter: 'blur(20px)',
-          paddingTop: '5rem',
-          overflowY: 'auto',
-          animation: 'fade-in 0.3s ease both',
-        }}>
-          <div className="container-xl" style={{ paddingBottom: '3rem' }}>
-            {navItems.map(item => (
-              <div key={item.label} style={{ borderBottom: '1px solid rgba(0,102,255,0.08)', paddingBottom: '1.5rem', marginBottom: '1.5rem' }}>
-                <div style={{
-                  fontFamily: '"Plus Jakarta Sans", sans-serif',
-                  fontWeight: 700,
-                  fontSize: '1.125rem',
-                  color: '#E8EEFF',
-                  marginBottom: '0.75rem',
-                }}>
-                  {item.label}
-                </div>
-                {item.columns.map(col => (
-                  <div key={col.title} style={{ marginBottom: '1rem' }}>
-                    <div style={{
-                      fontFamily: '"JetBrains Mono", monospace',
-                      fontSize: '0.625rem',
-                      letterSpacing: '0.15em',
-                      color: '#4A6A99',
-                      textTransform: 'uppercase',
-                      marginBottom: '0.5rem',
-                    }}>
-                      {col.title}
-                    </div>
-                    {col.items.map(navItem => (
-                      <Link
-                        key={navItem.label}
-                        href={navItem.href}
-                        onClick={() => setMobileOpen(false)}
-                        style={{
-                          display: 'block',
-                          padding: '0.5rem 0',
-                          color: '#8BA3CC',
-                          textDecoration: 'none',
-                          fontSize: '0.9375rem',
-                          fontFamily: '"Plus Jakarta Sans", sans-serif',
-                        }}
-                      >
-                        {navItem.label}
-                      </Link>
-                    ))}
-                  </div>
+        <div
+          style={{
+            background: '#151D27',
+            borderTop: '1px solid rgba(76, 141, 255, 0.12)',
+            padding: '1.5rem',
+            maxHeight: 'calc(100vh - 4.5rem)',
+            overflowY: 'auto',
+          }}
+          className="md:hidden"
+        >
+          {navItems.map(item => (
+            <div key={item.label} style={{ marginBottom: '1.5rem' }}>
+              <div
+                style={{
+                  fontFamily: '"JetBrains Mono", monospace',
+                  fontSize: '0.75rem',
+                  color: '#4C8DFF',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  marginBottom: '0.5rem',
+                }}
+              >
+                {item.label}
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '0.35rem' }}>
+                {item.columns.flatMap(c => c.items).map(sub => (
+                  <Link
+                    key={sub.label}
+                    href={sub.href}
+                    onClick={() => setMobileOpen(false)}
+                    style={{
+                      padding: '0.5rem',
+                      color: '#F4F6F8',
+                      textDecoration: 'none',
+                      fontSize: '0.875rem',
+                      fontFamily: '"Plus Jakarta Sans", sans-serif',
+                      borderBottom: '1px solid rgba(76, 141, 255, 0.06)',
+                    }}
+                  >
+                    {sub.label}
+                  </Link>
                 ))}
               </div>
-            ))}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '2rem' }}>
-              <Link href="/contact" className="btn-magnetic btn-primary" onClick={() => setMobileOpen(false)} style={{ textAlign: 'center', textDecoration: 'none' }}>
-                <span style={{ position: 'relative', zIndex: 1 }}>Talk to an Expert</span>
-              </Link>
             </div>
+          ))}
+          <div style={{ marginTop: '1.5rem' }}>
+            <Link
+              href="/contact"
+              onClick={() => setMobileOpen(false)}
+              className="btn-primary"
+              style={{ width: '100%', textAlign: 'center', display: 'block' }}
+            >
+              Talk to an Expert →
+            </Link>
           </div>
         </div>
       )}
-
-      <style>{`
-        @media (max-width: 1024px) {
-          .hidden-mobile { display: none !important; }
-          .show-mobile { display: flex !important; }
-        }
-        @media (min-width: 1025px) {
-          .show-mobile { display: none !important; }
-        }
-      `}</style>
-    </>
+    </header>
   );
 }

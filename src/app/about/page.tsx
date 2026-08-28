@@ -5,15 +5,15 @@ import CustomCursor from '@/components/layout/CustomCursor';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'About Voice Era Tech LLC — Our Mission, Vision & Technology',
-  description: 'Voice Era Tech LLC builds enterprise dialer systems, AI voice technology and cloud infrastructure for modern call centers. Learn about our mission and technology philosophy.',
+  title: 'About Voice Era Tech LLC — Mission, Engineering & Infrastructure',
+  description: 'Voice Era Tech LLC engineers mission-critical dialer systems, telecommunications platforms, AI voice agents, and cloud infrastructure for modern call centers.',
 };
 
 const values = [
-  { icon: '🎯', title: 'Precision Engineering', desc: 'Every system we build is designed to perform under production load — not just in a demo environment.' },
-  { icon: '🔒', title: 'Enterprise Reliability', desc: 'We design for high availability, data integrity and operational continuity from day one.' },
-  { icon: '🤝', title: 'Technical Partnership', desc: 'We work as an extension of your team, not a vendor. Deep collaboration is how we build better systems.' },
-  { icon: '⚡', title: 'Continuous Innovation', desc: 'The technology landscape evolves. Our platforms are built to adapt, extend and scale as your needs change.' },
+  { icon: '🎯', title: 'Precision Telephony Engineering', desc: 'Every system we build is designed and stress-tested to perform under heavy concurrent production loads with sub-35ms audio latency.' },
+  { icon: '🔒', title: 'Enterprise Reliability & Compliance', desc: 'We engineer five-nines high availability, cryptographic data integrity, and automated regulatory compliance from day one.' },
+  { icon: '🤝', title: 'Practicing Technical Partnership', desc: 'We operate as direct technical partners to your engineering and operations teams, not a distant third-party vendor.' },
+  { icon: '⚡', title: 'Continuous Telecommunications Innovation', desc: 'Our architectures are modular, open, and extensible — adapting effortlessly as your telephony throughput expands.' },
 ];
 
 export default function AboutPage() {
@@ -21,43 +21,47 @@ export default function AboutPage() {
     <>
       <CustomCursor />
       <Navbar />
-      <main style={{ minHeight: '100vh', background: 'var(--c-bg)' }}>
+      <main style={{ minHeight: '100vh', background: '#0B0F14' }}>
         {/* Hero */}
-        <section style={{ position: 'relative', paddingTop: '9rem', paddingBottom: '6rem', overflow: 'hidden' }}>
-          <div className="grid-pattern" style={{ position: 'absolute', inset: 0, opacity: 0.4 }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 70% 60% at 50% 0%, rgba(0,102,255,0.1) 0%, transparent 70%)', pointerEvents: 'none' }} />
-          <div className="container-lg" style={{ position: 'relative' }}>
-            <div className="eyebrow" style={{ marginBottom: '1.25rem' }}>Company</div>
-            <h1 className="text-display-lg" style={{ color: '#E8EEFF', marginBottom: '1.5rem' }}>
-              Building the Technology<br />
-              <span className="gradient-text-blue">That Connects Businesses.</span>
+        <section style={{ position: 'relative', paddingTop: '9.5rem', paddingBottom: '5.5rem', overflow: 'hidden' }}>
+          <div className="grid-pattern" style={{ position: 'absolute', inset: 0, opacity: 0.35 }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 65% 50% at 50% 0%, rgba(49, 87, 213, 0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
+          
+          <div className="container-lg" style={{ position: 'relative', zIndex: 1 }}>
+            <div className="eyebrow" style={{ marginBottom: '1.25rem' }}>Company Overview</div>
+            <h1 className="text-display-lg" style={{ color: '#F4F6F8', marginBottom: '1.5rem' }}>
+              Building the Telecommunications Infrastructure <br />
+              <span className="gradient-text-blue">That Powers Modern Enterprise.</span>
             </h1>
-            <p className="text-body-lg" style={{ color: '#8BA3CC', maxWidth: 600, lineHeight: 1.8, marginBottom: '3rem' }}>
-              Voice Era Tech LLC is a technology company focused on delivering enterprise-grade communication systems, AI voice technology and cloud infrastructure for call centers and modern businesses. We design systems built for scale, reliability and real-world performance.
+            <p className="text-body-lg" style={{ color: '#9AA6B2', maxWidth: 640, lineHeight: 1.8, marginBottom: '2.5rem' }}>
+              Voice Era Tech LLC is an enterprise technology and telecommunications engineering company. We design, deploy, and support carrier-grade dialer platforms, autonomous voice AI pipelines, and cloud computing infrastructure for call centers and high-scale businesses globally.
             </p>
-            <Link href="/contact" className="btn-magnetic btn-primary" style={{ textDecoration: 'none' }} data-cursor="CONNECT">
-              <span style={{ position: 'relative', zIndex: 1 }}>Start a Conversation</span>
+            <Link href="/contact" className="btn-primary" data-cursor="CONNECT">
+              Connect with Our Engineering Team →
             </Link>
           </div>
         </section>
 
-        {/* Mission + Vision */}
-        <section style={{ padding: '5rem 0', background: 'rgba(7,13,28,0.95)' }}>
+        {/* Mission & Vision */}
+        <section style={{ padding: '5rem 0', background: '#151D27', borderTop: '1px solid rgba(76, 141, 255, 0.08)', borderBottom: '1px solid rgba(76, 141, 255, 0.08)' }}>
           <div className="container-lg">
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2.5rem' }}>
               {[
-                { label: 'Mission', icon: '🎯', color: '#0066FF', text: 'To deliver reliable, scalable and intelligent communication technology that enables businesses to connect with their customers more effectively — through better dialer systems, smarter AI, and more powerful infrastructure.' },
-                { label: 'Vision', icon: '🔭', color: '#00D4FF', text: 'To become the leading provider of enterprise communication and call center technology for modern businesses — powering the next generation of call centers with dialer intelligence, AI automation and connected cloud infrastructure.' },
-              ].map(item => (
-                <div key={item.label} style={{
-                  background: 'rgba(5,10,20,0.8)',
-                  border: `1px solid ${item.color}20`,
-                  borderRadius: 20,
-                  padding: '2.5rem',
-                }}>
+                { label: 'Our Mission', icon: '🎯', text: 'To engineer reliable, scalable, and mathematically optimized communications technology that empowers organizations to connect with customers flawlessly — through higher dialer throughput, autonomous voice AI, and bulletproof infrastructure.' },
+                { label: 'Our Vision', icon: '🔭', text: 'To stand as the trusted technology infrastructure partner for the next generation of enterprise contact centers — bridging traditional telecommunications with conversational artificial intelligence and cloud-native resilience.' },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  style={{
+                    background: '#202B38',
+                    border: '1px solid rgba(76, 141, 255, 0.14)',
+                    borderRadius: 20,
+                    padding: '2.5rem',
+                  }}
+                >
                   <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>{item.icon}</div>
-                  <div className="eyebrow" style={{ color: item.color, marginBottom: '1rem' }}>{item.label}</div>
-                  <p style={{ color: '#8BA3CC', fontSize: '1rem', lineHeight: 1.8, fontFamily: '"Plus Jakarta Sans", sans-serif' }}>
+                  <div className="eyebrow" style={{ color: '#4C8DFF', marginBottom: '0.75rem' }}>{item.label}</div>
+                  <p style={{ color: '#9AA6B2', fontSize: '0.9375rem', lineHeight: 1.75, margin: 0 }}>
                     {item.text}
                   </p>
                 </div>
@@ -67,62 +71,36 @@ export default function AboutPage() {
         </section>
 
         {/* Values */}
-        <section style={{ padding: '5rem 0' }}>
+        <section style={{ padding: '5.5rem 0', background: '#0B0F14' }}>
           <div className="container-lg">
             <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-              <div className="eyebrow" style={{ marginBottom: '1rem' }}>Our Values</div>
-              <h2 className="text-display-sm" style={{ color: '#E8EEFF' }}>
-                How We <span className="gradient-text-blue">Work</span>
+              <div className="eyebrow" style={{ marginBottom: '1rem' }}>Engineering Principles</div>
+              <h2 className="text-display-md" style={{ color: '#F4F6F8' }}>
+                How We <span className="gradient-text-blue">Engineer Systems</span>
               </h2>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.25rem' }}>
-              {values.map(v => (
-                <div key={v.title} style={{
-                  background: 'rgba(7,13,28,0.8)',
-                  border: '1px solid rgba(0,102,255,0.1)',
-                  borderRadius: 20,
-                  padding: '2rem',
-                  backdropFilter: 'blur(12px)',
-                  display: 'flex',
-                  gap: '1.25rem',
-                  alignItems: 'flex-start',
-                }}>
-                  <div style={{
-                    width: 48, height: 48, borderRadius: 13,
-                    background: 'rgba(0,102,255,0.1)',
-                    border: '1px solid rgba(0,102,255,0.15)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '1.25rem', flexShrink: 0,
-                  }}>
-                    {v.icon}
-                  </div>
-                  <div>
-                    <div style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontWeight: 700, fontSize: '1.0625rem', color: '#E8EEFF', marginBottom: '0.5rem' }}>
-                      {v.title}
-                    </div>
-                    <p style={{ color: '#8BA3CC', fontSize: '0.9375rem', lineHeight: 1.7, fontFamily: '"Plus Jakarta Sans", sans-serif' }}>
-                      {v.desc}
-                    </p>
-                  </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
+              {values.map((v) => (
+                <div
+                  key={v.title}
+                  style={{
+                    background: '#151D27',
+                    border: '1px solid rgba(76, 141, 255, 0.12)',
+                    borderRadius: 16,
+                    padding: '2rem',
+                  }}
+                >
+                  <div style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>{v.icon}</div>
+                  <h3 style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontWeight: 700, fontSize: '1.0625rem', color: '#F4F6F8', marginBottom: '0.5rem' }}>
+                    {v.title}
+                  </h3>
+                  <p style={{ color: '#9AA6B2', fontSize: '0.875rem', lineHeight: 1.65, margin: 0 }}>
+                    {v.desc}
+                  </p>
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section style={{ padding: '5rem 0', background: 'rgba(7,13,28,0.95)', textAlign: 'center' }}>
-          <div className="container-lg">
-            <h2 className="text-display-sm" style={{ color: '#E8EEFF', marginBottom: '1rem' }}>
-              Ready to build something<br />
-              <span className="gradient-text-blue">together?</span>
-            </h2>
-            <p style={{ color: '#8BA3CC', maxWidth: 440, margin: '0 auto 2.5rem', fontFamily: '"Plus Jakarta Sans", sans-serif', fontSize: '1rem', lineHeight: 1.7 }}>
-              Connect with our team to discuss your call center technology requirements, cloud infrastructure or software development project.
-            </p>
-            <Link href="/contact" className="btn-magnetic btn-primary" style={{ textDecoration: 'none' }}>
-              <span style={{ position: 'relative', zIndex: 1 }}>Talk to an Expert →</span>
-            </Link>
           </div>
         </section>
       </main>

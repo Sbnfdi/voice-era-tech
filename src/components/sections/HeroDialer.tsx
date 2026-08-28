@@ -1,401 +1,339 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
+import { useState, useEffect, useRef } from 'react';
 
-type CallPhase = 'idle' | 'connecting' | 'routing' | 'connected' | 'active';
+type CallState = 'idle' | 'calling' | 'connected' | 'ended';
 
-const KEYS = [
-  ['1', '2', '3'],
-  ['4', '5', '6'],
-  ['7', '8', '9'],
-  ['*', '0', '#'],
+const keys = [
+  { digit: '1', sub: '' },
+  { digit: '2', sub: 'ABC' },
+  { digit: '3', sub: 'DEF' },
+  { digit: '4', sub: 'GHI' },
+  { digit: '5', sub: 'JKL' },
+  { digit: '6', sub: 'MNO' },
+  { digit: '7', sub: 'PQRS' },
+  { digit: '8', sub: 'TUV' },
+  { digit: '9', sub: 'WXYZ' },
+  { digit: '*', sub: '' },
+  { digit: '0', sub: '+' },
+  { digit: '#', sub: '' },
 ];
 
 export default function HeroDialer() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const mouseRef = useRef({ x: 0, y: 0 });
-  const rotRef = useRef({ x: 0, y: 0, tx: 0, ty: 0 });
-  const rafRef = useRef<number>(0);
-  const [callPhase, setCallPhase] = useState<CallPhase>('idle');
-  const [dialedKeys, setDialedKeys] = useState<string[]>([]);
+  const [number, setNumber] = useState('1 (800) 555-0199');
+  const [callState, setCallState] = useState<CallState>('idle');
+  const [duration, setDuration] = useState(0);
   const [activeKey, setActiveKey] = useState<string | null>(null);
-  const [waveHeights, setWaveHeights] = useState<number[]>(Array.from({ length: 18 }, () => 4));
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Waveform animation
   useEffect(() => {
-    if (callPhase !== 'active') return;
-    const iv = setInterval(() => {
-      setWaveHeights(h => h.map(() => 4 + Math.random() * 22));
-    }, 100);
-    return () => clearInterval(iv);
-  }, [callPhase]);
-
-  // Canvas — background particle field + rotating ring
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const resize = () => {
-      canvas.width = canvas.offsetWidth * devicePixelRatio;
-      canvas.height = canvas.offsetHeight * devicePixelRatio;
-      ctx.scale(devicePixelRatio, devicePixelRatio);
-    };
-    resize();
-    window.addEventListener('resize', resize);
-
-    const W = () => canvas.offsetWidth;
-    const H = () => canvas.offsetHeight;
-
-    // Particles
-    interface Particle { x: number; y: number; vx: number; vy: number; alpha: number; size: number; }
-    const particles: Particle[] = Array.from({ length: 80 }, () => ({
-      x: Math.random() * W(),
-      y: Math.random() * H(),
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4,
-      alpha: Math.random() * 0.4,
-      size: Math.random() * 1.5 + 0.5,
-    }));
-
-    let tick = 0;
-    const draw = () => {
-      tick++;
-      ctx.clearRect(0, 0, W(), H());
-
-      const cx = W() / 2, cy = H() / 2;
-
-      // Rotating outer ring
-      const ringRadius = Math.min(W(), H()) * 0.42;
-      const t = tick * 0.006;
-
-      // Outer dashed ring
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(t);
-      for (let i = 0; i < 48; i++) {
-        const angle = (i / 48) * Math.PI * 2;
-        const x1 = Math.cos(angle) * ringRadius;
-        const y1 = Math.sin(angle) * ringRadius;
-        const x2 = Math.cos(angle) * (ringRadius + 8);
-        const y2 = Math.sin(angle) * (ringRadius + 8);
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.strokeStyle = `rgba(0,102,255,${i % 3 === 0 ? 0.35 : 0.1})`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      }
-      ctx.restore();
-
-      // Counter-rotating inner ring
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(-t * 0.5);
-      ctx.beginPath();
-      ctx.arc(0, 0, ringRadius * 0.75, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(0,212,255,0.06)';
-      ctx.lineWidth = 1;
-      ctx.stroke();
-      ctx.restore();
-
-      // Signal pulse on ring
-      const pulseAngle = (tick * 0.04) % (Math.PI * 2);
-      const px = cx + Math.cos(pulseAngle) * ringRadius;
-      const py = cy + Math.sin(pulseAngle) * ringRadius;
-      const grad = ctx.createRadialGradient(px, py, 0, px, py, 20);
-      grad.addColorStop(0, 'rgba(0,212,255,0.7)');
-      grad.addColorStop(1, 'transparent');
-      ctx.beginPath();
-      ctx.arc(px, py, 20, 0, Math.PI * 2);
-      ctx.fillStyle = grad;
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(px, py, 4, 0, Math.PI * 2);
-      ctx.fillStyle = '#00D4FF';
-      ctx.fill();
-
-      // Node connections (routing lines)
-      const nodes = [
-        { x: cx - 220, y: cy - 80, label: 'Campaigns' },
-        { x: cx + 220, y: cy - 80, label: 'Agents' },
-        { x: cx - 200, y: cy + 100, label: 'CRM' },
-        { x: cx + 200, y: cy + 100, label: 'Analytics' },
-        { x: cx, y: cy - 200, label: 'AI' },
-        { x: cx, y: cy + 200, label: 'Cloud' },
-      ];
-
-      nodes.forEach((n, i) => {
-        // Line to center
-        ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.lineTo(n.x, n.y);
-        ctx.strokeStyle = `rgba(0,102,255,0.08)`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-
-        // Data packet on line
-        const packetT = ((tick * 0.008 + i * 0.2) % 1);
-        const pkx = cx + (n.x - cx) * packetT;
-        const pky = cy + (n.y - cy) * packetT;
-        ctx.beginPath();
-        ctx.arc(pkx, pky, 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0,212,255,0.5)';
-        ctx.fill();
-
-        // Node dot
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, 5, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0,102,255,0.5)`;
-        ctx.fill();
-      });
-
-      // Particles
-      particles.forEach(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0) p.x = W();
-        if (p.x > W()) p.x = 0;
-        if (p.y < 0) p.y = H();
-        if (p.y > H()) p.y = 0;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 102, 255, ${p.alpha})`;
-        ctx.fill();
-      });
-
-      rafRef.current = requestAnimationFrame(draw);
-    };
-
-    draw();
+    if (callState === 'connected') {
+      timerRef.current = setInterval(() => {
+        setDuration(d => d + 1);
+      }, 1000);
+    } else {
+      if (timerRef.current) clearInterval(timerRef.current);
+      setDuration(0);
+    }
     return () => {
-      cancelAnimationFrame(rafRef.current);
-      window.removeEventListener('resize', resize);
+      if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, []);
+  }, [callState]);
 
-  const handleKeyPress = (key: string) => {
-    setActiveKey(key);
-    setDialedKeys(d => [...d.slice(-9), key]);
-    setTimeout(() => setActiveKey(null), 200);
+  const handleKeyPress = (digit: string) => {
+    setActiveKey(digit);
+    setTimeout(() => setActiveKey(null), 150);
+    if (callState === 'idle') {
+      if (number.length < 18) {
+        setNumber(prev => (prev === '1 (800) 555-0199' ? digit : prev + digit));
+      }
+    }
   };
 
   const handleCall = () => {
-    if (callPhase !== 'idle') { setCallPhase('idle'); setDialedKeys([]); return; }
-    setCallPhase('connecting');
-    setTimeout(() => setCallPhase('routing'), 1200);
-    setTimeout(() => setCallPhase('connected'), 2400);
-    setTimeout(() => setCallPhase('active'), 3200);
+    if (callState === 'idle') {
+      setCallState('calling');
+      setTimeout(() => {
+        setCallState('connected');
+      }, 1800);
+    } else if (callState === 'connected' || callState === 'calling') {
+      setCallState('ended');
+      setTimeout(() => {
+        setCallState('idle');
+      }, 1500);
+    }
   };
 
-  const phaseColors: Record<CallPhase, string> = {
-    idle: '#4A6A99',
-    connecting: '#FFB800',
-    routing: '#00D4FF',
-    connected: '#00E5A0',
-    active: '#00FF88',
-  };
-  const phaseLabels: Record<CallPhase, string> = {
-    idle: 'PRESS CALL',
-    connecting: 'CONNECTING...',
-    routing: 'ROUTING...',
-    connected: 'AGENT CONNECTED',
-    active: 'CALL ACTIVE',
+  const formatTime = (secs: number) => {
+    const m = Math.floor(secs / 60).toString().padStart(2, '0');
+    const s = (secs % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
   };
 
   return (
-    <div style={{ position: 'relative', width: '100%', maxWidth: 540, margin: '0 auto' }}>
-      {/* Canvas background */}
-      <canvas
-        ref={canvasRef}
-        style={{
-          position: 'absolute',
-          inset: '-80px',
-          width: 'calc(100% + 160px)',
-          height: 'calc(100% + 160px)',
-          pointerEvents: 'none',
-        }}
-      />
-
-      {/* Dialer card */}
+    <div
+      style={{
+        width: '100%',
+        maxWidth: 380,
+        background: '#151D27',
+        border: '1px solid rgba(76, 141, 255, 0.18)',
+        borderRadius: 24,
+        padding: '1.75rem',
+        boxShadow: '0 32px 80px rgba(0, 0, 0, 0.6), 0 0 30px rgba(49, 87, 213, 0.08)',
+        position: 'relative',
+      }}
+    >
+      {/* Top Status Header */}
       <div
         style={{
-          position: 'relative',
-          background: 'rgba(7, 13, 28, 0.92)',
-          border: '1px solid rgba(0,102,255,0.2)',
-          borderRadius: 28,
-          padding: '2rem',
-          backdropFilter: 'blur(20px)',
-          boxShadow: '0 40px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04)',
-          transform: 'perspective(1000px)',
-          transition: 'transform 0.1s ease-out',
-        }}
-        onMouseMove={e => {
-          const rect = e.currentTarget.getBoundingClientRect();
-          const x = ((e.clientX - rect.left) / rect.width - 0.5) * 14;
-          const y = ((e.clientY - rect.top) / rect.height - 0.5) * -10;
-          e.currentTarget.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${y}deg)`;
-        }}
-        onMouseLeave={e => {
-          e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg)';
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '1.25rem',
+          paddingBottom: '0.75rem',
+          borderBottom: '1px solid rgba(76, 141, 255, 0.08)',
         }}
       >
-        {/* Header display */}
-        <div style={{
-          background: 'rgba(0,102,255,0.06)',
-          border: '1px solid rgba(0,102,255,0.12)',
-          borderRadius: 16,
-          padding: '1rem 1.25rem',
-          marginBottom: '1.5rem',
-          minHeight: 72,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-        }}>
-          {/* Status row */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <div style={{
-                width: 6, height: 6, borderRadius: '50%',
-                background: phaseColors[callPhase],
-                boxShadow: `0 0 8px ${phaseColors[callPhase]}`,
-                animation: callPhase !== 'idle' ? 'signal-pulse 1.5s ease-in-out infinite' : 'none',
-              }} />
-              <span style={{
-                fontFamily: '"JetBrains Mono", monospace',
-                fontSize: '0.6rem',
-                letterSpacing: '0.15em',
-                color: phaseColors[callPhase],
-                textTransform: 'uppercase',
-                transition: 'color 0.3s',
-              }}>
-                {phaseLabels[callPhase]}
-              </span>
-            </div>
-            {/* Waveform (active call) */}
-            {callPhase === 'active' && (
-              <div className="waveform">
-                {waveHeights.map((h, i) => (
-                  <div key={i} className="waveform-bar" style={{ height: h, animationDelay: `${i * 0.04}s` }} />
-                ))}
-              </div>
-            )}
-            {callPhase === 'idle' && (
-              <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '0.6rem', color: '#4A6A99', letterSpacing: '0.1em' }}>
-                VET-DIALER-v3.2
-              </span>
-            )}
-          </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <div
+            style={{
+              width: 7,
+              height: 7,
+              borderRadius: '50%',
+              background:
+                callState === 'connected'
+                  ? '#3AAFA9'
+                  : callState === 'calling'
+                  ? '#4C8DFF'
+                  : '#5E6A78',
+              boxShadow: callState === 'connected' ? '0 0 8px #3AAFA9' : 'none',
+            }}
+          />
+          <span
+            style={{
+              fontFamily: '"JetBrains Mono", monospace',
+              fontSize: '0.625rem',
+              color: '#9AA6B2',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+            }}
+          >
+            {callState === 'idle' && 'SIP Ready'}
+            {callState === 'calling' && 'Routing Call...'}
+            {callState === 'connected' && `Active • ${formatTime(duration)}`}
+            {callState === 'ended' && 'Call Terminated'}
+          </span>
+        </div>
 
-          {/* Dialed number */}
-          <div style={{
+        <span
+          style={{
+            fontFamily: '"JetBrains Mono", monospace',
+            fontSize: '0.5625rem',
+            color: '#C9A96E',
+            letterSpacing: '0.08em',
+          }}
+        >
+          HD AUDIO 48kHz
+        </span>
+      </div>
+
+      {/* Screen Display Panel */}
+      <div
+        style={{
+          background: '#0B0F14',
+          border: '1px solid rgba(76, 141, 255, 0.12)',
+          borderRadius: 14,
+          padding: '1.25rem',
+          textAlign: 'center',
+          marginBottom: '1.5rem',
+        }}
+      >
+        <div
+          style={{
             fontFamily: '"JetBrains Mono", monospace',
             fontSize: '1.375rem',
-            fontWeight: 600,
-            color: dialedKeys.length ? '#E8EEFF' : '#2A3A5A',
-            letterSpacing: '0.08em',
-            minHeight: '1.8rem',
-            transition: 'all 0.1s',
-          }}>
-            {dialedKeys.length ? dialedKeys.join('') : '_ _ _ _ _'}
-            {dialedKeys.length > 0 && <span style={{ animation: 'blink 1s step-end infinite', color: '#00D4FF' }}>|</span>}
-          </div>
+            fontWeight: 700,
+            color: callState === 'connected' ? '#3AAFA9' : '#F4F6F8',
+            letterSpacing: '0.04em',
+            marginBottom: '0.35rem',
+          }}
+        >
+          {number || 'Enter Number'}
         </div>
 
-        {/* Keypad */}
-        <div className="keypad-grid" style={{ marginBottom: '1rem' }}>
-          {KEYS.flat().map(key => (
+        {/* Live Audio Waveform */}
+        {callState === 'connected' ? (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '3px',
+              height: '18px',
+              marginTop: '0.5rem',
+            }}
+          >
+            {[40, 75, 30, 95, 60, 85, 45, 90, 65, 35, 80].map((h, i) => (
+              <div
+                key={i}
+                style={{
+                  width: 3,
+                  height: `${h}%`,
+                  borderRadius: 2,
+                  background: '#3AAFA9',
+                  animation: `pulseWave 0.8s ease-in-out infinite alternate ${i * 0.08}s`,
+                }}
+              />
+            ))}
+          </div>
+        ) : (
+          <div
+            style={{
+              fontFamily: '"Plus Jakarta Sans", sans-serif',
+              fontSize: '0.6875rem',
+              color: '#9AA6B2',
+            }}
+          >
+            Predictive Outbound Line #01
+          </div>
+        )}
+      </div>
+
+      {/* 12-Key Physical Keypad Grid */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: '0.625rem',
+          marginBottom: '1.5rem',
+        }}
+      >
+        {keys.map(k => {
+          const isPressed = activeKey === k.digit;
+          return (
             <button
-              key={key}
-              className="keypad-key"
-              onClick={() => handleKeyPress(key)}
+              key={k.digit}
+              onClick={() => handleKeyPress(k.digit)}
               style={{
-                background: activeKey === key
-                  ? 'rgba(0,212,255,0.15)'
-                  : 'rgba(0,102,255,0.06)',
-                borderColor: activeKey === key ? 'var(--c-cyan)' : undefined,
-                color: activeKey === key ? '#00D4FF' : undefined,
-                transform: activeKey === key ? 'scale(0.94)' : undefined,
-                boxShadow: activeKey === key ? '0 0 20px rgba(0,212,255,0.3)' : undefined,
+                background: isPressed ? '#3157D5' : '#202B38',
+                border: `1px solid ${isPressed ? '#4C8DFF' : 'rgba(76, 141, 255, 0.12)'}`,
+                borderRadius: 12,
+                padding: '0.8125rem 0',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'all 0.12s cubic-bezier(0.16, 1, 0.3, 1)',
+                boxShadow: isPressed ? '0 0 12px rgba(76, 141, 255, 0.4)' : 'none',
+              }}
+              onMouseEnter={e => {
+                if (!isPressed) {
+                  (e.currentTarget as HTMLElement).style.background = '#283747';
+                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(76, 141, 255, 0.25)';
+                }
+              }}
+              onMouseLeave={e => {
+                if (!isPressed) {
+                  (e.currentTarget as HTMLElement).style.background = '#202B38';
+                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(76, 141, 255, 0.12)';
+                }
               }}
             >
-              {key}
+              <span
+                style={{
+                  fontFamily: '"Plus Jakarta Sans", sans-serif',
+                  fontWeight: 700,
+                  fontSize: '1.1875rem',
+                  color: isPressed ? '#FFFFFF' : '#F4F6F8',
+                  lineHeight: 1,
+                  marginBottom: k.sub ? '2px' : '0',
+                }}
+              >
+                {k.digit}
+              </span>
+              {k.sub && (
+                <span
+                  style={{
+                    fontFamily: '"JetBrains Mono", monospace',
+                    fontSize: '0.5rem',
+                    color: isPressed ? '#F4F6F8' : '#9AA6B2',
+                    letterSpacing: '0.1em',
+                  }}
+                >
+                  {k.sub}
+                </span>
+              )}
             </button>
-          ))}
-        </div>
+          );
+        })}
+      </div>
 
-        {/* Call button */}
+      {/* Action Controls */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 3fr', gap: '0.625rem' }}>
+        <button
+          onClick={() => setNumber('')}
+          style={{
+            background: '#202B38',
+            border: '1px solid rgba(76, 141, 255, 0.12)',
+            borderRadius: 12,
+            color: '#9AA6B2',
+            fontFamily: '"JetBrains Mono", monospace',
+            fontSize: '0.75rem',
+            cursor: 'pointer',
+            transition: 'all 0.15s ease',
+          }}
+          onMouseEnter={e => {
+            (e.currentTarget as HTMLElement).style.color = '#F4F6F8';
+            (e.currentTarget as HTMLElement).style.background = '#283747';
+          }}
+          onMouseLeave={e => {
+            (e.currentTarget as HTMLElement).style.color = '#9AA6B2';
+            (e.currentTarget as HTMLElement).style.background = '#202B38';
+          }}
+        >
+          Clear
+        </button>
+
         <button
           onClick={handleCall}
-          data-cursor="CONNECT"
           style={{
-            width: '100%',
+            background:
+              callState === 'connected' || callState === 'calling'
+                ? '#D94848'
+                : '#3157D5',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            borderRadius: 12,
             padding: '0.875rem',
-            borderRadius: 14,
-            border: 'none',
-            background: callPhase === 'idle'
-              ? 'linear-gradient(135deg, #00AA44 0%, #00E567 100%)'
-              : callPhase === 'active'
-              ? 'linear-gradient(135deg, #CC2233 0%, #FF3B5C 100%)'
-              : 'linear-gradient(135deg, #0066FF 0%, #00D4FF 100%)',
-            cursor: 'none',
-            transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
+            color: '#FFFFFF',
+            fontFamily: '"Plus Jakarta Sans", sans-serif',
+            fontWeight: 700,
+            fontSize: '0.9375rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '0.625rem',
-            boxShadow: callPhase === 'active'
-              ? '0 0 30px rgba(255,59,92,0.4)'
-              : callPhase === 'idle'
-              ? '0 0 30px rgba(0,229,103,0.3)'
-              : '0 0 30px rgba(0,212,255,0.35)',
+            gap: '0.5rem',
+            cursor: 'pointer',
+            boxShadow:
+              callState === 'connected' || callState === 'calling'
+                ? '0 4px 16px rgba(217, 72, 72, 0.35)'
+                : '0 4px 16px rgba(49, 87, 213, 0.35)',
+            transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
         >
-          <span style={{ fontSize: '1.25rem' }}>
-            {callPhase === 'idle' ? '📞' : callPhase === 'active' ? '📵' : '⏳'}
-          </span>
-          <span style={{
-            fontFamily: '"JetBrains Mono", monospace',
-            fontSize: '0.75rem',
-            letterSpacing: '0.12em',
-            fontWeight: 600,
-            color: '#fff',
-          }}>
-            {callPhase === 'idle' ? 'CALL' : callPhase === 'active' ? 'END CALL' : phaseLabels[callPhase]}
-          </span>
+          {callState === 'idle' && 'Launch Outbound Dial →'}
+          {callState === 'calling' && 'Connecting... Cancel'}
+          {callState === 'connected' && 'End Connection'}
+          {callState === 'ended' && 'Call Concluded'}
         </button>
-
-        {/* Footer status */}
-        <div style={{
-          marginTop: '1rem',
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr 1fr',
-          gap: '0.5rem',
-        }}>
-          {[
-            { label: 'AGENTS', value: '24', color: '#00E5A0' },
-            { label: 'QUEUED', value: '156', color: '#00D4FF' },
-            { label: 'ACTIVE', value: '18', color: '#0080FF' },
-          ].map(stat => (
-            <div key={stat.label} style={{
-              background: 'rgba(0,102,255,0.04)',
-              border: '1px solid rgba(0,102,255,0.08)',
-              borderRadius: 10,
-              padding: '0.5rem 0.75rem',
-              textAlign: 'center',
-            }}>
-              <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '1rem', fontWeight: 700, color: stat.color }}>
-                {stat.value}
-              </div>
-              <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '0.5rem', letterSpacing: '0.12em', color: '#4A6A99', textTransform: 'uppercase', marginTop: '2px' }}>
-                {stat.label}
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
+
+      <style>{`
+        @keyframes pulseWave {
+          0% { transform: scaleY(0.3); }
+          100% { transform: scaleY(1); }
+        }
+      `}</style>
     </div>
   );
 }

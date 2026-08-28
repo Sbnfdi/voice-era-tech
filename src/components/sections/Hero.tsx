@@ -5,66 +5,56 @@ import HeroDialer from './HeroDialer';
 
 export default function Hero() {
   return (
-    <section style={{
-      position: 'relative',
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      overflow: 'hidden',
-      background: 'var(--c-bg)',
-    }}>
-      {/* Grid background */}
-      <div className="grid-pattern" style={{ position: 'absolute', inset: 0, opacity: 0.6 }} />
+    <section
+      style={{
+        position: 'relative',
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        overflow: 'hidden',
+        background: '#0B0F14',
+      }}
+    >
+      {/* Subtle Technical Grid */}
+      <div className="grid-pattern" style={{ position: 'absolute', inset: 0, opacity: 0.35 }} />
 
-      {/* Radial glow */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        background: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,102,255,0.12) 0%, transparent 70%)',
-        pointerEvents: 'none',
-      }} />
+      {/* Atmospheric Radial Lighting - Deep Royal Blue */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'radial-gradient(ellipse 70% 50% at 50% 35%, rgba(49, 87, 213, 0.08) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }}
+      />
 
-      {/* Corner glows */}
-      <div style={{
-        position: 'absolute',
-        top: '10%',
-        right: '5%',
-        width: 400,
-        height: 400,
-        borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(107,33,232,0.08) 0%, transparent 70%)',
-        pointerEvents: 'none',
-      }} />
-
-      <div className="container-xl" style={{ position: 'relative', zIndex: 1, paddingTop: '8rem', paddingBottom: '6rem' }}>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '5rem',
-          alignItems: 'center',
-        }}>
-          {/* Left — copy */}
+      <div className="container-xl" style={{ position: 'relative', zIndex: 1, paddingTop: '8.5rem', paddingBottom: '5.5rem' }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1.05fr',
+            gap: '4.5rem',
+            alignItems: 'center',
+          }}
+        >
+          {/* Left Column — Editorial & Value Proposition */}
           <div>
-            {/* Eyebrow */}
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.625rem',
-              padding: '0.375rem 1rem',
-              borderRadius: '100px',
-              background: 'rgba(0,102,255,0.08)',
-              border: '1px solid rgba(0,102,255,0.2)',
-              marginBottom: '2rem',
-              animation: 'fade-up 0.6s cubic-bezier(0.16,1,0.3,1) 0.2s both',
-            }}>
-              <div style={{
-                width: 6, height: 6, borderRadius: '50%',
-                background: '#00D4FF',
-                boxShadow: '0 0 8px #00D4FF',
-                animation: 'signal-pulse 2s ease-in-out infinite',
-              }} />
-              <span className="eyebrow" style={{ color: '#00D4FF' }}>
-                Enterprise Dialer Technology
+            {/* Eyebrow Pill */}
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.625rem',
+                padding: '0.3125rem 0.875rem',
+                borderRadius: '100px',
+                background: '#151D27',
+                border: '1px solid rgba(76, 141, 255, 0.2)',
+                marginBottom: '1.75rem',
+              }}
+            >
+              <div className="status-operational" />
+              <span className="eyebrow" style={{ color: '#4C8DFF', fontSize: '0.625rem' }}>
+                Enterprise Telecommunications Infrastructure
               </span>
             </div>
 
@@ -72,122 +62,96 @@ export default function Hero() {
             <h1
               className="text-display-xl"
               style={{
-                color: '#E8EEFF',
-                marginBottom: '1.5rem',
-                animation: 'fade-up 0.7s cubic-bezier(0.16,1,0.3,1) 0.35s both',
+                color: '#F4F6F8',
+                marginBottom: '1.25rem',
               }}
             >
               Powering the Next<br />
-              <span className="gradient-text-blue">Generation</span>{' '}
-              of<br />Call Centers.
+              <span className="gradient-text-blue">Generation</span> of<br />
+              Call Centers.
             </h1>
 
-            {/* Subheadline */}
+            {/* Supporting Copy */}
             <p
               className="text-body-lg"
               style={{
-                color: '#8BA3CC',
-                maxWidth: 500,
+                color: '#9AA6B2',
+                maxWidth: 520,
                 marginBottom: '2.5rem',
-                lineHeight: 1.7,
-                animation: 'fade-up 0.7s cubic-bezier(0.16,1,0.3,1) 0.5s both',
+                lineHeight: 1.75,
               }}
             >
-              Enterprise-grade dialer systems, intelligent voice technology, cloud infrastructure and digital solutions built for modern call centers and businesses.
+              Enterprise-grade predictive dialers, autonomous voice intelligence, carrier-grade SIP trunking, and cloud infrastructure engineered for maximum uptime and regulatory compliance.
             </p>
 
-            {/* CTAs */}
-            <div style={{
-              display: 'flex',
-              gap: '1rem',
-              flexWrap: 'wrap',
-              animation: 'fade-up 0.7s cubic-bezier(0.16,1,0.3,1) 0.65s both',
-            }}>
-              <Link
-                href="/dialer-systems"
-                className="btn-magnetic btn-primary"
-                data-cursor="EXPLORE"
-                style={{ textDecoration: 'none' }}
-              >
-                <span style={{ position: 'relative', zIndex: 1 }}>Explore Dialer Systems</span>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ position: 'relative', zIndex: 1 }}>
-                  <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </Link>
+            {/* Action Buttons */}
+            <div
+              style={{
+                display: 'flex',
+                gap: '1rem',
+                flexWrap: 'wrap',
+                alignItems: 'center',
+                marginBottom: '3rem',
+              }}
+            >
               <Link
                 href="/contact"
-                className="btn-magnetic btn-secondary"
+                className="btn-primary"
                 data-cursor="CONNECT"
-                style={{ textDecoration: 'none' }}
               >
-                Talk to an Expert
+                Talk to a Dialer Expert →
+              </Link>
+              <Link
+                href="/dialer-systems"
+                className="btn-secondary"
+              >
+                Explore Dialer Systems
               </Link>
             </div>
 
-            {/* Trust indicators */}
-            <div style={{
-              display: 'flex',
-              gap: '2rem',
-              marginTop: '3rem',
-              animation: 'fade-up 0.7s cubic-bezier(0.16,1,0.3,1) 0.8s both',
-            }}>
-              {[
-                { icon: '🔒', label: 'Enterprise Security' },
-                { icon: '⚡', label: 'High Availability' },
-                { icon: '🌐', label: 'Cloud-Native' },
-              ].map(item => (
-                <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span style={{ fontSize: '0.875rem' }}>{item.icon}</span>
-                  <span style={{
-                    fontFamily: '"JetBrains Mono", monospace',
-                    fontSize: '0.65rem',
-                    letterSpacing: '0.08em',
-                    color: '#4A6A99',
-                    textTransform: 'uppercase',
-                  }}>
-                    {item.label}
-                  </span>
+            {/* Enterprise Trust Indicators */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
+                gap: '1.25rem',
+                paddingTop: '2rem',
+                borderTop: '1px solid rgba(76, 141, 255, 0.1)',
+              }}
+            >
+              <div>
+                <div style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontWeight: 800, fontSize: '1.5rem', color: '#F4F6F8' }}>
+                  99.999%
                 </div>
-              ))}
+                <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '0.625rem', color: '#9AA6B2', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                  Five-Nines Uptime
+                </div>
+              </div>
+              <div>
+                <div style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontWeight: 800, fontSize: '1.5rem', color: '#3AAFA9' }}>
+                  &lt; 35ms
+                </div>
+                <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '0.625rem', color: '#9AA6B2', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                  Tier-1 Audio Latency
+                </div>
+              </div>
+              <div>
+                <div style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontWeight: 800, fontSize: '1.5rem', color: '#C9A96E' }}>
+                  TCPA / SOC-2
+                </div>
+                <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '0.625rem', color: '#9AA6B2', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                  Built-In Compliance
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Right — 3D Dialer */}
-          <div style={{ animation: 'fade-up 0.8s cubic-bezier(0.16,1,0.3,1) 0.4s both' }}>
+          {/* Right Column — 3D Physical Dialer Simulator */}
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
             <HeroDialer />
           </div>
         </div>
       </div>
-
-      {/* Scroll indicator */}
-      <div style={{
-        position: 'absolute',
-        bottom: '2rem',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '0.5rem',
-        animation: 'fade-in 1s 1.5s both',
-      }}>
-        <div className="scroll-indicator" />
-        <span style={{
-          fontFamily: '"JetBrains Mono", monospace',
-          fontSize: '0.55rem',
-          letterSpacing: '0.18em',
-          color: '#4A6A99',
-          textTransform: 'uppercase',
-        }}>
-          Scroll
-        </span>
-      </div>
-
-      <style>{`
-        @media (max-width: 900px) {
-          .hero-grid { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
     </section>
   );
 }

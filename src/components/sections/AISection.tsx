@@ -1,264 +1,162 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 
 const aiServices = [
-  { icon: '🎙️', label: 'AI Voice Agents', desc: 'Deploy conversational AI agents that handle inbound and outbound calls with natural language understanding.' },
-  { icon: '📞', label: 'AI Call Agents', desc: 'Automate outbound calling campaigns with intelligent AI agents that qualify leads and schedule appointments.' },
-  { icon: '💬', label: 'AI Customer Support', desc: 'Provide 24/7 automated customer support across voice and digital channels without additional headcount.' },
-  { icon: '🔍', label: 'AI Lead Qualification', desc: 'Score and qualify inbound leads in real time using conversation intelligence and predictive modeling.' },
-  { icon: '📅', label: 'AI Appointment Agents', desc: 'Let AI agents handle scheduling, confirmations and reminders across your calendar infrastructure.' },
-  { icon: '⚙️', label: 'AI Automation', desc: 'Automate repetitive call-center workflows including disposition logging, follow-up scheduling and CRM updates.' },
+  { icon: '🎙️', label: 'Conversational Voice AI', desc: 'Natural voice synthesis and ultra-low latency conversational pipelines conducting fluid customer interactions.' },
+  { icon: '📞', label: 'Autonomous Outbound Calling', desc: 'High-scale outbound agents that qualify leads, handle complex sales objections, and book calendar meetings.' },
+  { icon: '💬', label: '24/7 AI Customer Support', desc: 'RAG-driven knowledge ingestion resolving tier-1 support tickets and transactional inquiries instantly.' },
+  { icon: '🔍', label: 'Dynamic BANT Lead Scoring', desc: 'Evaluate budget, authority, need, and timeline in natural conversation before warm live-transfers.' },
+  { icon: '📅', label: 'Calendar Appointment Booking', desc: 'Real-time calendar availability coordination, confirmation SMS dispatch, and automated reminder calls.' },
+  { icon: '⚙️', label: 'Post-Call Workflow Automation', desc: 'Automate speaker-diarized transcription, structured CRM summaries, and after-call work (ACW).' },
 ];
 
 const flowSteps = [
-  { label: 'Customer', icon: '👤', color: '#4A9EFF' },
-  { label: 'AI Voice Agent', icon: '🤖', color: '#0066FF' },
-  { label: 'Understanding', icon: '🧠', color: '#00D4FF' },
-  { label: 'Decision', icon: '⚡', color: '#8B5CF6' },
-  { label: 'CRM Update', icon: '🗂️', color: '#00E5A0' },
-  { label: 'Resolution', icon: '✅', color: '#00FF88' },
+  { label: 'Caller', icon: '👤' },
+  { label: 'Voice Streaming', icon: '📡' },
+  { label: 'NLU Reasoning', icon: '🧠' },
+  { label: 'Database Action', icon: '⚡' },
+  { label: 'CRM Record', icon: '🗂️' },
+  { label: 'Resolution', icon: '✅' },
 ];
 
 export default function AISection() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const rafRef = useRef<number>(0);
-  const [activeService, setActiveService] = useState<number | null>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const resize = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    };
-    resize();
-    window.addEventListener('resize', resize);
-
-    let tick = 0;
-    const draw = () => {
-      tick++;
-      const W = canvas.width, H = canvas.height;
-      ctx.clearRect(0, 0, W, H);
-
-      // Neural network background
-      const cols = 8, rows = 5;
-      const nodes: { x: number; y: number }[] = [];
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          nodes.push({
-            x: (c / (cols - 1)) * W,
-            y: (r / (rows - 1)) * H,
-          });
-        }
-      }
-
-      // Connections
-      nodes.forEach((n1, i) => {
-        nodes.forEach((n2, j) => {
-          if (j <= i) return;
-          const dx = n1.x - n2.x, dy = n1.y - n2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist > W * 0.3) return;
-          const alpha = (1 - dist / (W * 0.3)) * 0.06;
-          ctx.beginPath();
-          ctx.moveTo(n1.x, n1.y);
-          ctx.lineTo(n2.x, n2.y);
-          ctx.strokeStyle = `rgba(107,33,232,${alpha})`;
-          ctx.lineWidth = 1;
-          ctx.stroke();
-        });
-      });
-
-      // Nodes with pulse
-      nodes.forEach((n, i) => {
-        const pulse = 0.3 + 0.7 * Math.abs(Math.sin(tick * 0.02 + i * 0.5));
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, 3 * pulse, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(107,33,232,${pulse * 0.4})`;
-        ctx.fill();
-      });
-
-      // Data wave
-      ctx.beginPath();
-      ctx.moveTo(0, H / 2);
-      for (let x = 0; x < W; x++) {
-        const y = H / 2 + Math.sin((x * 0.02) + tick * 0.05) * 20 + Math.sin((x * 0.04) - tick * 0.03) * 10;
-        ctx.lineTo(x, y);
-      }
-      ctx.strokeStyle = 'rgba(0,212,255,0.12)';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-
-      rafRef.current = requestAnimationFrame(draw);
-    };
-    draw();
-
-    return () => {
-      cancelAnimationFrame(rafRef.current);
-      window.removeEventListener('resize', resize);
-    };
-  }, []);
-
   return (
-    <section className="section-padding" style={{
-      background: 'rgba(7,13,28,0.98)',
-      position: 'relative',
-      overflow: 'hidden',
-    }}>
-      {/* Canvas background */}
-      <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }} />
-
-      {/* Right glow */}
-      <div style={{
-        position: 'absolute', right: '-10%', top: '20%',
-        width: 600, height: 600, borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(107,33,232,0.12) 0%, transparent 70%)',
-        pointerEvents: 'none',
-      }} />
-
+    <section
+      style={{
+        background: '#151D27',
+        padding: '6.5rem 0',
+        position: 'relative',
+        overflow: 'hidden',
+        borderTop: '1px solid rgba(76, 141, 255, 0.08)',
+        borderBottom: '1px solid rgba(76, 141, 255, 0.08)',
+      }}
+    >
       <div className="container-xl" style={{ position: 'relative', zIndex: 1 }}>
-        {/* Header */}
-        <div style={{ maxWidth: 640, marginBottom: '4rem' }}>
-          <div className="eyebrow" style={{ marginBottom: '1rem' }}>AI Solutions</div>
-          <h2 className="text-display-md" style={{ color: '#E8EEFF', marginBottom: '1rem' }}>
-            Give Every Conversation<br />
-            <span className="gradient-text-violet">Intelligence.</span>
+        {/* Section Header */}
+        <div style={{ maxWidth: 640, marginBottom: '3.5rem' }}>
+          <div className="eyebrow" style={{ marginBottom: '1rem' }}>Conversational Intelligence</div>
+          <h2 className="text-display-md" style={{ color: '#F4F6F8', marginBottom: '1rem' }}>
+            Autonomous Voice &amp; <span className="gradient-text-blue">Workflow AI</span>
           </h2>
-          <p className="text-body-lg" style={{ color: '#8BA3CC', lineHeight: 1.7 }}>
-            Deploy AI voice agents, intelligent automation and conversational AI systems that work alongside your call center team — handling routine interactions and amplifying human performance.
+          <p className="text-body-lg" style={{ color: '#9AA6B2' }}>
+            Deploy conversational voice agents and intelligent call center automation that work alongside your human teams — handling repetitive interactions and accelerating revenue pipeline.
           </p>
         </div>
 
-        {/* AI flow visualization */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0',
-          marginBottom: '4rem',
-          overflowX: 'auto',
-          padding: '1.5rem 0',
-        }}>
+        {/* Conversation Flow Pipeline */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            marginBottom: '3.5rem',
+            overflowX: 'auto',
+            padding: '1.25rem 0',
+            scrollbarWidth: 'none',
+          }}
+        >
           {flowSteps.map((step, i) => (
-            <div key={step.label} style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
-              {/* Node */}
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '0.5rem',
-              }}>
-                <div style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: '50%',
-                  background: `${step.color}18`,
-                  border: `2px solid ${step.color}40`,
+            <div key={step.label} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexShrink: 0 }}>
+              <div
+                style={{
+                  background: '#202B38',
+                  border: '1px solid rgba(76, 141, 255, 0.15)',
+                  borderRadius: 12,
+                  padding: '0.75rem 1.25rem',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '1.375rem',
-                  boxShadow: `0 0 20px ${step.color}25`,
-                  transition: 'all 0.3s',
+                  gap: '0.625rem',
                 }}
-                  onMouseEnter={e => {
-                    const el = e.currentTarget as HTMLElement;
-                    el.style.transform = 'scale(1.12)';
-                    el.style.boxShadow = `0 0 30px ${step.color}50`;
-                    el.style.borderColor = step.color;
-                  }}
-                  onMouseLeave={e => {
-                    const el = e.currentTarget as HTMLElement;
-                    el.style.transform = 'scale(1)';
-                    el.style.boxShadow = `0 0 20px ${step.color}25`;
-                    el.style.borderColor = `${step.color}40`;
+              >
+                <span style={{ fontSize: '1.125rem' }}>{step.icon}</span>
+                <span
+                  style={{
+                    fontFamily: '"JetBrains Mono", monospace',
+                    fontSize: '0.6875rem',
+                    color: '#F4F6F8',
+                    letterSpacing: '0.06em',
+                    textTransform: 'uppercase',
                   }}
                 >
-                  {step.icon}
-                </div>
-                <span style={{
-                  fontFamily: '"JetBrains Mono", monospace',
-                  fontSize: '0.6rem',
-                  letterSpacing: '0.1em',
-                  color: step.color,
-                  textTransform: 'uppercase',
-                  whiteSpace: 'nowrap',
-                }}>
                   {step.label}
                 </span>
               </div>
 
-              {/* Arrow */}
               {i < flowSteps.length - 1 && (
-                <div style={{ display: 'flex', alignItems: 'center', padding: '0 0.875rem', marginBottom: '1.5rem' }}>
-                  <div style={{ width: 40, height: 1, background: `linear-gradient(90deg, ${step.color}40, ${flowSteps[i + 1].color}40)` }} />
-                  <div style={{ color: '#4A6A99', fontSize: '0.6rem' }}>›</div>
-                </div>
+                <span style={{ color: '#4C8DFF', fontSize: '0.875rem', opacity: 0.5 }}>→</span>
               )}
             </div>
           ))}
         </div>
 
-        {/* Services grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '1.25rem',
-          marginBottom: '3rem',
-        }}>
-          {aiServices.map((s, i) => (
+        {/* Services Grid */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: '1.25rem',
+            marginBottom: '3rem',
+          }}
+        >
+          {aiServices.map((s) => (
             <div
               key={s.label}
-              onClick={() => setActiveService(activeService === i ? null : i)}
+              className="node-card"
               style={{
-                background: activeService === i ? 'rgba(107,33,232,0.1)' : 'rgba(7,13,28,0.8)',
-                border: `1px solid ${activeService === i ? 'rgba(107,33,232,0.4)' : 'rgba(0,102,255,0.1)'}`,
-                borderRadius: 16,
-                padding: '1.5rem',
-                cursor: 'none',
-                backdropFilter: 'blur(12px)',
-                transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
-                boxShadow: activeService === i ? '0 0 30px rgba(107,33,232,0.15)' : 'none',
-              }}
-              onMouseEnter={e => {
-                if (activeService !== i) {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.background = 'rgba(107,33,232,0.06)';
-                  el.style.borderColor = 'rgba(107,33,232,0.25)';
-                  el.style.transform = 'translateY(-4px)';
-                }
-              }}
-              onMouseLeave={e => {
-                if (activeService !== i) {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.background = 'rgba(7,13,28,0.8)';
-                  el.style.borderColor = 'rgba(0,102,255,0.1)';
-                  el.style.transform = 'translateY(0)';
-                }
+                padding: '1.75rem',
+                background: '#202B38',
+                border: '1px solid rgba(76, 141, 255, 0.12)',
               }}
             >
-              <div style={{ fontSize: '1.5rem', marginBottom: '0.75rem' }}>{s.icon}</div>
-              <div style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontWeight: 600, fontSize: '1rem', color: '#E8EEFF', marginBottom: '0.5rem' }}>
-                {s.label}
+              <div
+                style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: 10,
+                  background: '#151D27',
+                  border: '1px solid rgba(49, 87, 213, 0.25)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '1.25rem',
+                  marginBottom: '1rem',
+                }}
+              >
+                {s.icon}
               </div>
-              <p style={{ color: '#8BA3CC', fontSize: '0.875rem', lineHeight: 1.65, fontFamily: '"Plus Jakarta Sans", sans-serif' }}>
+              <h3
+                style={{
+                  fontFamily: '"Plus Jakarta Sans", sans-serif',
+                  fontWeight: 700,
+                  fontSize: '1.0625rem',
+                  color: '#F4F6F8',
+                  marginBottom: '0.5rem',
+                }}
+              >
+                {s.label}
+              </h3>
+              <p
+                style={{
+                  color: '#9AA6B2',
+                  fontSize: '0.875rem',
+                  lineHeight: 1.65,
+                  margin: 0,
+                }}
+              >
                 {s.desc}
               </p>
             </div>
           ))}
         </div>
 
-        {/* CTA */}
+        {/* Actions */}
         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-          <Link href="/ai-solutions" className="btn-magnetic btn-primary" style={{ textDecoration: 'none' }}>
-            <span style={{ position: 'relative', zIndex: 1 }}>Explore AI Solutions</span>
+          <Link href="/ai-solutions" className="btn-primary">
+            Explore Voice AI Solutions →
           </Link>
-          <Link href="/contact" className="btn-magnetic btn-secondary" style={{ textDecoration: 'none' }}>
-            Talk to an AI Expert
+          <Link href="/contact" className="btn-secondary">
+            Schedule an AI Architecture Call
           </Link>
         </div>
       </div>

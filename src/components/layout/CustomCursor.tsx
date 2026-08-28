@@ -1,93 +1,104 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-
-interface CursorState {
-  x: number;
-  y: number;
-  label: string;
-  expanded: boolean;
-}
+import { useEffect, useState } from 'react';
 
 export default function CustomCursor() {
-  const dotRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
-  const labelRef = useRef<HTMLSpanElement>(null);
-  const posRef = useRef({ x: 0, y: 0, tx: 0, ty: 0 });
-  const rafRef = useRef<number>(0);
+  const [pos, setPos] = useState({ x: -100, y: -100 });
+  const [trail, setTrail] = useState({ x: -100, y: -100 });
+  const [isPointer, setIsPointer] = useState(false);
+  const [cursorText, setCursorText] = useState('');
 
   useEffect(() => {
-    if (window.innerWidth <= 1024) return;
+    let mouseX = -100;
+    let mouseY = -100;
+    let trailX = -100;
+    let trailY = -100;
+    let rafId: number;
 
-    const onMove = (e: MouseEvent) => {
-      posRef.current.tx = e.clientX;
-      posRef.current.ty = e.clientY;
+    const onMouseMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      setPos({ x: mouseX, y: mouseY });
 
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
-      }
+      const target = e.target as HTMLElement;
+      const clickable = target.closest('a, button, [role="button"], input, select, textarea');
+      setIsPointer(!!clickable);
 
-      // Check what we're hovering
-      const el = document.elementFromPoint(e.clientX, e.clientY);
-      const isInteractive =
-        el?.closest('a, button, [data-cursor], .keypad-key, .stack-toggle, .industry-card, .node-card') !== null;
-      const cursorLabel = el?.closest('[data-cursor]')?.getAttribute('data-cursor') || (isInteractive ? 'EXPLORE' : '');
-
-      if (ringRef.current) {
-        ringRef.current.classList.toggle('expanded', isInteractive);
-      }
-      if (labelRef.current) {
-        labelRef.current.textContent = cursorLabel;
-        labelRef.current.style.opacity = cursorLabel ? '1' : '0';
-      }
+      const customLabel = target.closest('[data-cursor]')?.getAttribute('data-cursor');
+      setCursorText(customLabel || '');
     };
 
-    const animate = () => {
-      const { x, y, tx, ty } = posRef.current;
-      const nx = x + (tx - x) * 0.12;
-      const ny = y + (ty - y) * 0.12;
-      posRef.current.x = nx;
-      posRef.current.y = ny;
-
-      if (ringRef.current) {
-        ringRef.current.style.transform = `translate(${nx}px, ${ny}px) translate(-50%, -50%)`;
-      }
-      rafRef.current = requestAnimationFrame(animate);
+    const animateTrail = () => {
+      trailX += (mouseX - trailX) * 0.18;
+      trailY += (mouseY - trailY) * 0.18;
+      setTrail({ x: trailX, y: trailY });
+      rafId = requestAnimationFrame(animateTrail);
     };
 
-    document.addEventListener('mousemove', onMove);
-    rafRef.current = requestAnimationFrame(animate);
+    window.addEventListener('mousemove', onMouseMove);
+    rafId = requestAnimationFrame(animateTrail);
 
     return () => {
-      document.removeEventListener('mousemove', onMove);
-      cancelAnimationFrame(rafRef.current);
+      window.removeEventListener('mousemove', onMouseMove);
+      cancelAnimationFrame(rafId);
     };
   }, []);
 
   return (
     <>
+      {/* Precision Dot */}
       <div
-        ref={dotRef}
-        className="cursor-dot"
-        style={{ willChange: 'transform' }}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: 5,
+          height: 5,
+          borderRadius: '50%',
+          background: '#4C8DFF',
+          pointerEvents: 'none',
+          zIndex: 99999,
+          transform: `translate3d(${pos.x - 2.5}px, ${pos.y - 2.5}px, 0)`,
+          transition: 'opacity 0.2s',
+        }}
+        className="hidden md:block"
       />
+
+      {/* Lagging Ring */}
       <div
-        ref={ringRef}
-        className="cursor-ring"
-        style={{ willChange: 'transform', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: isPointer ? 36 : 22,
+          height: isPointer ? 36 : 22,
+          borderRadius: '50%',
+          border: `1px solid ${isPointer ? 'rgba(76, 141, 255, 0.45)' : 'rgba(76, 141, 255, 0.2)'}`,
+          background: isPointer ? 'rgba(49, 87, 213, 0.06)' : 'transparent',
+          pointerEvents: 'none',
+          zIndex: 99998,
+          transform: `translate3d(${trail.x - (isPointer ? 18 : 11)}px, ${trail.y - (isPointer ? 18 : 11)}px, 0)`,
+          transition: 'width 0.2s cubic-bezier(0.16, 1, 0.3, 1), height 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        className="hidden md:flex"
       >
-        <span
-          ref={labelRef}
-          style={{
-            fontFamily: '"JetBrains Mono", monospace',
-            fontSize: '0.45rem',
-            letterSpacing: '0.12em',
-            color: 'var(--c-cyan)',
-            opacity: 0,
-            transition: 'opacity 0.2s',
-            whiteSpace: 'nowrap',
-          }}
-        />
+        {cursorText && (
+          <span
+            style={{
+              fontFamily: '"JetBrains Mono", monospace',
+              fontSize: '0.5rem',
+              color: '#F4F6F8',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {cursorText}
+          </span>
+        )}
       </div>
     </>
   );
