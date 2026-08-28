@@ -1,129 +1,120 @@
 import type { Metadata } from 'next';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import CustomCursor from '@/components/layout/CustomCursor';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Our Technology — The Systems That Power Voice Era Tech',
-  description: 'Explore the technology stack, architecture and engineering philosophy behind Voice Era Tech LLC dialer systems, AI solutions and cloud infrastructure.',
+  title: 'Platform Architecture & Technology Stack — Voice Era Tech LLC',
+  description: 'Explore the full-stack architecture, carrier protocols, AI pipelines, and cloud networks that power the Voice Era Tech platform.',
 };
 
 const techStack = [
-  { category: 'Dialer Core', color: '#0066FF', icon: '📡', technologies: ['SIP/RTP Stack', 'VoIP Gateway', 'Call Routing Engine', 'Predictive Pacing Algorithm', 'DNC Integration', 'Campaign Engine'] },
-  { category: 'AI & ML', color: '#8B5CF6', icon: '🤖', technologies: ['NLP Engine', 'Sentiment Analysis', 'Voice Recognition', 'Predictive Analytics', 'Lead Scoring', 'Conversational AI'] },
-  { category: 'Infrastructure', color: '#4A9EFF', icon: '☁️', technologies: ['Cloud-Native Architecture', 'Auto-Scaling', 'Load Balancing', 'CDN Distribution', 'Multi-Region Deployment', 'Container Orchestration'] },
-  { category: 'Data & Analytics', color: '#00E5A0', icon: '📊', technologies: ['Real-Time Data Pipeline', 'Analytics Engine', 'Call Recording Storage', 'Business Intelligence', 'Custom Reporting', 'Event Streaming'] },
-  { category: 'Security', color: '#FF3B5C', icon: '🔒', technologies: ['TLS Encryption', 'RBAC Access Control', 'Audit Logging', 'Vulnerability Management', 'API Security', 'Compliance Controls'] },
-  { category: 'Integration', color: '#FFB800', icon: '🔗', technologies: ['REST APIs', 'Webhook Engine', 'CRM Connectors', 'SaaS Integrations', 'iPaaS Support', 'Custom Middleware'] },
+  { category: 'Dialer Core', color: '#0284C7', icon: '📡', technologies: ['SIP / RTP Protocol Stack', 'Kamailio Session Border Controllers', 'Real-Time Predictive Pacing Daemon', 'Answering Machine Detection (AMD)', 'Dynamic DNC Scrubbing Engine', 'Local Presence DID Rotation'] },
+  { category: 'Voice AI & NLP', color: '#6366F1', icon: '🤖', technologies: ['Sub-600ms Speech-to-Speech Pipeline', 'Deepgram Real-Time Transcription', 'ElevenLabs / Cartesia Ultra-Fast TTS', 'Deterministic LLM Guardrails', 'Multi-Agent State Orchestration', 'Live Sentiment & Intent Analysis'] },
+  { category: 'Cloud Infrastructure', color: '#2563EB', icon: '☁️', technologies: ['Multi-Region AWS & GCP Clusters', 'Kubernetes / Docker Microservices', 'SR-IOV High-Speed Network Interfaces', 'Automated Terraform CI/CD Deployments', 'Zero-SPOF Clustered Databases', 'Cloudflare DDoS Mitigation'] },
+  { category: 'Data & Analytics', color: '#059669', icon: '📊', technologies: ['Kafka Distributed Event Streaming', 'PostgreSQL with Row-Level Security', 'Redis Real-Time State Cache', 'Snowflake / BigQuery Warehouse Sync', 'Sub-Second CDR Telemetry Pipelines', 'Automated QA Speech Analytics'] },
+  { category: 'Security & Compliance', color: '#DC2626', icon: '🔒', technologies: ['TLS 1.3 & SRTP Voice Encryption', 'STIR/SHAKEN A-Attestation Protocol', 'Role-Based Access Control (RBAC)', 'PCI-DSS Recording Redaction', 'Automated Toll Fraud Quarantine', 'Immutable Audit Event Ledgers'] },
+  { category: 'APIs & Integrations', color: '#D97706', icon: '🔗', technologies: ['RESTful JSON & GraphQL Endpoints', 'Sub-Second Webhook Event Emitters', 'Native Salesforce / HubSpot Connectors', 'OAuth 2.0 & Token Rate Limiting', 'OpenAPI 3.1 Interactive Specs', 'Zapier & Make.com Native Apps'] },
 ];
 
 const architectureLayers = [
-  { label: 'Frontend / Agent Interface', color: '#4A9EFF' },
-  { label: 'API Gateway', color: '#0066FF' },
-  { label: 'Application Layer', color: '#00D4FF' },
-  { label: 'Dialer Engine', color: '#00E5A0' },
-  { label: 'VoIP / SIP Layer', color: '#8B5CF6' },
-  { label: 'CRM Integration', color: '#FFB800' },
-  { label: 'AI & Analytics', color: '#FF6B35' },
-  { label: 'Cloud Infrastructure', color: '#4A9EFF' },
+  { label: 'Layer 1: Edge & Client Presentation (WebRTC Softphone / Next.js React UI)', color: '#2563EB' },
+  { label: 'Layer 2: API Gateway & Webhook Router (Kong / OAuth 2.0 / Rate Limiting)', color: '#0284C7' },
+  { label: 'Layer 3: Microservices Application Core (Campaigns / Routing / Workspaces)', color: '#6366F1' },
+  { label: 'Layer 4: Real-Time Telephony & Pacing Daemon (Predictive Pacing in Go/Rust)', color: '#0284C7' },
+  { label: 'Layer 5: Session Border Controllers & SIP Media Proxies (Kamailio / FreeSWITCH)', color: '#059669' },
+  { label: 'Layer 6: Conversational Voice AI Pipeline (Deepgram / LLM / Low-Latency TTS)', color: '#6366F1' },
+  { label: 'Layer 7: Storage & Event Streaming (PostgreSQL / Kafka / Redis / S3)', color: '#D97706' },
+  { label: 'Layer 8: Carrier Network Layer (Tier-1 CLECs / Global Anycast SIP Trunks)', color: '#2563EB' },
 ];
 
 export default function TechnologyPage() {
   return (
     <>
-      <CustomCursor />
       <Navbar />
-      <main style={{ minHeight: '100vh', background: 'var(--c-bg)' }}>
+      <main style={{ minHeight: '100vh', background: '#FFFFFF', paddingTop: '8.5rem', paddingBottom: '6rem' }}>
         {/* Hero */}
-        <section style={{ position: 'relative', paddingTop: '9rem', paddingBottom: '5rem', overflow: 'hidden' }}>
-          <div className="grid-pattern" style={{ position: 'absolute', inset: 0, opacity: 0.4 }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(0,102,255,0.1) 0%, transparent 70%)', pointerEvents: 'none' }} />
-          <div className="container-lg" style={{ position: 'relative' }}>
-            <div className="eyebrow" style={{ marginBottom: '1.25rem' }}>Technology</div>
-            <h1 className="text-display-lg" style={{ color: '#E8EEFF', marginBottom: '1.25rem' }}>
-              The Systems We<br />
-              <span className="gradient-text-blue">Build On</span>
+        <section style={{ position: 'relative', paddingBottom: '4rem' }}>
+          <div className="container-lg">
+            <div className="eyebrow" style={{ marginBottom: '1.25rem' }}>Platform Architecture</div>
+            <h1 className="text-display-lg" style={{ color: '#0F172A', marginBottom: '1.25rem' }}>
+              The Telephony Stack We<br />
+              <span className="gradient-text-blue">Engineer On</span>
             </h1>
-            <p className="text-body-lg" style={{ color: '#8BA3CC', maxWidth: 560, lineHeight: 1.7, marginBottom: '2.5rem' }}>
-              Voice Era Tech builds on a foundation of proven telecommunications protocols, cloud-native infrastructure and modern software engineering practices. Our architecture is designed for scale, reliability and extensibility.
+            <p className="text-body-lg" style={{ color: '#475569', maxWidth: 680, lineHeight: 1.7, marginBottom: '2.5rem' }}>
+              Voice Era Tech builds on carrier-grade telecommunications standards, low-latency media streams, cloud-native orchestration, and modern AI architectures engineered for maximum throughput and zero downtime.
             </p>
           </div>
         </section>
 
-        {/* Architecture stack */}
-        <section style={{ padding: '4rem 0', background: 'rgba(7,13,28,0.95)' }}>
+        {/* 8-Layer Architecture Stack */}
+        <section style={{ padding: '4.5rem 0', background: '#F8FAFC', borderTop: '1px solid rgba(226, 232, 240, 0.9)', borderBottom: '1px solid rgba(226, 232, 240, 0.9)' }}>
           <div className="container-lg">
-            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-              <div className="eyebrow" style={{ marginBottom: '1rem' }}>Platform Architecture</div>
-              <h2 className="text-display-sm" style={{ color: '#E8EEFF' }}>
-                Full-Stack <span className="gradient-text-blue">Infrastructure</span>
+            <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+              <div className="eyebrow" style={{ marginBottom: '1rem' }}>Multi-Tier Stack</div>
+              <h2 className="text-display-sm" style={{ color: '#0F172A' }}>
+                End-to-End <span className="gradient-text-blue">System Topology</span>
               </h2>
             </div>
-            <div style={{ maxWidth: 600, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
+            <div style={{ maxWidth: 760, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {architectureLayers.map((layer, i) => (
                 <div key={layer.label} style={{
-                  padding: '1rem 1.5rem',
-                  borderRadius: 12,
-                  background: `${layer.color}08`,
-                  border: `1px solid ${layer.color}20`,
+                  padding: '1.15rem 1.75rem',
+                  borderRadius: 14,
+                  background: '#FFFFFF',
+                  border: '1px solid rgba(226, 232, 240, 0.9)',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '1rem',
-                  animation: `fade-up 0.3s cubic-bezier(0.16,1,0.3,1) ${i * 0.06}s both`,
+                  boxShadow: 'var(--shadow-sm)',
                 }}>
-                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: layer.color, boxShadow: `0 0 8px ${layer.color}`, flexShrink: 0 }} />
-                  <span style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontWeight: 500, color: '#E8EEFF', fontSize: '0.9375rem' }}>
+                  <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#2563EB', flexShrink: 0 }} />
+                  <span style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontWeight: 600, color: '#0F172A', fontSize: '0.95rem' }}>
                     {layer.label}
                   </span>
-                  <div style={{ marginLeft: 'auto', fontFamily: '"JetBrains Mono", monospace', fontSize: '0.6rem', color: '#4A6A99', letterSpacing: '0.08em' }}>
-                    Layer {i + 1}
-                  </div>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Tech stack grid */}
-        <section style={{ padding: '5rem 0 7rem' }}>
+        {/* Tech Stack Component Grid */}
+        <section style={{ padding: '5rem 0 6rem' }}>
           <div className="container-xl">
-            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-              <div className="eyebrow" style={{ marginBottom: '1rem' }}>Technology Components</div>
-              <h2 className="text-display-sm" style={{ color: '#E8EEFF' }}>
-                What Powers the <span className="gradient-text-blue">Platform</span>
+            <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+              <div className="eyebrow" style={{ marginBottom: '1rem' }}>Component Breakdown</div>
+              <h2 className="text-display-sm" style={{ color: '#0F172A' }}>
+                What Powers the <span className="gradient-text-blue">Voice Era Platform</span>
               </h2>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.25rem', marginBottom: '3rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '1.5rem', marginBottom: '4rem' }}>
               {techStack.map(ts => (
-                <div key={ts.category} style={{
-                  background: 'rgba(7,13,28,0.85)', border: `1px solid ${ts.color}18`,
-                  borderRadius: 20, padding: '2rem', backdropFilter: 'blur(12px)',
-                }}>
+                <div key={ts.category} className="node-card" style={{ padding: '2rem' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
                     <div style={{
-                      width: 40, height: 40, borderRadius: 10, fontSize: '1.125rem',
-                      background: `${ts.color}15`, border: `1px solid ${ts.color}25`,
+                      width: 44, height: 44, borderRadius: 12, fontSize: '1.25rem',
+                      background: 'rgba(37, 99, 235, 0.1)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}>{ts.icon}</div>
-                    <div style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontWeight: 700, fontSize: '1rem', color: ts.color }}>
+                    <h3 style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontWeight: 700, fontSize: '1.15rem', color: '#0F172A' }}>
                       {ts.category}
-                    </div>
+                    </h3>
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
                     {ts.technologies.map(tech => (
-                      <div key={tech} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <div style={{ width: 4, height: 4, borderRadius: '50%', background: ts.color, opacity: 0.6 }} />
-                        <span style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontSize: '0.875rem', color: '#8BA3CC' }}>{tech}</span>
+                      <div key={tech} style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                        <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#2563EB', flexShrink: 0 }} />
+                        <span style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontSize: '0.9rem', color: '#475569' }}>{tech}</span>
                       </div>
                     ))}
                   </div>
                 </div>
               ))}
             </div>
+
             <div style={{ textAlign: 'center' }}>
-              <Link href="/contact" className="btn-magnetic btn-primary" style={{ textDecoration: 'none' }}>
-                <span style={{ position: 'relative', zIndex: 1 }}>Discuss Your Architecture →</span>
+              <Link href="/contact" className="btn-magnetic btn-primary">
+                Discuss Your Architecture Blueprint →
               </Link>
             </div>
           </div>

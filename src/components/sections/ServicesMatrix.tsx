@@ -7,44 +7,44 @@ const services = [
   {
     category: 'Dialer Technology',
     icon: '📡',
-    color: '#0066FF',
+    color: '#0284C7',
     items: ['Predictive Dialer', 'Power Dialer', 'Progressive Dialer', 'Preview Dialer', 'VoIP Infrastructure', 'SIP Trunking', 'Call Routing', 'Campaign Management'],
     href: '/dialer-systems',
   },
   {
     category: 'AI & Intelligence',
     icon: '🤖',
-    color: '#8B5CF6',
+    color: '#6366F1',
     items: ['AI Voice Agents', 'Conversational AI', 'AI Lead Qualification', 'Sentiment Analysis', 'Automated Calling', 'AI Appointment Agents', 'Call Transcription', 'Predictive Analytics'],
     href: '/ai-solutions',
   },
   {
     category: 'Cloud Infrastructure',
     icon: '☁️',
-    color: '#4A9EFF',
+    color: '#2563EB',
     items: ['Cloud Architecture', 'Server Deployment', 'Cloud Migration', 'Auto-Scaling', 'Multi-Region Setup', 'Disaster Recovery', 'Monitoring', 'DevOps Pipelines'],
     href: '/cloud-it',
   },
   {
     category: 'Software Development',
     icon: '💻',
-    color: '#00E5A0',
+    color: '#0D9488',
     items: ['Website Development', 'SaaS Development', 'Custom Software', 'Web Applications', 'CRM Development', 'API Development', 'UI/UX Design', 'Mobile-First Design'],
     href: '/development',
   },
   {
-    category: 'Automation',
+    category: 'Workflow Automation',
     icon: '⚙️',
-    color: '#FF6B35',
+    color: '#D97706',
     items: ['Workflow Automation', 'Business Process Automation', 'API Integrations', 'CRM Automation', 'Lead Routing', 'Reporting Automation', 'Alert Systems', 'Data Pipelines'],
-    href: '/cloud-it',
+    href: '/cloud-it/devops',
   },
   {
-    category: 'IT Infrastructure',
-    icon: '🖥️',
-    color: '#FFB800',
+    category: 'IT Security & Support',
+    icon: '🔒',
+    color: '#DC2626',
     items: ['Server Management', 'Network Infrastructure', 'Security Architecture', 'VPN Configuration', 'Backup Systems', 'Infrastructure Monitoring', 'Technical Support', 'IT Consulting'],
-    href: '/cloud-it',
+    href: '/cloud-it/security',
   },
 ];
 
@@ -52,61 +52,38 @@ export default function ServicesMatrix() {
   const [expanded, setExpanded] = useState<string | null>(null);
 
   return (
-    <section className="section-padding" style={{
-      background: 'var(--c-bg)',
-      position: 'relative',
-      overflow: 'hidden',
-    }}>
-      <div className="grid-pattern" style={{ position: 'absolute', inset: 0, opacity: 0.35 }} />
-
-      <div className="container-xl" style={{ position: 'relative' }}>
+    <section className="section-padding" style={{ background: '#FFFFFF', position: 'relative' }}>
+      <div className="container-xl">
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-          <div className="eyebrow" style={{ marginBottom: '1rem' }}>Complete Technology Services</div>
-          <h2 className="text-display-md" style={{ color: '#E8EEFF', marginBottom: '1rem' }}>
-            Everything Your<br />
-            <span className="gradient-text-blue">Business Needs</span>
+          <div className="eyebrow" style={{ marginBottom: '1rem' }}>Full-Stack Services</div>
+          <h2 className="text-display-md" style={{ color: '#0F172A', marginBottom: '1rem' }}>
+            Comprehensive Technology Services<br />
+            <span className="gradient-text-blue">For Modern Enterprise</span>
           </h2>
-          <p className="text-body-lg" style={{ color: '#8BA3CC', maxWidth: 480, margin: '0 auto' }}>
-            From dialer infrastructure to custom software, cloud architecture to AI — Voice Era Tech delivers complete technology solutions.
+          <p className="text-body-lg" style={{ color: '#475569', maxWidth: 520, margin: '0 auto' }}>
+            From high-concurrency dialer infrastructure to custom software and conversational AI, we deliver end-to-end technology solutions.
           </p>
         </div>
 
         {/* Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '1.25rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+          gap: '1.5rem',
         }}>
           {services.map(svc => {
             const isExpanded = expanded === svc.category;
             return (
               <div
                 key={svc.category}
+                className="node-card"
                 style={{
-                  background: isExpanded ? `${svc.color}0A` : 'rgba(7,13,28,0.8)',
-                  border: `1px solid ${isExpanded ? svc.color + '35' : 'rgba(0,102,255,0.1)'}`,
-                  borderRadius: 20,
-                  padding: '1.75rem',
-                  backdropFilter: 'blur(12px)',
-                  cursor: 'none',
-                  transition: 'all 0.35s cubic-bezier(0.16,1,0.3,1)',
-                  boxShadow: isExpanded ? `0 20px 40px rgba(0,0,0,0.25), 0 0 40px ${svc.color}12` : 'none',
+                  cursor: 'pointer',
+                  borderColor: isExpanded ? '#2563EB' : undefined,
+                  boxShadow: isExpanded ? 'var(--shadow-card-hover)' : undefined,
                 }}
                 onClick={() => setExpanded(isExpanded ? null : svc.category)}
-                onMouseEnter={e => {
-                  if (!isExpanded) {
-                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(0,212,255,0.2)';
-                    (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)';
-                  }
-                }}
-                onMouseLeave={e => {
-                  if (!isExpanded) {
-                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(0,102,255,0.1)';
-                    (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-                  }
-                }}
-                data-cursor="EXPLORE"
               >
                 {/* Header */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.875rem', marginBottom: '1rem' }}>
@@ -114,61 +91,56 @@ export default function ServicesMatrix() {
                     width: 48,
                     height: 48,
                     borderRadius: 13,
-                    background: `${svc.color}15`,
-                    border: `1px solid ${svc.color}30`,
+                    background: `${svc.color}12`,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '1.25rem',
-                    boxShadow: isExpanded ? `0 0 20px ${svc.color}30` : 'none',
-                    transition: 'box-shadow 0.3s',
+                    fontSize: '1.35rem',
                     flexShrink: 0,
                   }}>
                     {svc.icon}
                   </div>
                   <div style={{ flex: 1 }}>
-                    <div style={{
+                    <h3 style={{
                       fontFamily: '"Plus Jakarta Sans", sans-serif',
                       fontWeight: 700,
-                      fontSize: '1rem',
-                      color: '#E8EEFF',
+                      fontSize: '1.15rem',
+                      color: '#0F172A',
                       marginBottom: '2px',
                     }}>
                       {svc.category}
-                    </div>
+                    </h3>
                     <div style={{
                       fontFamily: '"JetBrains Mono", monospace',
-                      fontSize: '0.6rem',
+                      fontSize: '0.65rem',
                       letterSpacing: '0.08em',
-                      color: '#4A6A99',
+                      color: '#64748B',
+                      fontWeight: 600,
                     }}>
-                      {svc.items.length} services
+                      {svc.items.length} specialized services
                     </div>
                   </div>
-                  <svg
-                    width="16" height="16" viewBox="0 0 16 16" fill="none"
-                    style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.3s', color: svc.color, flexShrink: 0 }}
-                  >
-                    <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                  </svg>
+                  <span style={{ fontSize: '1.1rem', color: '#94A3B8', transform: isExpanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>
+                    ▼
+                  </span>
                 </div>
 
-                {/* Items */}
-                {isExpanded && (
-                  <div style={{ animation: 'fade-up 0.3s cubic-bezier(0.16,1,0.3,1)' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '1.25rem' }}>
-                      {svc.items.map((item, i) => (
+                {/* Expanded items */}
+                {isExpanded ? (
+                  <div className="animate-fade-up">
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.25rem' }}>
+                      {svc.items.map((item) => (
                         <div key={item} style={{
                           display: 'flex',
                           alignItems: 'center',
                           gap: '0.625rem',
-                          padding: '0.5rem 0.75rem',
-                          borderRadius: 9,
-                          background: 'rgba(0,102,255,0.04)',
-                          animation: `fade-up 0.25s cubic-bezier(0.16,1,0.3,1) ${i * 0.04}s both`,
+                          padding: '0.6rem 0.85rem',
+                          borderRadius: 10,
+                          background: '#F8FAFC',
+                          border: '1px solid rgba(226, 232, 240, 0.8)',
                         }}>
-                          <div style={{ width: 5, height: 5, borderRadius: '50%', background: svc.color, flexShrink: 0 }} />
-                          <span style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontSize: '0.875rem', color: '#8BA3CC' }}>{item}</span>
+                          <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#2563EB', flexShrink: 0 }} />
+                          <span style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontSize: '0.9rem', color: '#0F172A', fontWeight: 500 }}>{item}</span>
                         </div>
                       ))}
                     </div>
@@ -178,43 +150,43 @@ export default function ServicesMatrix() {
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '0.375rem',
-                        color: svc.color,
+                        color: '#2563EB',
                         textDecoration: 'none',
                         fontFamily: '"Plus Jakarta Sans", sans-serif',
-                        fontWeight: 600,
-                        fontSize: '0.875rem',
+                        fontWeight: 700,
+                        fontSize: '0.9rem',
                       }}
                       onClick={e => e.stopPropagation()}
                     >
-                      View all services →
+                      View all {svc.category} capabilities →
                     </Link>
                   </div>
-                )}
-
-                {!isExpanded && (
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.375rem' }}>
-                    {svc.items.slice(0, 3).map(item => (
+                ) : (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                    {svc.items.slice(0, 4).map(item => (
                       <span key={item} style={{
-                        padding: '0.2rem 0.5rem',
+                        padding: '0.3rem 0.65rem',
                         borderRadius: '100px',
-                        background: 'rgba(0,102,255,0.06)',
+                        background: '#F8FAFC',
+                        border: '1px solid rgba(226, 232, 240, 0.9)',
                         fontFamily: '"JetBrains Mono", monospace',
-                        fontSize: '0.6rem',
+                        fontSize: '0.65rem',
                         letterSpacing: '0.04em',
-                        color: '#4A6A99',
+                        color: '#475569',
                       }}>
                         {item}
                       </span>
                     ))}
                     <span style={{
-                      padding: '0.2rem 0.5rem',
+                      padding: '0.3rem 0.65rem',
                       borderRadius: '100px',
-                      background: 'rgba(0,102,255,0.06)',
+                      background: '#F1F5F9',
                       fontFamily: '"JetBrains Mono", monospace',
-                      fontSize: '0.6rem',
-                      color: '#4A6A99',
+                      fontSize: '0.65rem',
+                      color: '#2563EB',
+                      fontWeight: 600,
                     }}>
-                      +{svc.items.length - 3} more
+                      +{svc.items.length - 4} more
                     </span>
                   </div>
                 )}

@@ -4,18 +4,17 @@ import { useState } from 'react';
 import Link from 'next/link';
 
 const stackItems = [
-  { id: 'callcenter', label: 'Call Center', icon: '🏢', technologies: ['Inbound/Outbound Setup', 'Agent Management', 'Campaign Control', 'Call Recording'], color: '#0066FF' },
-  { id: 'dialer', label: 'Dialer', icon: '📡', technologies: ['Predictive Dialer', 'Power Dialer', 'SIP Trunking', 'DID Management'], color: '#00D4FF' },
-  { id: 'crm', label: 'CRM', icon: '🗂️', technologies: ['CRM Integration', 'Lead Management', 'Contact History', 'Disposition Flows'], color: '#8B5CF6' },
-  { id: 'ai', label: 'AI Agent', icon: '🤖', technologies: ['AI Voice Agent', 'Transcription', 'Sentiment Analysis', 'Auto-qualification'], color: '#6B21E8' },
-  { id: 'cloud', label: 'Cloud', icon: '☁️', technologies: ['Cloud Infrastructure', 'Auto-scaling', 'Monitoring', 'Redundancy'], color: '#4A9EFF' },
-  { id: 'website', label: 'Website', icon: '🌐', technologies: ['Custom Web Design', 'Lead Capture Forms', 'CRM Integration', 'Analytics'], color: '#00E5A0' },
-  { id: 'automation', label: 'Automation', icon: '⚙️', technologies: ['Workflow Automation', 'API Integrations', 'Task Routing', 'Reporting'], color: '#FF6B35' },
+  { id: 'dialer', label: 'Dialer Core', icon: '📡', technologies: ['Predictive Dialer', 'Power Dialer', 'SIP Trunking', 'DID Pool Management'], color: '#0284C7' },
+  { id: 'callcenter', label: 'Call Center Queues', icon: '🏢', technologies: ['Skills Routing', 'Queue Management', 'Campaign Controls', 'Call Recording'], color: '#2563EB' },
+  { id: 'ai', label: 'Conversational Voice AI', icon: '🤖', technologies: ['AI Voice Agents', 'Real-Time Transcription', 'Sentiment Analysis', 'Auto-Qualification'], color: '#6366F1' },
+  { id: 'crm', label: 'CRM & Integrations', icon: '🗂️', technologies: ['Salesforce/HubSpot Sync', 'Instant Screen Pop', 'Contact History', 'Auto-Disposition'], color: '#059669' },
+  { id: 'cloud', label: 'Cloud Infrastructure', icon: '☁️', technologies: ['Multi-Region Setup', 'Auto-Scaling SBCs', 'Real-Time Monitoring', 'DDoS Protection'], color: '#0284C7' },
+  { id: 'website', label: 'Digital Web Portal', icon: '🌐', technologies: ['Custom Next.js Web', 'Speed-to-Lead Forms', 'Omnichannel Chat', 'Conversion Tracking'], color: '#0D9488' },
+  { id: 'automation', label: 'Workflow Automation', icon: '⚙️', technologies: ['Post-Call Automations', 'API Webhooks', 'Automated SMS/Email', 'BI Reporting'], color: '#D97706' },
 ];
 
 export default function StackBuilder() {
-  const [selected, setSelected] = useState<Set<string>>(new Set(['dialer', 'callcenter']));
-  const [submitted, setSubmitted] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set(['dialer', 'callcenter', 'ai']));
 
   const toggle = (id: string) => {
     setSelected(prev => {
@@ -29,164 +28,162 @@ export default function StackBuilder() {
   const selectedItems = stackItems.filter(s => selected.has(s.id));
 
   return (
-    <section className="section-padding" style={{
-      background: 'rgba(5,10,20,0.98)',
-      position: 'relative',
-      overflow: 'hidden',
-    }}>
-      <div className="grid-pattern" style={{ position: 'absolute', inset: 0, opacity: 0.25 }} />
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        background: 'radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,102,255,0.06) 0%, transparent 70%)',
-        pointerEvents: 'none',
-      }} />
-
-      <div className="container-lg" style={{ position: 'relative' }}>
+    <section className="section-padding" style={{ background: '#F8FAFC', position: 'relative' }}>
+      <div className="container-lg">
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-          <div className="eyebrow" style={{ marginBottom: '1rem' }}>Technology Configurator</div>
-          <h2 className="text-display-md" style={{ color: '#E8EEFF', marginBottom: '1rem' }}>
-            Build Your<br />
+          <div className="eyebrow" style={{ marginBottom: '1rem' }}>Interactive Configurator</div>
+          <h2 className="text-display-md" style={{ color: '#0F172A', marginBottom: '1rem' }}>
+            Build Your Custom<br />
             <span className="gradient-text-blue">Technology Stack</span>
           </h2>
-          <p className="text-body-lg" style={{ color: '#8BA3CC', maxWidth: 480, margin: '0 auto' }}>
-            Select the components your business needs and see your recommended technology architecture.
+          <p className="text-body-lg" style={{ color: '#475569', maxWidth: 520, margin: '0 auto' }}>
+            Select the components your team needs and generate your recommended architecture blueprint.
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', alignItems: 'start' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', alignItems: 'start' }} className="flex flex-col md:grid">
           {/* Selector */}
           <div>
             <div style={{
               fontFamily: '"JetBrains Mono", monospace',
-              fontSize: '0.65rem',
-              letterSpacing: '0.15em',
-              color: '#4A6A99',
+              fontSize: '0.7rem',
+              letterSpacing: '0.12em',
+              color: '#64748B',
               textTransform: 'uppercase',
               marginBottom: '1.25rem',
+              fontWeight: 700,
             }}>
-              Choose Your Business Needs
+              1. Choose Required Architecture Layers
             </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.625rem' }}>
-              {stackItems.map(item => (
-                <button
-                  key={item.id}
-                  onClick={() => toggle(item.id)}
-                  className="stack-toggle"
-                  style={{
-                    background: selected.has(item.id) ? `${item.color}15` : 'transparent',
-                    borderColor: selected.has(item.id) ? item.color : 'rgba(0,102,255,0.15)',
-                    color: selected.has(item.id) ? item.color : '#8BA3CC',
-                    boxShadow: selected.has(item.id) ? `0 0 20px ${item.color}20` : 'none',
-                  }}
-                >
-                  <span>{item.icon}</span>
-                  {item.label}
-                  {selected.has(item.id) && (
-                    <span style={{
-                      marginLeft: 'auto',
-                      width: 16,
-                      height: 16,
-                      borderRadius: '50%',
-                      background: item.color,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '0.625rem',
-                      color: '#fff',
-                      flexShrink: 0,
-                    }}>✓</span>
-                  )}
-                </button>
-              ))}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              {stackItems.map(item => {
+                const isSelected = selected.has(item.id);
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => toggle(item.id)}
+                    className="stack-toggle"
+                    style={{
+                      background: isSelected ? '#FFFFFF' : '#F1F5F9',
+                      borderColor: isSelected ? '#2563EB' : 'rgba(226, 232, 240, 0.9)',
+                      color: isSelected ? '#0F172A' : '#64748B',
+                      boxShadow: isSelected ? '0 4px 14px rgba(37, 99, 235, 0.12)' : 'none',
+                    }}
+                  >
+                    <span style={{ fontSize: '1.25rem' }}>{item.icon}</span>
+                    <span style={{ fontWeight: 600 }}>{item.label}</span>
+                    {isSelected ? (
+                      <span style={{
+                        marginLeft: 'auto',
+                        width: 22,
+                        height: 22,
+                        borderRadius: '50%',
+                        background: '#2563EB',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '0.75rem',
+                        color: '#FFFFFF',
+                        fontWeight: 800,
+                      }}>✓</span>
+                    ) : (
+                      <span style={{
+                        marginLeft: 'auto',
+                        width: 22,
+                        height: 22,
+                        borderRadius: '50%',
+                        border: '1.5px solid #CBD5E1',
+                      }} />
+                    )}
+                  </button>
+                );
+              })}
             </div>
 
-            {/* Selected count */}
+            {/* Selected count bar */}
             <div style={{
               marginTop: '1.5rem',
-              padding: '0.75rem 1rem',
-              borderRadius: 10,
-              background: 'rgba(0,102,255,0.05)',
-              border: '1px solid rgba(0,102,255,0.1)',
+              padding: '0.85rem 1.25rem',
+              borderRadius: 12,
+              background: '#FFFFFF',
+              border: '1px solid rgba(226, 232, 240, 0.9)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
+              boxShadow: 'var(--shadow-sm)',
             }}>
-              <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '0.7rem', color: '#4A6A99', letterSpacing: '0.08em' }}>
-                {selected.size} COMPONENTS SELECTED
+              <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '0.75rem', color: '#2563EB', fontWeight: 700 }}>
+                {selected.size} MODULES SELECTED
               </span>
               <button
                 onClick={() => setSelected(new Set())}
                 style={{
                   background: 'none',
                   border: 'none',
-                  color: '#4A6A99',
+                  color: '#64748B',
                   fontFamily: '"JetBrains Mono", monospace',
-                  fontSize: '0.65rem',
-                  letterSpacing: '0.08em',
-                  cursor: 'none',
-                  textTransform: 'uppercase',
+                  fontSize: '0.7rem',
+                  cursor: 'pointer',
+                  fontWeight: 600,
                 }}
               >
-                Clear
+                Clear All
               </button>
             </div>
           </div>
 
           {/* Stack output */}
-          <div>
+          <div className="node-card" style={{ padding: '2rem' }}>
             <div style={{
               fontFamily: '"JetBrains Mono", monospace',
-              fontSize: '0.65rem',
-              letterSpacing: '0.15em',
-              color: '#4A6A99',
+              fontSize: '0.7rem',
+              letterSpacing: '0.12em',
+              color: '#64748B',
               textTransform: 'uppercase',
               marginBottom: '1.25rem',
+              fontWeight: 700,
             }}>
-              Recommended Technology Stack
+              2. Recommended Architecture Blueprint
             </div>
 
             {selectedItems.length === 0 ? (
               <div style={{
-                background: 'rgba(0,102,255,0.04)',
-                border: '1px dashed rgba(0,102,255,0.15)',
+                background: '#F8FAFC',
+                border: '1px dashed rgba(203, 213, 225, 0.9)',
                 borderRadius: 16,
-                padding: '3rem',
+                padding: '3rem 2rem',
                 textAlign: 'center',
-                color: '#4A6A99',
-                fontFamily: '"Plus Jakarta Sans", sans-serif',
-                fontSize: '0.9375rem',
+                color: '#64748B',
+                fontSize: '0.95rem',
               }}>
-                Select at least one component to see your recommended stack
+                Select at least one layer to see your customized blueprint
               </div>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
-                {selectedItems.map((item, i) => (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                {selectedItems.map((item) => (
                   <div
                     key={item.id}
                     style={{
                       padding: '1rem 1.25rem',
                       borderRadius: 14,
-                      background: `${item.color}08`,
-                      border: `1px solid ${item.color}20`,
+                      background: '#F8FAFC',
+                      border: '1px solid rgba(226, 232, 240, 0.9)',
                       display: 'flex',
                       alignItems: 'flex-start',
                       gap: '0.875rem',
-                      animation: 'fade-up 0.3s cubic-bezier(0.16,1,0.3,1) both',
-                      animationDelay: `${i * 0.05}s`,
                     }}
                   >
                     <div style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: 9,
-                      background: `${item.color}18`,
-                      border: `1px solid ${item.color}33`,
+                      width: 38,
+                      height: 38,
+                      borderRadius: 10,
+                      background: '#FFFFFF',
+                      border: '1px solid rgba(226, 232, 240, 0.9)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '1rem',
+                      fontSize: '1.15rem',
                       flexShrink: 0,
                     }}>
                       {item.icon}
@@ -194,24 +191,23 @@ export default function StackBuilder() {
                     <div style={{ flex: 1 }}>
                       <div style={{
                         fontFamily: '"Plus Jakarta Sans", sans-serif',
-                        fontWeight: 600,
-                        fontSize: '0.9375rem',
-                        color: item.color,
-                        marginBottom: '0.375rem',
+                        fontWeight: 700,
+                        fontSize: '0.95rem',
+                        color: '#0F172A',
+                        marginBottom: '0.35rem',
                       }}>
-                        {item.label} Layer
+                        {item.label}
                       </div>
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.375rem' }}>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
                         {item.technologies.map(tech => (
                           <span key={tech} style={{
-                            padding: '0.2rem 0.5rem',
+                            padding: '0.2rem 0.55rem',
                             borderRadius: '100px',
-                            background: `${item.color}10`,
-                            border: `1px solid ${item.color}20`,
+                            background: '#FFFFFF',
+                            border: '1px solid rgba(226, 232, 240, 0.9)',
                             fontFamily: '"JetBrains Mono", monospace',
-                            fontSize: '0.6rem',
-                            letterSpacing: '0.05em',
-                            color: '#8BA3CC',
+                            fontSize: '0.625rem',
+                            color: '#334155',
                           }}>
                             {tech}
                           </span>
@@ -224,14 +220,13 @@ export default function StackBuilder() {
             )}
 
             {selectedItems.length > 0 && (
-              <div style={{ marginTop: '1.5rem' }}>
+              <div style={{ marginTop: '1.75rem' }}>
                 <Link
                   href={`/contact?stack=${[...selected].join(',')}`}
                   className="btn-magnetic btn-primary"
-                  style={{ textDecoration: 'none', width: '100%', display: 'flex', justifyContent: 'center' }}
-                  data-cursor="CONNECT"
+                  style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
                 >
-                  <span style={{ position: 'relative', zIndex: 1 }}>Discuss Your Stack →</span>
+                  Configure & Price This Stack →
                 </Link>
               </div>
             )}
