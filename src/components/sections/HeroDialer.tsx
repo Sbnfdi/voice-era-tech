@@ -19,17 +19,64 @@ const keys = [
   { digit: '#', sub: '' },
 ];
 
+// DTMF Frequencies (Hz) for real telecom audio feedback
+const dtmfFreqs: Record<string, [number, number]> = {
+  '1': [697, 1209], '2': [697, 1336], '3': [697, 1477],
+  '4': [770, 1209], '5': [770, 1336], '6': [770, 1477],
+  '7': [852, 1209], '8': [852, 1336], '9': [852, 1477],
+  '*': [941, 1209], '0': [941, 1336], '#': [941, 1477],
+};
+
 export default function HeroDialer() {
   const [number, setNumber] = useState('1 (800) 555-0199');
   const [callState, setCallState] = useState<CallState>('idle');
   const [duration, setDuration] = useState(0);
   const [activeKey, setActiveKey] = useState<string | null>(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+
+  // Play realistic DTMF dual-tone
+  const playTone = (digit: string) => {
+    try {
+      if (!audioCtxRef.current) {
+        const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+        audioCtxRef.current = new AudioCtx();
+      }
+      const ctx = audioCtxRef.current;
+      if (ctx.state === 'suspended') ctx.resume();
+
+      const freqs = dtmfFreqs[digit];
+      if (!freqs) return;
+
+      const osc1 = ctx.createOscillator();
+      const osc2 = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc1.frequency.value = freqs[0];
+      osc2.frequency.value = freqs[1];
+
+      gain.gain.setValueAtTime(0.06, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+
+      osc1.connect(gain);
+      osc2.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc1.start();
+      osc2.start();
+      osc1.stop(ctx.currentTime + 0.12);
+      osc2.stop(ctx.currentTime + 0.12);
+    } catch {
+      // AudioContext unavailable or blocked by browser policy
+    }
+  };
 
   useEffect(() => {
     if (callState === 'connected') {
       timerRef.current = setInterval(() => {
-        setDuration(d => d + 1);
+        setDuration((d) => d + 1);
       }, 1000);
     } else {
       if (timerRef.current) clearInterval(timerRef.current);
@@ -42,10 +89,11 @@ export default function HeroDialer() {
 
   const handleKeyPress = (digit: string) => {
     setActiveKey(digit);
+    playTone(digit);
     setTimeout(() => setActiveKey(null), 150);
     if (callState === 'idle') {
       if (number.length < 18) {
-        setNumber(prev => (prev === '1 (800) 555-0199' ? digit : prev + digit));
+        setNumber((prev) => (prev === '1 (800) 555-0199' ? digit : prev + digit));
       }
     }
   };
@@ -53,15 +101,32 @@ export default function HeroDialer() {
   const handleCall = () => {
     if (callState === 'idle') {
       setCallState('calling');
+      playTone('5');
       setTimeout(() => {
         setCallState('connected');
-      }, 1800);
+      }, 1400);
     } else if (callState === 'connected' || callState === 'calling') {
       setCallState('ended');
+      playTone('#');
       setTimeout(() => {
         setCallState('idle');
-      }, 1500);
+      }, 1200);
     }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    setTilt({
+      x: -(y / rect.height) * 8,
+      y: (x / rect.width) * 8,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
   };
 
   const formatTime = (secs: number) => {
@@ -72,6 +137,9 @@ export default function HeroDialer() {
 
   return (
     <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       style={{
         width: '100%',
         maxWidth: 380,
@@ -81,6 +149,9 @@ export default function HeroDialer() {
         padding: '1.75rem',
         boxShadow: '0 32px 80px rgba(0, 0, 0, 0.6), 0 0 30px rgba(49, 87, 213, 0.08)',
         position: 'relative',
+        transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+        transition: 'transform 0.1s ease-out',
+        willChange: 'transform',
       }}
     >
       {/* Top Status Header */}
@@ -107,6 +178,7 @@ export default function HeroDialer() {
                   ? '#4C8DFF'
                   : '#5E6A78',
               boxShadow: callState === 'connected' ? '0 0 8px #3AAFA9' : 'none',
+              animation: callState === 'calling' ? 'signal-pulse 1s infinite' : 'none',
             }}
           />
           <span
@@ -146,6 +218,7 @@ export default function HeroDialer() {
           padding: '1.25rem',
           textAlign: 'center',
           marginBottom: '1.5rem',
+          boxShadow: 'inset 0 2px 8px rgba(0, 0, 0, 0.5)',
         }}
       >
         <div
@@ -181,7 +254,7 @@ export default function HeroDialer() {
                   height: `${h}%`,
                   borderRadius: 2,
                   background: '#3AAFA9',
-                  animation: `pulseWave 0.8s ease-in-out infinite alternate ${i * 0.08}s`,
+                  animation: `pulseWave 0.75s ease-in-out infinite alternate ${i * 0.07}s`,
                 }}
               />
             ))}
@@ -208,7 +281,7 @@ export default function HeroDialer() {
           marginBottom: '1.5rem',
         }}
       >
-        {keys.map(k => {
+        {keys.map((k) => {
           const isPressed = activeKey === k.digit;
           return (
             <button
@@ -226,14 +299,15 @@ export default function HeroDialer() {
                 cursor: 'pointer',
                 transition: 'all 0.12s cubic-bezier(0.16, 1, 0.3, 1)',
                 boxShadow: isPressed ? '0 0 12px rgba(76, 141, 255, 0.4)' : 'none',
+                transform: isPressed ? 'scale(0.96)' : 'none',
               }}
-              onMouseEnter={e => {
+              onMouseEnter={(e) => {
                 if (!isPressed) {
                   (e.currentTarget as HTMLElement).style.background = '#283747';
                   (e.currentTarget as HTMLElement).style.borderColor = 'rgba(76, 141, 255, 0.25)';
                 }
               }}
-              onMouseLeave={e => {
+              onMouseLeave={(e) => {
                 if (!isPressed) {
                   (e.currentTarget as HTMLElement).style.background = '#202B38';
                   (e.currentTarget as HTMLElement).style.borderColor = 'rgba(76, 141, 255, 0.12)';
@@ -283,11 +357,11 @@ export default function HeroDialer() {
             cursor: 'pointer',
             transition: 'all 0.15s ease',
           }}
-          onMouseEnter={e => {
+          onMouseEnter={(e) => {
             (e.currentTarget as HTMLElement).style.color = '#F4F6F8';
             (e.currentTarget as HTMLElement).style.background = '#283747';
           }}
-          onMouseLeave={e => {
+          onMouseLeave={(e) => {
             (e.currentTarget as HTMLElement).style.color = '#9AA6B2';
             (e.currentTarget as HTMLElement).style.background = '#202B38';
           }}
@@ -327,13 +401,6 @@ export default function HeroDialer() {
           {callState === 'ended' && 'Call Concluded'}
         </button>
       </div>
-
-      <style>{`
-        @keyframes pulseWave {
-          0% { transform: scaleY(0.3); }
-          100% { transform: scaleY(1); }
-        }
-      `}</style>
     </div>
   );
 }

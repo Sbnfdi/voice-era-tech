@@ -1,9 +1,86 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import HeroDialer from './HeroDialer';
 
 export default function Hero() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animId: number;
+    let width = (canvas.width = canvas.offsetWidth);
+    let height = (canvas.height = canvas.offsetHeight);
+
+    const handleResize = () => {
+      if (!canvas) return;
+      width = canvas.width = canvas.offsetWidth;
+      height = canvas.height = canvas.offsetHeight;
+    };
+    window.addEventListener('resize', handleResize);
+
+    // Subtle floating telemetry nodes
+    const particleCount = 28;
+    const particles = Array.from({ length: particleCount }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      radius: Math.random() * 2 + 1,
+    }));
+
+    const render = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      // Draw connection lines between nearby particles
+      for (let i = 0; i < particleCount; i++) {
+        for (let j = i + 1; j < particleCount; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 140) {
+            const alpha = (1 - dist / 140) * 0.08;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(76, 141, 255, ${alpha})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Draw and update particles
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > width) p.vx *= -1;
+        if (p.y < 0 || p.y > height) p.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(76, 141, 255, 0.25)';
+        ctx.fill();
+      });
+
+      animId = requestAnimationFrame(render);
+    };
+
+    render();
+
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <section
       style={{
@@ -15,8 +92,21 @@ export default function Hero() {
         background: '#0B0F14',
       }}
     >
-      {/* Subtle Technical Grid */}
-      <div className="grid-pattern" style={{ position: 'absolute', inset: 0, opacity: 0.35 }} />
+      {/* Dynamic Animated Telemetry Canvas */}
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+
+      {/* Subtle Technical Grid Pattern */}
+      <div className="grid-pattern" style={{ position: 'absolute', inset: 0, opacity: 0.35, pointerEvents: 'none' }} />
 
       {/* Atmospheric Radial Lighting - Deep Royal Blue */}
       <div
@@ -38,7 +128,7 @@ export default function Hero() {
           }}
         >
           {/* Left Column — Editorial & Value Proposition */}
-          <div>
+          <div className="animate-fade-up">
             {/* Eyebrow Pill */}
             <div
               style={{
@@ -147,7 +237,7 @@ export default function Hero() {
           </div>
 
           {/* Right Column — 3D Physical Dialer Simulator */}
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', justifyContent: 'center' }} className="animate-fade-up">
             <HeroDialer />
           </div>
         </div>

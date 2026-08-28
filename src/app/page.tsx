@@ -20,10 +20,22 @@ import TheCallSignature from '@/components/sections/TheCallSignature';
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
 
+  useEffect(() => {
+    // If preloader was already completed in this session, reveal immediately
+    if (sessionStorage.getItem('v_preloaded')) {
+      setLoaded(true);
+    }
+  }, []);
+
+  const handlePreloaderComplete = () => {
+    sessionStorage.setItem('v_preloaded', 'true');
+    setLoaded(true);
+  };
+
   return (
     <>
-      {!loaded && <Preloader onComplete={() => setLoaded(true)} />}
-      <div style={{ opacity: loaded ? 1 : 0, transition: 'opacity 0.5s ease' }}>
+      {!loaded && <Preloader onComplete={handlePreloaderComplete} />}
+      <div style={{ opacity: loaded ? 1 : 0, transition: 'opacity 0.4s ease-out' }}>
         <CustomCursor />
         <Navbar />
         <main>

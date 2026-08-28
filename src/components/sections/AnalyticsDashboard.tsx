@@ -2,19 +2,37 @@
 
 import { useState, useEffect } from 'react';
 
-const callVolumeData = [35, 48, 62, 58, 72, 85, 76, 92, 105, 98, 115, 128, 110, 122, 138, 130, 142, 155, 148, 162, 150, 138, 120, 105];
+const initialCallVolume = [35, 48, 62, 58, 72, 85, 76, 92, 105, 98, 115, 128, 110, 122, 138, 130, 142, 155, 148, 162, 150, 138, 120, 105];
 
 export default function AnalyticsDashboard() {
-  const [animatedBars, setAnimatedBars] = useState<number[]>(callVolumeData.map(() => 0));
+  const [callVolume, setCallVolume] = useState<number[]>(initialCallVolume);
+  const [activeLines, setActiveLines] = useState(482);
+  const [answerRate, setAnswerRate] = useState(71.4);
 
+  // Live telemetry pulse simulation
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimatedBars(callVolumeData);
-    }, 200);
-    return () => clearTimeout(timer);
+    const interval = setInterval(() => {
+      setActiveLines((prev) => {
+        const delta = Math.floor(Math.random() * 7) - 3;
+        return Math.max(460, Math.min(510, prev + delta));
+      });
+      setAnswerRate((prev) => {
+        const delta = (Math.random() * 0.4 - 0.2);
+        return parseFloat((prev + delta).toFixed(1));
+      });
+      setCallVolume((prev) => {
+        const next = [...prev.slice(1)];
+        const last = prev[prev.length - 1];
+        const nextVal = Math.max(90, Math.min(168, last + Math.floor(Math.random() * 11) - 5));
+        next.push(nextVal);
+        return next;
+      });
+    }, 2800);
+
+    return () => clearInterval(interval);
   }, []);
 
-  const maxVal = Math.max(...callVolumeData);
+  const maxVal = Math.max(...callVolume, 160);
 
   return (
     <section
@@ -101,8 +119,8 @@ export default function AnalyticsDashboard() {
               }}
             >
               {[
-                { label: 'Active Outbound Lines', value: '482', sub: '+14% pacing', color: '#3157D5' },
-                { label: 'Carrier Answer Rate', value: '71.4%', sub: 'STIR/SHAKEN A-Level', color: '#3AAFA9' },
+                { label: 'Active Outbound Lines', value: `${activeLines}`, sub: '+14% pacing', color: '#3157D5' },
+                { label: 'Carrier Answer Rate', value: `${answerRate}%`, sub: 'STIR/SHAKEN A-Level', color: '#3AAFA9' },
                 { label: 'Average Handle Time', value: '3m 42s', sub: 'Target: 4m 00s', color: '#4C8DFF' },
                 { label: 'System MOS Score', value: '4.42', sub: 'Pristine HD Audio', color: '#C9A96E' },
               ].map((m) => (
@@ -113,6 +131,7 @@ export default function AnalyticsDashboard() {
                     border: '1px solid rgba(76, 141, 255, 0.1)',
                     borderRadius: 14,
                     padding: '1.25rem',
+                    transition: 'border-color 0.2s ease',
                   }}
                 >
                   <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '0.625rem', color: '#9AA6B2', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
@@ -145,7 +164,7 @@ export default function AnalyticsDashboard() {
                       24-Hour Telephony Concurrency
                     </div>
                     <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '0.625rem', color: '#9AA6B2' }}>
-                      Peak Throughput: 162 Concurrent Calls / Cluster
+                      Peak Throughput: {Math.max(...callVolume)} Concurrent Calls / Cluster
                     </div>
                   </div>
                   <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '0.6875rem', color: '#4C8DFF' }}>
@@ -154,16 +173,16 @@ export default function AnalyticsDashboard() {
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'flex-end', gap: '4px', height: 110 }}>
-                  {animatedBars.map((h, i) => (
+                  {callVolume.map((h, i) => (
                     <div
                       key={i}
                       style={{
                         flex: 1,
                         height: `${(h / maxVal) * 100}%`,
-                        background: '#3157D5',
+                        background: i === callVolume.length - 1 ? '#4C8DFF' : '#3157D5',
                         borderRadius: '3px 3px 0 0',
-                        transition: `height ${0.3 + i * 0.02}s cubic-bezier(0.16, 1, 0.3, 1)`,
-                        opacity: h > 130 ? 1 : 0.6,
+                        transition: 'height 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease',
+                        opacity: h > 130 ? 1 : 0.65,
                       }}
                     />
                   ))}
@@ -208,6 +227,7 @@ export default function AnalyticsDashboard() {
                           width: `${item.pct}%`,
                           background: item.color,
                           borderRadius: 3,
+                          transition: 'width 0.5s ease',
                         }}
                       />
                     </div>

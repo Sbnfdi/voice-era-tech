@@ -4,18 +4,24 @@ import { useEffect, useRef, useState } from 'react';
 
 export default function Preloader({ onComplete }: { onComplete: () => void }) {
   const [progress, setProgress] = useState(0);
-  const [phase, setPhase] = useState<'assembling' | 'logo' | 'done'>('assembling');
+  const [phase, setPhase] = useState<'assembling' | 'done'>('assembling');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animRef = useRef<number>(0);
 
   useEffect(() => {
+    // Safety fallback timeout to ensure preloader never traps the UI
+    const safetyTimer = setTimeout(() => {
+      setPhase('done');
+      onComplete();
+    }, 1200);
+
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas) return () => clearTimeout(safetyTimer);
     const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    if (!ctx) return () => clearTimeout(safetyTimer);
 
     let frame = 0;
-    const totalFrames = 80;
+    const totalFrames = 38;
 
     const render = () => {
       frame++;
@@ -72,17 +78,19 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
       if (pct < 1) {
         animRef.current = requestAnimationFrame(render);
       } else {
-        setPhase('logo');
         setTimeout(() => {
           setPhase('done');
           onComplete();
-        }, 350);
+        }, 150);
       }
     };
 
     animRef.current = requestAnimationFrame(render);
 
-    return () => cancelAnimationFrame(animRef.current);
+    return () => {
+      clearTimeout(safetyTimer);
+      cancelAnimationFrame(animRef.current);
+    };
   }, [onComplete]);
 
   if (phase === 'done') return null;
@@ -101,10 +109,10 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         justifyContent: 'center',
         gap: '2rem',
         opacity: 1,
-        transition: 'opacity 0.4s ease',
+        transition: 'opacity 0.3s ease',
       }}
     >
-      <div style={{ position: 'relative', width: 220, height: 220 }}>
+      <div style={{ position: 'relative', width: 200, height: 200 }}>
         <canvas
           ref={canvasRef}
           style={{ width: '100%', height: '100%', display: 'block' }}
@@ -123,8 +131,8 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
           <span
             style={{
               fontFamily: '"JetBrains Mono", monospace',
-              fontSize: '1rem',
-              fontWeight: 600,
+              fontSize: '1.125rem',
+              fontWeight: 700,
               color: '#F4F6F8',
             }}
           >
