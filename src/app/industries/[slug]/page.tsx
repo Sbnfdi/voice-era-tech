@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { subPagesData } from '@/data/pagesData';
 import SubPageTemplate from '@/components/templates/SubPageTemplate';
 
-const validSlugs = ['predictive', 'power', 'progressive', 'preview', 'voip', 'sip', 'multi-tenant', 'custom', 'integrations'];
+const validSlugs = ['bpo', 'financial-services', 'healthcare', 'real-estate', 'insurance', 'ecommerce'];
 
 export function generateStaticParams() {
   return validSlugs.map(slug => ({ slug }));
@@ -11,7 +11,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const key = `dialer-systems/${slug}`;
+  const key = `industries/${slug}`;
   const page = subPagesData[key];
   if (!page) return {};
 
@@ -25,9 +25,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-export default async function DialerSubPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function IndustrySubPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const key = `dialer-systems/${slug}`;
+  const key = `industries/${slug}`;
   const page = subPagesData[key];
 
   if (!page) {

@@ -4,18 +4,21 @@ import { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
 
 const signalNodes = [
-  { id: 'customer', label: 'Lead Inbound', icon: '👤', x: 10, y: 50, color: '#0284C7' },
-  { id: 'dialer', label: 'Dialer Core', icon: '📡', x: 27, y: 50, color: '#2563EB' },
-  { id: 'network', label: 'SIP Carrier', icon: '🌐', x: 44, y: 50, color: '#0284C7' },
-  { id: 'ai', label: 'Voice AI Engine', icon: '🤖', x: 61, y: 50, color: '#6366F1' },
-  { id: 'crm', label: 'CRM Database', icon: '🗂️', x: 78, y: 50, color: '#059669' },
-  { id: 'agent', label: 'Live Specialist', icon: '🎧', x: 95, y: 50, color: '#10B981' },
+  { id: 'customer', label: 'Customer', icon: '👤', x: 10, y: 50, color: '#4A9EFF' },
+  { id: 'dialer', label: 'Dialer', icon: '📡', x: 27, y: 50, color: '#0066FF' },
+  { id: 'network', label: 'Network', icon: '🌐', x: 44, y: 50, color: '#00A8CC' },
+  { id: 'ai', label: 'AI Engine', icon: '🤖', x: 61, y: 50, color: '#8B5CF6' },
+  { id: 'crm', label: 'CRM', icon: '🗂️', x: 78, y: 50, color: '#00E5A0' },
+  { id: 'agent', label: 'Agent', icon: '👤', x: 95, y: 50, color: '#00FF88' },
 ];
 
 export default function TheCallSignature() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [active, setActive] = useState(true);
+  const rafRef = useRef<number>(0);
+  const [active, setActive] = useState(false);
   const tickRef = useRef(0);
+
+  const handleActivate = () => setActive(true);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -24,40 +27,45 @@ export default function TheCallSignature() {
     if (!ctx) return;
 
     const resize = () => {
-      canvas.width = canvas.offsetWidth * (window.devicePixelRatio || 1);
-      canvas.height = canvas.offsetHeight * (window.devicePixelRatio || 1);
-      ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
     };
     resize();
     window.addEventListener('resize', resize);
 
-    let rafId: number;
     const draw = () => {
       tickRef.current++;
-      const W = canvas.offsetWidth;
-      const H = canvas.offsetHeight;
+      const W = canvas.width, H = canvas.height;
       ctx.clearRect(0, 0, W, H);
+
+      if (!active) {
+        rafRef.current = requestAnimationFrame(draw);
+        return;
+      }
 
       const getPos = (n: typeof signalNodes[0]) => ({
         x: (n.x / 100) * W,
         y: (n.y / 100) * H,
       });
 
-      // Connecting line
+      // Draw connecting lines
       for (let i = 0; i < signalNodes.length - 1; i++) {
         const from = getPos(signalNodes[i]);
         const to = getPos(signalNodes[i + 1]);
+        const grad = ctx.createLinearGradient(from.x, from.y, to.x, to.y);
+        grad.addColorStop(0, `${signalNodes[i].color}30`);
+        grad.addColorStop(1, `${signalNodes[i + 1].color}30`);
         ctx.beginPath();
         ctx.moveTo(from.x, from.y);
         ctx.lineTo(to.x, to.y);
-        ctx.strokeStyle = 'rgba(203, 213, 225, 0.8)';
-        ctx.lineWidth = 3;
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 2;
         ctx.stroke();
       }
 
       // Traveling signal
       const totalNodes = signalNodes.length;
-      const cycleDuration = totalNodes * 50;
+      const cycleDuration = totalNodes * 60;
       const t = (tickRef.current % cycleDuration) / cycleDuration;
       const segmentIndex = Math.floor(t * (totalNodes - 1));
       const segmentT = (t * (totalNodes - 1)) % 1;
@@ -68,62 +76,83 @@ export default function TheCallSignature() {
         const sx = from.x + (to.x - from.x) * segmentT;
         const sy = from.y + (to.y - from.y) * segmentT;
 
-        // Signal glow
+        // Glow trail
+        const grd = ctx.createRadialGradient(sx, sy, 0, sx, sy, 30);
+        grd.addColorStop(0, `${signalNodes[segmentIndex].color}80`);
+        grd.addColorStop(1, 'transparent');
         ctx.beginPath();
-        ctx.arc(sx, sy, 14, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(37, 99, 235, 0.2)';
+        ctx.arc(sx, sy, 30, 0, Math.PI * 2);
+        ctx.fillStyle = grd;
         ctx.fill();
 
         // Signal dot
         ctx.beginPath();
-        ctx.arc(sx, sy, 6, 0, Math.PI * 2);
-        ctx.fillStyle = '#2563EB';
+        ctx.arc(sx, sy, 7, 0, Math.PI * 2);
+        ctx.fillStyle = signalNodes[segmentIndex].color;
         ctx.fill();
       }
 
-      rafId = requestAnimationFrame(draw);
+      rafRef.current = requestAnimationFrame(draw);
     };
     draw();
 
     return () => {
+      cancelAnimationFrame(rafRef.current);
       window.removeEventListener('resize', resize);
-      cancelAnimationFrame(rafId);
     };
   }, [active]);
 
   return (
     <section className="section-padding" style={{
-      background: '#FFFFFF',
+      background: '#030710',
       position: 'relative',
       overflow: 'hidden',
     }}>
-      <div className="container-lg">
+      {/* Top border glow */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: '10%',
+        right: '10%',
+        height: 1,
+        background: 'linear-gradient(90deg, transparent, rgba(0,212,255,0.5), transparent)',
+      }} />
+
+      <div className="container-lg" style={{ position: 'relative' }}>
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-          <div className="eyebrow" style={{ marginBottom: '1rem' }}>The Voice Era Advantage</div>
-          <h2 className="text-display-md" style={{ color: '#0F172A', marginBottom: '1rem' }}>
-            Every Call Connected.<br />
-            <span className="gradient-text-blue">Every System Working in Synchrony.</span>
+          <div className="eyebrow" style={{ color: '#00D4FF', marginBottom: '1rem' }}>The Voice Era Experience</div>
+          <h2 className="text-display-md" style={{ color: '#E8EEFF', marginBottom: '1rem' }}>
+            <span className="gradient-text">Every Conversation Connected.</span><br />
+            Every System Working Together.
           </h2>
-          <p className="text-body-lg" style={{ color: '#475569', maxWidth: 540, margin: '0 auto' }}>
-            Watch how Voice Era Tech orchestrates voice packets, AI transcription, and CRM data flow in real time.
+          <p className="text-body-lg" style={{ color: '#8BA3CC', maxWidth: 520, margin: '0 auto 2rem' }}>
+            From the moment a customer dials in, to the moment their issue is resolved — every component of your technology stack is orchestrated in real time.
           </p>
+          {!active && (
+            <button
+              onClick={handleActivate}
+              className="btn-magnetic btn-primary"
+              data-cursor="CONNECT"
+              style={{ fontSize: '0.9375rem' }}
+            >
+              ▶ Watch The Call
+            </button>
+          )}
         </div>
 
         {/* Canvas visualization */}
         <div style={{
           position: 'relative',
-          height: 180,
-          background: '#F8FAFC',
-          border: '1px solid rgba(226, 232, 240, 0.9)',
+          height: 200,
+          background: 'rgba(0,102,255,0.03)',
+          border: '1px solid rgba(0,102,255,0.08)',
           borderRadius: 24,
           overflow: 'hidden',
-          marginBottom: '3.5rem',
-          boxShadow: 'var(--shadow-card)',
         }}>
           <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
 
-          {/* Node items */}
+          {/* Node labels */}
           {signalNodes.map(node => (
             <div
               key={node.id}
@@ -140,27 +169,28 @@ export default function TheCallSignature() {
               }}
             >
               <div style={{
-                width: 48,
-                height: 48,
-                borderRadius: 14,
-                background: '#FFFFFF',
-                border: '1.5px solid rgba(226, 232, 240, 0.9)',
+                width: 52,
+                height: 52,
+                borderRadius: '50%',
+                background: `${node.color}15`,
+                border: `1.5px solid ${node.color}35`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: '1.25rem',
-                boxShadow: 'var(--shadow-sm)',
+                boxShadow: active ? `0 0 16px ${node.color}30` : 'none',
+                transition: 'box-shadow 0.3s',
               }}>
                 {node.icon}
               </div>
               <span style={{
                 fontFamily: '"JetBrains Mono", monospace',
-                fontSize: '0.625rem',
-                letterSpacing: '0.08em',
-                color: '#0F172A',
-                fontWeight: 700,
+                fontSize: '0.55rem',
+                letterSpacing: '0.1em',
+                color: active ? node.color : '#4A6A99',
                 textTransform: 'uppercase',
                 whiteSpace: 'nowrap',
+                transition: 'color 0.3s',
               }}>
                 {node.label}
               </span>
@@ -168,13 +198,13 @@ export default function TheCallSignature() {
           ))}
         </div>
 
-        {/* Bottom CTAs */}
-        <div style={{ textAlign: 'center', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <Link href="/contact" className="btn-magnetic btn-primary" style={{ padding: '0.9rem 2rem' }}>
-            Deploy Your Enterprise Platform →
+        {/* Bottom copy */}
+        <div style={{ textAlign: 'center', marginTop: '3rem', display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <Link href="/dialer-systems" className="btn-magnetic btn-primary" style={{ textDecoration: 'none' }}>
+            <span style={{ position: 'relative', zIndex: 1 }}>Explore Dialer Systems</span>
           </Link>
-          <Link href="/dialer-systems" className="btn-magnetic btn-secondary" style={{ padding: '0.9rem 2rem' }}>
-            View Dialer Architectures
+          <Link href="/contact" className="btn-magnetic btn-secondary" style={{ textDecoration: 'none' }}>
+            Talk to an Expert
           </Link>
         </div>
       </div>
