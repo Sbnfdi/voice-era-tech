@@ -52,28 +52,13 @@ export default function AISolutionsPage() {
                 <Link
                   key={s.name}
                   href={s.href}
+                  className="node-card"
                   style={{
-                    background: '#151D27',
-                    border: '1px solid rgba(76, 141, 255, 0.12)',
-                    borderRadius: 16,
                     padding: '2rem',
                     textDecoration: 'none',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                    transition: 'all 0.2s ease',
-                  }}
-                  onMouseEnter={(e) => {
-                    const el = e.currentTarget as HTMLElement;
-                    el.style.background = '#202B38';
-                    el.style.borderColor = 'rgba(76, 141, 255, 0.3)';
-                    el.style.transform = 'translateY(-2px)';
-                  }}
-                  onMouseLeave={(e) => {
-                    const el = e.currentTarget as HTMLElement;
-                    el.style.background = '#151D27';
-                    el.style.borderColor = 'rgba(76, 141, 255, 0.12)';
-                    el.style.transform = 'none';
                   }}
                 >
                   <div>
