@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { useDemoModal } from "./demo-modal-context";
 
 const navLinks = [
   { name: "Solutions", href: "#features" },
@@ -16,6 +17,7 @@ const navLinks = [
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { openDemo } = useDemoModal();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,6 +26,17 @@ export function Navigation() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      setIsMobileMenuOpen(false);
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
 
   return (
     <header
@@ -57,6 +70,7 @@ export function Navigation() {
               <a
                 key={link.name}
                 href={link.href}
+                onClick={(e) => handleNavClick(e, link.href)}
                 className="text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 relative group"
               >
                 {link.name}
@@ -67,12 +81,17 @@ export function Navigation() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4">
-            <a href="#" className={`text-foreground/70 hover:text-foreground transition-all duration-500 ${isScrolled ? "text-xs" : "text-sm"}`}>
+            <a 
+              href="#contact" 
+              onClick={(e) => handleNavClick(e, "#contact")}
+              className={`text-foreground/70 hover:text-foreground transition-all duration-500 ${isScrolled ? "text-xs" : "text-sm"}`}
+            >
               Client portal
             </a>
             <Button
+              onClick={() => openDemo()}
               size="sm"
-              className={`bg-foreground hover:bg-foreground/90 text-background rounded-full transition-all duration-500 ${isScrolled ? "px-4 h-8 text-xs" : "px-6"}`}
+              className={`bg-foreground hover:bg-foreground/90 text-background rounded-full transition-all duration-500 cursor-pointer ${isScrolled ? "px-4 h-8 text-xs" : "px-6"}`}
             >
               Book a Demo
             </Button>
@@ -110,7 +129,7 @@ export function Navigation() {
               <a
                 key={link.name}
                 href={link.href}
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={(e) => handleNavClick(e, link.href)}
                 className={`text-5xl font-display text-foreground hover:text-muted-foreground transition-all duration-500 ${
                   isMobileMenuOpen 
                     ? "opacity-100 translate-y-0" 
@@ -134,13 +153,18 @@ export function Navigation() {
             <Button 
               variant="outline" 
               className="flex-1 rounded-full h-14 text-base"
-              onClick={() => setIsMobileMenuOpen(false)}
+              onClick={(e) => {
+                handleNavClick(e as unknown as React.MouseEvent<HTMLAnchorElement>, "#contact");
+              }}
             >
               Client portal
             </Button>
             <Button 
-              className="flex-1 bg-foreground text-background rounded-full h-14 text-base"
-              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex-1 bg-foreground text-background rounded-full h-14 text-base cursor-pointer"
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                openDemo();
+              }}
             >
               Book a Demo
             </Button>

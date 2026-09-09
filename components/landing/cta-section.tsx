@@ -4,11 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { AnimatedTetrahedron } from "./animated-tetrahedron";
+import { useDemoModal } from "./demo-modal-context";
 
 export function CtaSection() {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const { openDemo } = useDemoModal();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -64,7 +66,8 @@ export function CtaSection() {
                 <div className="flex flex-col sm:flex-row items-start gap-4">
                   <Button
                     size="lg"
-                    className="bg-foreground hover:bg-foreground/90 text-background px-8 h-14 text-base rounded-full group"
+                    onClick={() => openDemo({ interest: "Executive Suite Walkthrough" })}
+                    className="bg-foreground hover:bg-foreground/90 text-background px-8 h-14 text-base rounded-full group cursor-pointer"
                   >
                     Book a Demo
                     <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
@@ -72,7 +75,13 @@ export function CtaSection() {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="h-14 px-8 text-base rounded-full border-foreground/20 hover:bg-foreground/5"
+                    onClick={() => {
+                      const element = document.getElementById("contact");
+                      if (element) {
+                        element.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }}
+                    className="h-14 px-8 text-base rounded-full border-foreground/20 hover:bg-foreground/5 cursor-pointer"
                   >
                     Contact us
                   </Button>

@@ -6,26 +6,27 @@ import { AnimatedWave } from "./animated-wave";
 const footerLinks = {
   Product: [
     { name: "Features", href: "#features" },
+    { name: "Industries", href: "#industries" },
     { name: "How it works", href: "#how-it-works" },
     { name: "Pricing", href: "#pricing" },
     { name: "Integrations", href: "#integrations" },
   ],
   Developers: [
     { name: "Documentation", href: "#developers" },
-    { name: "API Reference", href: "#" },
+    { name: "API Reference", href: "#developers" },
     { name: "SDK", href: "#developers" },
-    { name: "Status", href: "#" },
+    { name: "Security", href: "#security" },
   ],
   Company: [
-    { name: "About", href: "#" },
-    { name: "Blog", href: "#" },
-    { name: "Careers", href: "#", badge: "Hiring" },
-    { name: "Contact", href: "#" },
+    { name: "About", href: "#about" },
+    { name: "Industries", href: "#industries" },
+    { name: "Security Standards", href: "#security" },
+    { name: "Contact", href: "#contact" },
   ],
   Legal: [
-    { name: "Privacy", href: "#" },
-    { name: "Terms", href: "#" },
-    { name: "Security", href: "#security" },
+    { name: "Compliance", href: "#security" },
+    { name: "Privacy Policy", href: "#contact" },
+    { name: "Terms of Service", href: "#contact" },
   ],
 };
 

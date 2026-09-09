@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
+import { useDemoModal } from "./demo-modal-context";
 
 const plans = [
   {
@@ -55,6 +56,7 @@ const plans = [
 
 export function PricingSection() {
   const [isAnnual, setIsAnnual] = useState(true);
+  const { openDemo } = useDemoModal();
 
   return (
     <section id="pricing" className="relative py-32 lg:py-40 border-t border-foreground/10">
@@ -157,7 +159,8 @@ export function PricingSection() {
 
               {/* CTA */}
               <button
-                className={`w-full py-4 flex items-center justify-center gap-2 text-sm font-medium transition-all group ${
+                onClick={() => openDemo({ plan: plan.name, interest: `${plan.name} Tier` })}
+                className={`w-full py-4 flex items-center justify-center gap-2 text-sm font-medium transition-all group cursor-pointer ${
                   plan.popular
                     ? "bg-foreground text-primary-foreground hover:bg-foreground/90"
                     : "border border-foreground/20 text-foreground hover:border-foreground hover:bg-foreground/5"

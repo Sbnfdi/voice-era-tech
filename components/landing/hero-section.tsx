@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { AnimatedSphere } from "./animated-sphere";
+import { useDemoModal } from "./demo-modal-context";
 
 const words = ["connect", "convert", "scale", "serve"];
 
 export function HeroSection() {
   const [isVisible, setIsVisible] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
+  const { openDemo } = useDemoModal();
 
   useEffect(() => {
     setIsVisible(true);
@@ -21,6 +23,13 @@ export function HeroSection() {
     }, 2500);
     return () => clearInterval(interval);
   }, []);
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <section className="relative min-h-screen flex flex-col justify-center overflow-hidden">
@@ -119,7 +128,8 @@ export function HeroSection() {
           >
             <Button 
               size="lg" 
-              className="bg-foreground hover:bg-foreground/90 text-background px-8 h-14 text-base rounded-full group"
+              onClick={() => openDemo({ interest: "Predictive & Power Dialers" })}
+              className="bg-foreground hover:bg-foreground/90 text-background px-8 h-14 text-base rounded-full group cursor-pointer"
             >
               Book a Demo
               <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
@@ -127,7 +137,8 @@ export function HeroSection() {
             <Button 
               size="lg" 
               variant="outline" 
-              className="h-14 px-8 text-base rounded-full border-foreground/20 hover:bg-foreground/5"
+              onClick={() => scrollToSection("features")}
+              className="h-14 px-8 text-base rounded-full border-foreground/20 hover:bg-foreground/5 cursor-pointer"
             >
               Explore Solutions
             </Button>
