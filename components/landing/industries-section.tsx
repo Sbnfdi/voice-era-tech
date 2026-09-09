@@ -125,26 +125,26 @@ export function IndustriesSection() {
   const activeIndustry = industries.find((i) => i.id === selectedId) || industries[0];
 
   return (
-    <section id="industries" className="relative py-28 lg:py-36 border-t border-foreground/10 scroll-mt-20">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+    <section id="industries" className="relative py-20 sm:py-28 lg:py-36 border-t border-foreground/10 scroll-mt-16 sm:scroll-mt-20">
+      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
         {/* Header */}
-        <div className="max-w-3xl mb-16">
-          <div className="inline-flex items-center gap-2 mb-4">
+        <div className="max-w-3xl mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 mb-3 sm:mb-4">
             <span className="w-2 h-2 rounded-full bg-foreground" />
-            <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+            <span className="font-mono text-[11px] sm:text-xs uppercase tracking-widest text-muted-foreground">
               Industry Verticals &amp; Architectures
             </span>
           </div>
-          <h2 className="text-4xl lg:text-6xl font-display tracking-tight text-foreground leading-[1.05] mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-6xl font-display tracking-tight text-foreground leading-[1.05] mb-4 sm:mb-6">
             Engineered for High-Velocity Sectors
           </h2>
-          <p className="text-lg text-muted-foreground leading-relaxed">
+          <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
             Every vertical operates under distinct pacing algorithms, queue dynamics, and regulatory scrutiny. Voice Era Tech LLC provides specialized dialer configurations tailored specifically for your operational environment.
           </p>
         </div>
 
-        {/* Desktop / Large Screen Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Responsive Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
           {/* Industry Navigation List */}
           <div className="lg:col-span-5 space-y-2">
             {industries.map((ind) => {
@@ -154,22 +154,22 @@ export function IndustriesSection() {
                 <button
                   key={ind.id}
                   onClick={() => setSelectedId(ind.id)}
-                  className={`w-full text-left p-4 md:p-5 rounded-xl border transition-all duration-300 flex items-center justify-between group ${
+                  className={`w-full text-left p-3.5 sm:p-5 rounded-xl border transition-all duration-300 flex items-center justify-between group cursor-pointer ${
                     isSelected
-                      ? "border-foreground bg-foreground text-background shadow-lg"
+                      ? "border-foreground bg-foreground text-background shadow-md"
                       : "border-foreground/10 bg-foreground/[0.01] hover:border-foreground/30 text-foreground"
                   }`}
                 >
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3 sm:gap-4">
                     <div
-                      className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${
+                      className={`w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center transition-colors shrink-0 ${
                         isSelected ? "bg-background text-foreground" : "bg-foreground/5 text-foreground group-hover:bg-foreground/10"
                       }`}
                     >
-                      <Icon className="w-5 h-5" />
+                      <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
                     <div>
-                      <div className="font-medium text-base tracking-tight">{ind.name}</div>
+                      <div className="font-medium text-sm sm:text-base tracking-tight">{ind.name}</div>
                       <div
                         className={`text-xs mt-0.5 line-clamp-1 ${
                           isSelected ? "text-background/80" : "text-muted-foreground"
@@ -180,7 +180,7 @@ export function IndustriesSection() {
                     </div>
                   </div>
                   <ArrowRight
-                    className={`w-4 h-4 transition-transform ${
+                    className={`w-4 h-4 shrink-0 transition-transform ${
                       isSelected ? "translate-x-1 opacity-100" : "opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5"
                     }`}
                   />
@@ -191,18 +191,18 @@ export function IndustriesSection() {
 
           {/* Active Industry Deep-Dive Display Card */}
           <div className="lg:col-span-7">
-            <div className="border border-foreground/15 rounded-2xl p-8 lg:p-12 bg-card relative overflow-hidden shadow-sm">
-              {/* Background watermark badge */}
-              <div className="absolute right-4 top-4 font-mono text-[10px] tracking-widest uppercase border border-foreground/15 px-3 py-1 rounded-full text-muted-foreground bg-background">
+            <div className="border border-foreground/15 rounded-2xl p-5 sm:p-8 lg:p-12 bg-card relative overflow-hidden shadow-sm">
+              {/* Compliance badge */}
+              <div className="mb-4 sm:mb-0 sm:absolute sm:right-4 sm:top-4 inline-block font-mono text-[10px] tracking-widest uppercase border border-foreground/15 px-3 py-1 rounded-full text-muted-foreground bg-background">
                 {activeIndustry.compliance}
               </div>
 
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-foreground text-background flex items-center justify-center">
-                  <activeIndustry.icon className="w-6 h-6" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-foreground text-background flex items-center justify-center shrink-0">
+                  <activeIndustry.icon className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
                 <div>
-                  <h3 className="text-2xl lg:text-3xl font-display tracking-tight text-foreground">
+                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-display tracking-tight text-foreground">
                     {activeIndustry.name}
                   </h3>
                   <p className="text-xs font-mono text-muted-foreground mt-0.5">

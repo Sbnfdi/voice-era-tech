@@ -22,8 +22,18 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: 'Voice Era Tech LLC | Dialer Systems for Call Centers',
-  description: 'Voice Era Tech LLC builds dialer systems for call centers, BPOs, telemarketing teams, and modern customer support operations.',
-  generator: 'v0.app',
+  description: 'Voice Era Tech LLC builds dialer systems, AI voice agents, and carrier-grade telephony infrastructure for call centers, BPOs, and enterprise customer operations.',
+  icons: {
+    icon: [
+      { url: '/logo.png', type: 'image/png' },
+      { url: '/icon.png', type: 'image/png' },
+      { url: '/favicon.ico' },
+    ],
+    shortcut: ['/logo.png'],
+    apple: [
+      { url: '/apple-icon.png' },
+    ],
+  },
 }
 
 export default function RootLayout({

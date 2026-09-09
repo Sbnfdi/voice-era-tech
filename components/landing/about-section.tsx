@@ -41,41 +41,41 @@ export function AboutSection() {
   ];
 
   return (
-    <section id="about" className="relative py-28 lg:py-36 border-t border-foreground/10 scroll-mt-20">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+    <section id="about" className="relative py-20 sm:py-28 lg:py-36 border-t border-foreground/10 scroll-mt-16 sm:scroll-mt-20">
+      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
         {/* Eyebrow & Headline */}
-        <div className="max-w-3xl mb-16">
-          <div className="inline-flex items-center gap-2 mb-4">
+        <div className="max-w-3xl mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 mb-3 sm:mb-4">
             <span className="w-2 h-2 rounded-full bg-foreground" />
-            <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+            <span className="font-mono text-[11px] sm:text-xs uppercase tracking-widest text-muted-foreground">
               About Voice Era Tech LLC
             </span>
           </div>
-          <h2 className="text-4xl lg:text-6xl font-display tracking-tight text-foreground leading-[1.05] mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-6xl font-display tracking-tight text-foreground leading-[1.05] mb-4 sm:mb-6">
             Built for Mission-Critical Voice Operations
           </h2>
-          <p className="text-lg text-muted-foreground leading-relaxed">
+          <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
             Founded with a singular mission: to eradicate dropped connections, carrier mislabeling, and rigid legacy telephony architectures. We provide modern contact centers with the infrastructure needed to perform at their absolute peak.
           </p>
         </div>
 
         {/* 4 Pillars Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-16 sm:mb-20">
           {corePillars.map((pillar, i) => {
             const Icon = pillar.icon;
             return (
               <div 
                 key={i} 
-                className="p-8 rounded-2xl border border-foreground/15 bg-card/60 relative overflow-hidden flex flex-col justify-between hover:border-foreground/35 transition-all group"
+                className="p-6 sm:p-8 rounded-2xl border border-foreground/15 bg-card/60 relative overflow-hidden flex flex-col justify-between hover:border-foreground/35 transition-all group"
               >
                 <div>
-                  <div className="w-12 h-12 rounded-xl bg-foreground/5 flex items-center justify-center text-foreground mb-6 group-hover:bg-foreground group-hover:text-background transition-colors">
-                    <Icon className="w-6 h-6" />
+                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-foreground/5 flex items-center justify-center text-foreground mb-5 sm:mb-6 group-hover:bg-foreground group-hover:text-background transition-colors">
+                    <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
-                  <h3 className="font-display text-xl text-foreground mb-3 tracking-tight">
+                  <h3 className="font-display text-lg sm:text-xl text-foreground mb-2 sm:mb-3 tracking-tight">
                     {pillar.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                     {pillar.description}
                   </p>
                 </div>
@@ -89,29 +89,29 @@ export function AboutSection() {
         </div>
 
         {/* Enterprise Metrics & Engineering Ethos */}
-        <div className="border border-foreground/15 rounded-2xl p-8 lg:p-12 bg-foreground/[0.02]">
+        <div className="border border-foreground/15 rounded-2xl p-5 sm:p-8 lg:p-12 bg-foreground/[0.02]">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-7">
               <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground block mb-3">
                 Architectural Commitment
               </span>
-              <h3 className="text-3xl lg:text-4xl font-display tracking-tight text-foreground mb-4">
+              <h3 className="text-2xl sm:text-3xl lg:text-4xl font-display tracking-tight text-foreground mb-3 sm:mb-4">
                 Dialer systems first. Practical technology always.
               </h3>
               <p className="text-muted-foreground text-sm lg:text-base leading-relaxed mb-6">
                 We do not sell fragile hype. We engineer rock-solid telecommunication pipes, ultra-responsive WebRTC webphones, and dependable AI agents that directly enhance your call center&apos;s bottom line.
               </p>
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
                 <Button 
                   onClick={() => openDemo({ interest: "Voice Era Tech Infrastructure" })}
-                  className="bg-foreground text-background hover:bg-foreground/90 rounded-full px-7 h-12 text-sm font-medium group"
+                  className="w-full sm:w-auto justify-center bg-foreground text-background hover:bg-foreground/90 rounded-full px-7 h-12 text-sm font-medium group cursor-pointer"
                 >
                   Book Infrastructure Walkthrough
                   <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                 </Button>
                 <a
                   href="#contact"
-                  className="inline-flex items-center px-6 h-12 rounded-full border border-foreground/20 text-sm font-medium hover:bg-foreground/5 transition-colors"
+                  className="w-full sm:w-auto text-center inline-flex items-center justify-center px-6 h-12 rounded-full border border-foreground/20 text-sm font-medium hover:bg-foreground/5 transition-colors"
                 >
                   Contact Our Engineering Team
                 </a>
@@ -119,7 +119,7 @@ export function AboutSection() {
             </div>
 
             {/* Stats list */}
-            <div className="lg:col-span-5 grid grid-cols-2 gap-4">
+            <div className="lg:col-span-5 grid grid-cols-2 gap-3 sm:gap-4">
               <div className="p-5 rounded-xl border border-foreground/10 bg-background">
                 <div className="flex items-center gap-2 text-muted-foreground mb-2">
                   <Activity className="w-4 h-4" />

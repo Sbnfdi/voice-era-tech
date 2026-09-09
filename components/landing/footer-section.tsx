@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { AnimatedWave } from "./animated-wave";
 
@@ -50,12 +51,23 @@ export function FooterSection() {
           <div className="grid grid-cols-2 md:grid-cols-6 gap-12 lg:gap-8">
             {/* Brand Column */}
             <div className="col-span-2">
-              <a href="#" className="inline-flex items-center gap-2 mb-6">
-                <span className="text-2xl font-display">Voice Era Tech LLC</span>
-                <span className="text-xs text-muted-foreground font-mono">TM</span>
+              <a href="#" className="inline-flex items-center gap-3.5 mb-6 group">
+                <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-foreground/20 bg-black shadow-md flex items-center justify-center shrink-0 group-hover:border-foreground/40 transition-colors">
+                  <Image 
+                    src="/logo.png" 
+                    alt="Voice Era Tech LLC" 
+                    width={48} 
+                    height={48} 
+                    className="w-full h-full object-cover" 
+                  />
+                </div>
+                <div>
+                  <div className="text-xl sm:text-2xl font-display font-medium text-foreground tracking-tight">Voice Era Tech</div>
+                  <div className="text-[9px] font-mono uppercase tracking-widest text-muted-foreground">Dialer Systems For a Smarter Tomorrow</div>
+                </div>
               </a>
 
-              <p className="text-muted-foreground leading-relaxed mb-8 max-w-xs">
+              <p className="text-muted-foreground leading-relaxed mb-8 max-w-xs text-sm">
                 Dialer systems, AI agents, websites, cloud configuration, and IT services for teams that connect with customers.
               </p>
 

@@ -59,25 +59,25 @@ export function PricingSection() {
   const { openDemo } = useDemoModal();
 
   return (
-    <section id="pricing" className="relative py-32 lg:py-40 border-t border-foreground/10">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+    <section id="pricing" className="relative py-20 sm:py-28 lg:py-36 border-t border-foreground/10 scroll-mt-16 sm:scroll-mt-20">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
         {/* Header */}
-        <div className="max-w-3xl mb-20">
-          <span className="font-mono text-xs tracking-widest text-muted-foreground uppercase block mb-6">
+        <div className="max-w-3xl mb-12 sm:mb-16">
+          <span className="font-mono text-[11px] sm:text-xs tracking-widest text-muted-foreground uppercase block mb-4 sm:mb-6">
             Pricing
           </span>
-          <h2 className="font-display text-5xl md:text-6xl lg:text-7xl tracking-tight text-foreground mb-6">
+          <h2 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight text-foreground mb-4 sm:mb-6">
             Simple, transparent
             <br />
             <span className="text-stroke">pricing</span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-xl">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-xl leading-relaxed">
             Start free and scale as you grow. No hidden fees, no surprises.
           </p>
         </div>
 
         {/* Billing Toggle */}
-        <div className="flex items-center gap-4 mb-16">
+        <div className="flex items-center gap-4 mb-12 sm:mb-16">
           <span
             className={`text-sm transition-colors ${
               !isAnnual ? "text-foreground" : "text-muted-foreground"
@@ -87,7 +87,7 @@ export function PricingSection() {
           </span>
           <button
             onClick={() => setIsAnnual(!isAnnual)}
-            className="relative w-14 h-7 bg-foreground/10 rounded-full p-1 transition-colors hover:bg-foreground/20"
+            className="relative w-14 h-7 bg-foreground/10 rounded-full p-1 transition-colors hover:bg-foreground/20 cursor-pointer"
           >
             <div
               className={`w-5 h-5 bg-foreground rounded-full transition-transform duration-300 ${
@@ -103,19 +103,19 @@ export function PricingSection() {
             Annual
           </span>
           {isAnnual && (
-            <span className="ml-2 px-2 py-1 bg-foreground text-primary-foreground text-xs font-mono">
+            <span className="ml-2 px-2 py-0.5 sm:py-1 bg-foreground text-primary-foreground text-xs font-mono rounded">
               Save 17%
             </span>
           )}
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid md:grid-cols-3 gap-px bg-foreground/10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-px rounded-2xl md:rounded-none overflow-hidden md:bg-foreground/10">
           {plans.map((plan, idx) => (
             <div
               key={plan.name}
-              className={`relative p-8 lg:p-12 bg-background ${
-                plan.popular ? "md:-my-4 md:py-12 lg:py-16 border-2 border-foreground" : ""
+              className={`relative p-6 sm:p-8 lg:p-12 bg-background border border-foreground/10 md:border-0 rounded-2xl md:rounded-none ${
+                plan.popular ? "md:-my-4 md:py-12 lg:py-16 md:border-2 md:border-foreground md:shadow-xl" : ""
               }`}
             >
               {plan.popular && (

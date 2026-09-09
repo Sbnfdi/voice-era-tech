@@ -36,41 +36,41 @@ export function InfrastructureSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+    <section ref={sectionRef} className="relative py-20 sm:py-28 lg:py-32 overflow-hidden">
+      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
           {/* Left: Content */}
           <div
             className={`transition-all duration-700 ${
               isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
             }`}
           >
-            <span className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-6">
-              <span className="w-8 h-px bg-foreground/30" />
-Dialer infrastructure
+            <span className="inline-flex items-center gap-2 sm:gap-3 text-xs sm:text-sm font-mono text-muted-foreground mb-4 sm:mb-6">
+              <span className="w-6 sm:w-8 h-px bg-foreground/30" />
+              Dialer infrastructure
             </span>
-            <h2 className="text-4xl lg:text-6xl font-display tracking-tight mb-8">
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display tracking-tight mb-6 sm:mb-8">
               Every call.
               <br />
               Fully visible.
             </h2>
-            <p className="text-xl text-muted-foreground leading-relaxed mb-12">
+            <p className="text-base sm:text-xl text-muted-foreground leading-relaxed mb-8 sm:mb-12">
               Put your operation in control. Voice Era Tech brings dialing, routing, agent monitoring, CRM context, analytics, and compliance into one dependable system.
             </p>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-8">
-              <div>
-                <div className="text-4xl lg:text-5xl font-display mb-2">1M+</div>
-                <div className="text-sm text-muted-foreground">Calls handled</div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
+              <div className="p-4 sm:p-0 rounded-xl bg-foreground/[0.02] sm:bg-transparent border border-foreground/10 sm:border-0">
+                <div className="text-3xl sm:text-4xl lg:text-5xl font-display mb-1 sm:mb-2">1M+</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Calls handled</div>
               </div>
-              <div>
-                <div className="text-4xl lg:text-5xl font-display mb-2">99.99%</div>
-                <div className="text-sm text-muted-foreground">Platform uptime</div>
+              <div className="p-4 sm:p-0 rounded-xl bg-foreground/[0.02] sm:bg-transparent border border-foreground/10 sm:border-0">
+                <div className="text-3xl sm:text-4xl lg:text-5xl font-display mb-1 sm:mb-2">99.99%</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Platform uptime</div>
               </div>
-              <div>
-                <div className="text-4xl lg:text-5xl font-display mb-2">10K+</div>
-                <div className="text-sm text-muted-foreground">Agents supported</div>
+              <div className="p-4 sm:p-0 rounded-xl bg-foreground/[0.02] sm:bg-transparent border border-foreground/10 sm:border-0">
+                <div className="text-3xl sm:text-4xl lg:text-5xl font-display mb-1 sm:mb-2">10K+</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Agents supported</div>
               </div>
             </div>
           </div>

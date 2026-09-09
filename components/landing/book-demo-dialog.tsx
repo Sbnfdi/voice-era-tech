@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import {
   Dialog,
   DialogContent,
@@ -69,11 +70,27 @@ export function BookDemoDialog({ isOpen, onClose, prefill }: BookDemoDialogProps
         {!isSuccess ? (
           <div className="p-6 md:p-8 max-h-[85vh] overflow-y-auto">
             <DialogHeader className="mb-6 text-left">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
-                  Live Telephony & AI Walkthrough
-                </span>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-foreground/20 bg-black shadow-md flex items-center justify-center shrink-0">
+                  <Image 
+                    src="/logo.png" 
+                    alt="Voice Era Tech LLC" 
+                    width={40} 
+                    height={40} 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div>
+                  <span className="font-display text-lg font-medium text-foreground tracking-tight block">
+                    Voice Era Tech LLC
+                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                      Live Telephony &amp; AI Walkthrough
+                    </span>
+                  </div>
+                </div>
               </div>
               <DialogTitle className="text-2xl md:text-3xl font-display tracking-tight text-foreground">
                 Book an Executive Demo

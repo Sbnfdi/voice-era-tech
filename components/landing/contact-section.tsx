@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useDemoModal } from "./demo-modal-context";
 import { 
@@ -39,29 +40,29 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact" className="relative py-28 lg:py-36 border-t border-foreground/10 scroll-mt-20">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+    <section id="contact" className="relative py-20 sm:py-28 lg:py-36 border-t border-foreground/10 scroll-mt-16 sm:scroll-mt-20">
+      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
         {/* Header */}
-        <div className="max-w-3xl mb-16">
-          <div className="inline-flex items-center gap-2 mb-4">
+        <div className="max-w-3xl mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 mb-3 sm:mb-4">
             <span className="w-2 h-2 rounded-full bg-foreground" />
-            <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+            <span className="font-mono text-[11px] sm:text-xs uppercase tracking-widest text-muted-foreground">
               Direct Contact &amp; Support
             </span>
           </div>
-          <h2 className="text-4xl lg:text-6xl font-display tracking-tight text-foreground leading-[1.05] mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-6xl font-display tracking-tight text-foreground leading-[1.05] mb-4 sm:mb-6">
             Speak with a Telephony Specialist
           </h2>
-          <p className="text-lg text-muted-foreground leading-relaxed">
+          <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
             Have questions regarding custom dialer configurations, high-density SIP interconnects, or AI agent pilots? Connect directly with our engineering and solutions team.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Left Column: Direct Communication Channels & Info */}
-          <div className="lg:col-span-5 space-y-8">
+          <div className="lg:col-span-5 space-y-6 sm:space-y-8">
             {/* Quick Demo Pitch Card */}
-            <div className="p-8 rounded-2xl border border-foreground/15 bg-foreground/[0.02]">
+            <div className="p-6 sm:p-8 rounded-2xl border border-foreground/15 bg-foreground/[0.02]">
               <div className="flex items-center gap-2 mb-3">
                 <span className="w-2 h-2 rounded-full bg-emerald-500" />
                 <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
@@ -129,10 +130,21 @@ export function ContactSection() {
                   <div className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
                     Corporate Headquarters
                   </div>
-                  <p className="text-sm font-medium text-foreground mt-0.5">
-                    Voice Era Tech LLC
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
+                  <div className="flex items-center gap-2 mt-1">
+                    <div className="relative w-6 h-6 rounded-md overflow-hidden border border-foreground/20 bg-black shadow-xs shrink-0">
+                      <Image 
+                        src="/logo.png" 
+                        alt="Voice Era Tech LLC" 
+                        width={24} 
+                        height={24} 
+                        className="w-full h-full object-cover" 
+                      />
+                    </div>
+                    <span className="text-sm font-medium text-foreground">
+                      Voice Era Tech LLC
+                    </span>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">
                     1201 N Orange St, Suite 700 &bull; Wilmington, DE 19801 &bull; USA
                   </p>
                 </div>
@@ -164,7 +176,7 @@ export function ContactSection() {
 
           {/* Right Column: Interactive Form */}
           <div className="lg:col-span-7">
-            <div className="border border-foreground/15 rounded-2xl p-8 lg:p-12 bg-card shadow-sm">
+            <div className="border border-foreground/15 rounded-2xl p-5 sm:p-8 lg:p-12 bg-card shadow-sm">
               {!submitted ? (
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div>

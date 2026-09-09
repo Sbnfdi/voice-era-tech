@@ -33,8 +33,8 @@ export function CtaSection() {
   };
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+    <section ref={sectionRef} className="relative py-16 sm:py-24 lg:py-32 overflow-hidden">
+      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
         <div
           className={`relative border border-foreground transition-all duration-1000 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -49,25 +49,25 @@ export function CtaSection() {
             }}
           />
           
-          <div className="relative z-10 px-8 lg:px-16 py-16 lg:py-24">
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
+          <div className="relative z-10 px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-24">
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
               {/* Left content */}
-              <div className="flex-1">
-                <h2 className="text-4xl lg:text-7xl font-display tracking-tight mb-8 leading-[0.95]">
+              <div className="flex-1 w-full">
+                <h2 className="text-3xl sm:text-5xl lg:text-7xl font-display tracking-tight mb-6 sm:mb-8 leading-[0.95]">
                   Ready to make
                   <br />
                   every call count?
                 </h2>
 
-                <p className="text-xl text-muted-foreground mb-12 leading-relaxed max-w-xl">
+                <p className="text-base sm:text-xl text-muted-foreground mb-8 sm:mb-12 leading-relaxed max-w-xl">
                   See how Voice Era Tech LLC can help your call center connect more customers, support agents, and scale with confidence.
                 </p>
 
-                <div className="flex flex-col sm:flex-row items-start gap-4">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-start gap-3 sm:gap-4 w-full sm:w-auto">
                   <Button
                     size="lg"
                     onClick={() => openDemo({ interest: "Executive Suite Walkthrough" })}
-                    className="bg-foreground hover:bg-foreground/90 text-background px-8 h-14 text-base rounded-full group cursor-pointer"
+                    className="w-full sm:w-auto justify-center bg-foreground hover:bg-foreground/90 text-background px-8 h-12 sm:h-14 text-sm sm:text-base rounded-full group cursor-pointer shadow-sm"
                   >
                     Book a Demo
                     <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
@@ -81,13 +81,13 @@ export function CtaSection() {
                         element.scrollIntoView({ behavior: "smooth" });
                       }
                     }}
-                    className="h-14 px-8 text-base rounded-full border-foreground/20 hover:bg-foreground/5 cursor-pointer"
+                    className="w-full sm:w-auto justify-center h-12 sm:h-14 px-8 text-sm sm:text-base rounded-full border-foreground/20 hover:bg-foreground/5 cursor-pointer"
                   >
                     Contact us
                   </Button>
                 </div>
 
-                <p className="text-sm text-muted-foreground mt-8 font-mono">
+                <p className="text-xs sm:text-sm text-muted-foreground mt-6 sm:mt-8 font-mono">
                   Dialer systems first. Practical technology always.
                 </p>
               </div>

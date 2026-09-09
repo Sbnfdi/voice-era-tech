@@ -107,32 +107,32 @@ export function DevelopersSection() {
   }, []);
 
   return (
-    <section id="developers" ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="developers" ref={sectionRef} className="relative py-20 sm:py-28 lg:py-32 overflow-hidden scroll-mt-16 sm:scroll-mt-20">
       <style dangerouslySetInnerHTML={{ __html: codeAnimationStyles }} />
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start">
           {/* Left: Content */}
           <div
             className={`transition-all duration-700 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            <span className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-6">
-              <span className="w-8 h-px bg-foreground/30" />
+            <span className="inline-flex items-center gap-2 sm:gap-3 text-xs sm:text-sm font-mono text-muted-foreground mb-4 sm:mb-6">
+              <span className="w-6 sm:w-8 h-px bg-foreground/30" />
               For every operation
             </span>
-            <h2 className="text-4xl lg:text-6xl font-display tracking-tight mb-8">
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display tracking-tight mb-6 sm:mb-8">
               Built by devs.
               <br />
               <span className="text-muted-foreground">For devs.</span>
             </h2>
-            <p className="text-xl text-muted-foreground mb-12 leading-relaxed">
+            <p className="text-base sm:text-xl text-muted-foreground mb-8 sm:mb-12 leading-relaxed">
               A thoughtfully designed SDK that gets out of your way. 
               Ship faster with intuitive APIs and exceptional documentation.
             </p>
             
             {/* Features */}
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               {features.map((feature, index) => (
                 <div
                   key={feature.title}
@@ -190,7 +190,7 @@ export function DevelopersSection() {
               </div>
               
               {/* Code content */}
-              <div className="p-8 font-mono text-sm bg-foreground/[0.01] min-h-[220px]">
+              <div className="p-4 sm:p-6 md:p-8 font-mono text-xs sm:text-sm bg-foreground/[0.01] min-h-[220px] overflow-x-auto">
                 <pre className="text-foreground/80">
                   {codeExamples[activeTab].code.split('\n').map((line, lineIndex) => (
                     <div 

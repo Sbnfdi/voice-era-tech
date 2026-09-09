@@ -51,10 +51,10 @@ export function TestimonialsSection() {
   const activeTestimonial = testimonials[activeIndex];
 
   return (
-    <section className="relative py-32 lg:py-40 border-t border-foreground/10 lg:pb-14">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+    <section className="relative py-20 sm:py-28 lg:py-36 border-t border-foreground/10 lg:pb-14">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
         {/* Section Label */}
-        <div className="flex items-center gap-4 mb-16">
+        <div className="flex items-center gap-4 mb-12 sm:mb-16">
           <span className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
             What call leaders say
           </span>
@@ -65,15 +65,15 @@ export function TestimonialsSection() {
         </div>
 
         {/* Main Quote */}
-        <div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
+        <div className="grid lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-20">
           <div className="lg:col-span-8">
             <blockquote
               className={`transition-all duration-300 ${
                 isAnimating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"
               }`}
             >
-              <p className="font-display text-4xl md:text-5xl lg:text-6xl leading-[1.1] tracking-tight text-foreground">
-                "{activeTestimonial.quote}"
+              <p className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.15] sm:leading-[1.1] tracking-tight text-foreground">
+                &ldquo;{activeTestimonial.quote}&rdquo;
               </p>
             </blockquote>
 
