@@ -10,7 +10,7 @@ const navLinks = [
   { name: "VoIP Routes", href: "#features" },
   { name: "Dialers", href: "#how-it-works" },
   { name: "Industries", href: "#industries" },
-  { name: "Network", href: "#infrastructure" },
+  { name: "Network", href: "#network" },
   { name: "Pricing", href: "#pricing" },
   { name: "About", href: "#about" },
   { name: "Contact", href: "#contact" },

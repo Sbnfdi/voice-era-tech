@@ -9,7 +9,7 @@ const footerLinks = {
     { name: "Direct CLI VoIP Routes", href: "#features" },
     { name: "Wholesale SIP Trunking", href: "#features" },
     { name: "Predictive & Power Dialers", href: "#how-it-works" },
-    { name: "Global Voice PoPs", href: "#infrastructure" },
+    { name: "Global Voice PoPs", href: "#network" },
     { name: "VoIP & Dialer Pricing", href: "#pricing" },
   ],
   Developers: [
@@ -21,7 +21,7 @@ const footerLinks = {
   Company: [
     { name: "About Voice Era", href: "#about" },
     { name: "Industry Verticals", href: "#industries" },
-    { name: "Network Status", href: "#infrastructure" },
+    { name: "Network Status", href: "#network" },
     { name: "Contact Specialists", href: "#contact" },
   ],
   Legal: [

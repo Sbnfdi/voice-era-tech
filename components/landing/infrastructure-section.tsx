@@ -36,7 +36,12 @@ export function InfrastructureSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative py-20 sm:py-28 lg:py-32 overflow-hidden">
+    <section 
+      id="network" 
+      ref={sectionRef} 
+      className="relative py-20 sm:py-28 lg:py-32 overflow-hidden scroll-mt-16 sm:scroll-mt-20"
+    >
+      <div id="infrastructure" className="sr-only -top-24 absolute pointer-events-none" aria-hidden="true" />
       <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
           {/* Left: Content */}
