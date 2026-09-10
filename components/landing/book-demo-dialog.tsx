@@ -30,7 +30,7 @@ export function BookDemoDialog({ isOpen, onClose, prefill }: BookDemoDialogProps
     phone: "",
     company: "",
     teamSize: "11-50 agents",
-    interest: "Predictive & Power Dialers",
+    interest: "Direct VoIP Routes & SIP Trunking",
     date: "",
     timeSlot: "10:00 AM EST",
     notes: "",
@@ -59,44 +59,58 @@ export function BookDemoDialog({ isOpen, onClose, prefill }: BookDemoDialogProps
     }, 900);
   };
 
-  const handleResetAndClose = () => {
-    setIsSuccess(false);
-    onClose();
-  };
-
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => (!open ? handleResetAndClose() : null)}>
-      <DialogContent className="max-w-xl p-0 overflow-hidden border border-foreground/15 bg-background shadow-2xl rounded-2xl">
-        {!isSuccess ? (
-          <div className="p-6 md:p-8 max-h-[85vh] overflow-y-auto">
-            <DialogHeader className="mb-6 text-left">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-foreground/20 bg-black shadow-md flex items-center justify-center shrink-0">
-                  <Image 
-                    src="/logo.png" 
-                    alt="Voice Era Tech LLC" 
-                    width={40} 
-                    height={40} 
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-[620px] max-h-[92vh] overflow-y-auto p-5 sm:p-7 border border-foreground/20 bg-background shadow-2xl rounded-2xl">
+        {isSuccess ? (
+          <div className="py-10 sm:py-12 text-center space-y-4">
+            <div className="w-14 h-14 rounded-full bg-foreground text-background mx-auto flex items-center justify-center">
+              <CheckCircle2 className="w-8 h-8" />
+            </div>
+            <h3 className="text-2xl font-display font-medium text-foreground tracking-tight">
+              Route Test & Demo Request Confirmed
+            </h3>
+            <p className="text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
+              Thank you, <span className="text-foreground font-medium">{formData.fullName}</span>. A senior VoIP solutions engineer has reserved your slot for <span className="text-foreground font-medium">{formData.timeSlot}</span>. We will send test SIP trunk credentials and a calendar invite to <span className="text-foreground font-medium">{formData.workEmail}</span>.
+            </p>
+            <div className="pt-4">
+              <Button
+                onClick={() => {
+                  setIsSuccess(false);
+                  onClose();
+                }}
+                className="rounded-full px-8 bg-foreground text-background hover:bg-foreground/90 cursor-pointer"
+              >
+                Close Window
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <>
+            <DialogHeader className="space-y-2 text-left pb-2 border-b border-foreground/10">
+              <div className="flex items-center gap-3 mb-1">
+                <div className="relative w-9 h-9 rounded-lg overflow-hidden border border-foreground/20 bg-black shrink-0 flex items-center justify-center">
+                  <Image
+                    src="/logo.png"
+                    alt="Voice Era Tech LLC"
+                    width={36}
+                    height={36}
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div>
-                  <span className="font-display text-lg font-medium text-foreground tracking-tight block">
-                    Voice Era Tech LLC
-                  </span>
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-                      Live Telephony &amp; AI Walkthrough
-                    </span>
+                  <div className="text-xs font-mono uppercase tracking-widest text-muted-foreground">Voice Era Tech LLC</div>
+                  <div className="flex items-center gap-1.5 text-[11px] font-mono text-foreground">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>Live VoIP Interconnect &amp; Architecture Walkthrough</span>
                   </div>
                 </div>
               </div>
               <DialogTitle className="text-2xl md:text-3xl font-display tracking-tight text-foreground">
-                Book an Executive Demo
+                Request Route Test &amp; Demo
               </DialogTitle>
               <DialogDescription className="text-sm text-muted-foreground mt-1.5 leading-relaxed">
-                Experience Voice Era Tech&apos;s dialer architecture, agent orchestration, and sub-50ms carrier routing firsthand with a solutions architect.
+                Experience Voice Era Tech&apos;s direct VoIP route architecture, Tier-1 SIP interconnects, and intelligent dialer systems firsthand with a solutions architect.
               </DialogDescription>
             </DialogHeader>
 
@@ -187,11 +201,12 @@ export function BookDemoDialog({ isOpen, onClose, prefill }: BookDemoDialogProps
                     onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
                     className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-background text-sm text-foreground focus:outline-none focus:border-foreground transition-colors"
                   >
+                    <option value="Direct VoIP Routes & SIP Trunking">Direct VoIP Routes & SIP Trunking</option>
+                    <option value="VoIP Routes + Hosted Dialer Suite">VoIP Routes + Hosted Dialer Suite</option>
+                    <option value="Wholesale VoIP Routes">Wholesale VoIP Routes</option>
                     <option value="Predictive & Power Dialers">Predictive & Power Dialers</option>
-                    <option value="Conversational AI Voice Agents">Conversational AI Voice Agents</option>
-                    <option value="Speed-to-Lead CRM Integration">Speed-to-Lead CRM Integration</option>
-                    <option value="High-Density SIP Trunks">High-Density SIP Trunks</option>
-                    <option value="Custom Telephony Infrastructure">Custom Telephony Infrastructure</option>
+                    <option value="Enterprise Carrier Interconnect">Enterprise Carrier Interconnect</option>
+                    <option value="STIR/SHAKEN & Compliance Audit">STIR/SHAKEN & Compliance Audit</option>
                   </select>
                 </div>
               </div>

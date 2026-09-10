@@ -5,27 +5,27 @@ import { ArrowUpRight } from "lucide-react";
 import { AnimatedWave } from "./animated-wave";
 
 const footerLinks = {
-  Product: [
-    { name: "Features", href: "#features" },
-    { name: "Industries", href: "#industries" },
-    { name: "How it works", href: "#how-it-works" },
-    { name: "Pricing", href: "#pricing" },
-    { name: "Integrations", href: "#integrations" },
+  Solutions: [
+    { name: "Direct CLI VoIP Routes", href: "#features" },
+    { name: "Wholesale SIP Trunking", href: "#features" },
+    { name: "Predictive & Power Dialers", href: "#how-it-works" },
+    { name: "Global Voice PoPs", href: "#infrastructure" },
+    { name: "VoIP & Dialer Pricing", href: "#pricing" },
   ],
   Developers: [
-    { name: "Documentation", href: "#developers" },
-    { name: "API Reference", href: "#developers" },
-    { name: "SDK", href: "#developers" },
-    { name: "Security", href: "#security" },
+    { name: "Telephony SDK", href: "#developers" },
+    { name: "SIP Interconnect Guide", href: "#developers" },
+    { name: "API Documentation", href: "#developers" },
+    { name: "STIR/SHAKEN Compliance", href: "#security" },
   ],
   Company: [
-    { name: "About", href: "#about" },
-    { name: "Industries", href: "#industries" },
-    { name: "Security Standards", href: "#security" },
-    { name: "Contact", href: "#contact" },
+    { name: "About Voice Era", href: "#about" },
+    { name: "Industry Verticals", href: "#industries" },
+    { name: "Network Status", href: "#infrastructure" },
+    { name: "Contact Specialists", href: "#contact" },
   ],
   Legal: [
-    { name: "Compliance", href: "#security" },
+    { name: "TCPA & FDCPA Safeguards", href: "#security" },
     { name: "Privacy Policy", href: "#contact" },
     { name: "Terms of Service", href: "#contact" },
   ],
@@ -63,12 +63,12 @@ export function FooterSection() {
                 </div>
                 <div>
                   <div className="text-xl sm:text-2xl font-display font-medium text-foreground tracking-tight">Voice Era Tech</div>
-                  <div className="text-[9px] font-mono uppercase tracking-widest text-muted-foreground">Dialer Systems For a Smarter Tomorrow</div>
+                  <div className="text-[9px] font-mono uppercase tracking-widest text-muted-foreground">VoIP Routes &amp; Dialer Systems</div>
                 </div>
               </a>
 
               <p className="text-muted-foreground leading-relaxed mb-8 max-w-xs text-sm">
-                Dialer systems, AI agents, websites, cloud configuration, and IT services for teams that connect with customers.
+                Carrier-grade VoIP routes, wholesale voice termination, and intelligent dialer systems for call centers and enterprises that connect with customers.
               </p>
 
               {/* Social Links */}

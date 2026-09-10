@@ -5,38 +5,39 @@ import { useEffect, useRef, useState } from "react";
 const steps = [
   {
     number: "I",
-    title: "Connect your stack",
-    description: "Bring your CRM, phone lines, lists, and existing workflows together with a dialer system configured for your operation.",
-    code: `import { VoiceEra } from '@voice-era/dialer'
+    title: "Interconnect VoIP SIP Trunks",
+    description: "Establish dedicated SIP interconnects with IP authentication or secure credentials. Select your route profiles, premium codecs (G.711u, Opus), and sub-50ms regional gateways.",
+    code: `import { VoiceEra } from '@voice-era/telephony'
 
-const dialer = new VoiceEra({
-  campaign: 'spring-outreach',
-  crm: 'your-crm',
-  compliance: 'TCPA'
+const sipTrunk = new VoiceEra.SipTrunk({
+  tier: 'direct-cli',
+  region: 'us-east-ashburn',
+  codecs: ['G711u', 'Opus'],
+  stirShaken: 'attestation-A'
 })`,
   },
   {
     number: "II",
-    title: "Configure your campaign",
-    description: "Choose predictive, power, or preview dialing, set routing rules, and give supervisors a live view of the floor.",
-    code: `dialer.campaign('spring-outreach', {
+    title: "Pair with Hosted or BYO Dialers",
+    description: "Route voice traffic directly into your existing PBX or dialer (Vicidial, Asterisk, Genesys) or activate Voice Era's native predictive and power dialing suites.",
+    code: `const campaign = await sipTrunk.attachDialer({
   mode: 'predictive',
-  agents: 48,
-  recording: true,
-  dnc: 'enforced'
+  concurrency: 150,
+  amdDetection: 'ultra-fast-400ms',
+  dncScrubbing: true
 })`,
   },
   {
     number: "III",
-    title: "Measure every conversation",
-    description: "Launch with confidence and use real-time dashboards to improve connection rates, agent performance, and outcomes.",
-    code: `await dialer.launch({
-  routing: 'skills-based',
-  analytics: 'real-time',
-  ivr: 'enabled'
+    title: "Real-Time Telemetry & Failover",
+    description: "Monitor live ASR, ACD, PDD, and MOS voice quality in real time with automated Least Cost Routing (LCR) and instant carrier redundancy.",
+    code: `await sipTrunk.enableAutoFailover({
+  metrics: ['ASR', 'ACD', 'PDD'],
+  minASRThreshold: 0.65,
+  backupRoutes: ['tier1-secondary', 'redundant-carrier']
 })
 
-// Campaign is live`,
+// Routes active & auto-balanced`,
   },
 ];
 
@@ -88,16 +89,16 @@ export function HowItWorksSection() {
         <div className="mb-16 lg:mb-24">
           <span className="inline-flex items-center gap-3 text-sm font-mono text-background/50 mb-6">
             <span className="w-8 h-px bg-background/30" />
-            Process
+            Routing Architecture
           </span>
           <h2
             className={`text-4xl lg:text-6xl font-display tracking-tight transition-all duration-700 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            Three steps.
+            From SIP interconnect.
             <br />
-            <span className="text-background/50">Infinite possibilities.</span>
+            <span className="text-background/50">To high-volume execution.</span>
           </h2>
         </div>
 

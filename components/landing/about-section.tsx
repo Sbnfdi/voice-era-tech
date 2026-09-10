@@ -55,7 +55,7 @@ export function AboutSection() {
             Built for Mission-Critical Voice Operations
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-            Founded with a singular mission: to eradicate dropped connections, carrier mislabeling, and rigid legacy telephony architectures. We provide modern contact centers with the infrastructure needed to perform at their absolute peak.
+            Founded with a singular mission: to provide bulletproof Tier-1 VoIP routes, wholesale voice termination, and intelligent dialer technology without the dropped connections, spam flags, and opacity of legacy telecom aggregators.
           </p>
         </div>
 
@@ -65,23 +65,22 @@ export function AboutSection() {
             const Icon = pillar.icon;
             return (
               <div 
-                key={i} 
-                className="p-6 sm:p-8 rounded-2xl border border-foreground/15 bg-card/60 relative overflow-hidden flex flex-col justify-between hover:border-foreground/35 transition-all group"
+                key={pillar.title}
+                className="p-6 sm:p-8 rounded-2xl border border-foreground/10 bg-foreground/[0.01] hover:border-foreground/25 hover:bg-foreground/[0.03] transition-all duration-300 flex flex-col justify-between"
               >
                 <div>
-                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-foreground/5 flex items-center justify-center text-foreground mb-5 sm:mb-6 group-hover:bg-foreground group-hover:text-background transition-colors">
-                    <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+                  <div className="w-10 h-10 rounded-xl bg-foreground/5 border border-foreground/10 flex items-center justify-center mb-6 text-foreground">
+                    <Icon className="w-5 h-5" />
                   </div>
-                  <h3 className="font-display text-lg sm:text-xl text-foreground mb-2 sm:mb-3 tracking-tight">
+                  <h3 className="text-lg sm:text-xl font-display font-medium text-foreground tracking-tight mb-3">
                     {pillar.title}
                   </h3>
                   <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                     {pillar.description}
                   </p>
                 </div>
-                <div className="mt-6 pt-4 border-t border-foreground/10 font-mono text-[11px] text-muted-foreground flex items-center justify-between">
-                  <span>SPEC 0{i + 1}</span>
-                  <span className="text-foreground/80">OPERATIONAL</span>
+                <div className="mt-6 pt-4 border-t border-foreground/5 font-mono text-[10px] text-muted-foreground uppercase tracking-widest">
+                  Pillar 0{i + 1}
                 </div>
               </div>
             );
@@ -96,14 +95,14 @@ export function AboutSection() {
                 Architectural Commitment
               </span>
               <h3 className="text-2xl sm:text-3xl lg:text-4xl font-display tracking-tight text-foreground mb-3 sm:mb-4">
-                Dialer systems first. Practical technology always.
+                Carrier-grade VoIP routes first. Intelligent dialer systems always.
               </h3>
               <p className="text-muted-foreground text-sm lg:text-base leading-relaxed mb-6">
-                We do not sell fragile hype. We engineer rock-solid telecommunication pipes, ultra-responsive WebRTC webphones, and dependable AI agents that directly enhance your call center&apos;s bottom line.
+                We do not sell fragile hype. We engineer rock-solid wholesale voice termination, direct CLI route interconnects, and responsive dialer suites that directly enhance your call center&apos;s connection rates and bottom line.
               </p>
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
                 <Button 
-                  onClick={() => openDemo({ interest: "Voice Era Tech Infrastructure" })}
+                  onClick={() => openDemo({ interest: "Direct VoIP Routes & SIP Trunking" })}
                   className="w-full sm:w-auto justify-center bg-foreground text-background hover:bg-foreground/90 rounded-full px-7 h-12 text-sm font-medium group cursor-pointer"
                 >
                   Book Infrastructure Walkthrough

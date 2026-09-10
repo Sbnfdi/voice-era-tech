@@ -5,26 +5,26 @@ import { useEffect, useRef, useState } from "react";
 const features = [
   {
     number: "01",
-    title: "Dialer Systems",
-    description: "Predictive, power, preview, and auto-dialers that keep agents productive and queues moving without sacrificing the human connection.",
+    title: "Direct CLI VoIP Routes",
+    description: "Tier-1 wholesale voice termination, pristine audio codecs (G.711u, Opus), and high ASR/ACD ratios engineered to defeat spam tags and maximize live answer rates.",
     visual: "deploy",
   },
   {
     number: "02",
-    title: "Agent Intelligence",
-    description: "See agent status, listen in, coach in real time, and turn live call analytics into better decisions for every team.",
+    title: "Integrated Dialer Systems",
+    description: "Predictive, power, preview, and auto-dialers natively synchronized with our voice trunks to maximize agent talk-time without dropped calls or awkward pauses.",
     visual: "ai",
   },
   {
     number: "03",
-    title: "Connected Workflows",
-    description: "Route calls, sync your CRM, launch IVR flows, and give every campaign the context it needs to move forward.",
+    title: "Dynamic LCR & Route Failover",
+    description: "Intelligent multi-carrier Least Cost Routing, sub-second automated route failover, and dedicated high-density SIP interconnects across global voice PoPs.",
     visual: "collab",
   },
   {
     number: "04",
-    title: "Compliance Built In",
-    description: "TCPA and DNC controls, call recording, permissions, and audit-ready reporting help your operation stay ready.",
+    title: "STIR/SHAKEN & Compliance",
+    description: "Full Level-A cryptographic caller ID attestation, automated National DNC list scrubbing, TCPA safe-harbor guardrails, and audit-ready CDR reporting.",
     visual: "security",
   },
 ];
@@ -326,16 +326,16 @@ export function FeaturesSection() {
         <div className="mb-16 lg:mb-24">
           <span className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-6">
             <span className="w-8 h-px bg-foreground/30" />
-            Capabilities
+            VoIP Routes & Telephony Infrastructure
           </span>
           <h2
             className={`text-4xl lg:text-6xl font-display tracking-tight transition-all duration-700 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            Everything you need.
+            Direct VoIP routes.
             <br />
-            <span className="text-muted-foreground">Nothing you don&apos;t.</span>
+            <span className="text-muted-foreground">High-performance dialers.</span>
           </h2>
         </div>
 

@@ -54,7 +54,7 @@ export function ContactSection() {
             Speak with a Telephony Specialist
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-            Have questions regarding custom dialer configurations, high-density SIP interconnects, or AI agent pilots? Connect directly with our engineering and solutions team.
+            Have questions regarding wholesale VoIP routes, test SIP trunks, custom dialer configurations, or carrier rate sheets? Connect directly with our engineering and solutions team.
           </p>
         </div>
 
@@ -73,10 +73,10 @@ export function ContactSection() {
                 Prefer a Live Interactive Demo?
               </h3>
               <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-                Skip the back-and-forth email queue. Choose a specific time with a senior systems architect to tour our dialer portal in real time.
+                Skip the back-and-forth email queue. Choose a specific time with a senior systems architect to test our direct VoIP routes and dialer portal in real time.
               </p>
               <Button
-                onClick={() => openDemo({ interest: "Direct Contact Inquiry" })}
+                onClick={() => openDemo({ interest: "Direct VoIP Routes & SIP Trunking" })}
                 className="w-full bg-foreground text-background hover:bg-foreground/90 rounded-full h-12 text-sm font-medium group"
               >
                 Schedule Interactive Demo
@@ -273,7 +273,7 @@ export function ContactSection() {
                       rows={4}
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      placeholder="Outline your current dialer setup, call volume, CRM integration goals, or carrier challenges..."
+                      placeholder="Outline your VoIP route requirements, target destinations, concurrent call volume, or current dialer setup..."
                       className="w-full p-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-foreground transition-colors resize-none"
                     />
                   </div>

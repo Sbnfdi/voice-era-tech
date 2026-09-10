@@ -54,22 +54,22 @@ export function CtaSection() {
               {/* Left content */}
               <div className="flex-1 w-full">
                 <h2 className="text-3xl sm:text-5xl lg:text-7xl font-display tracking-tight mb-6 sm:mb-8 leading-[0.95]">
-                  Ready to make
+                  Ready to elevate
                   <br />
-                  every call count?
+                  your voice routes?
                 </h2>
 
                 <p className="text-base sm:text-xl text-muted-foreground mb-8 sm:mb-12 leading-relaxed max-w-xl">
-                  See how Voice Era Tech LLC can help your call center connect more customers, support agents, and scale with confidence.
+                  See how Voice Era Tech LLC powers higher connection rates with direct Tier-1 VoIP routes and intelligent dialer systems engineered for modern contact centers.
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-start gap-3 sm:gap-4 w-full sm:w-auto">
                   <Button
                     size="lg"
-                    onClick={() => openDemo({ interest: "Executive Suite Walkthrough" })}
+                    onClick={() => openDemo({ interest: "Direct VoIP Routes & SIP Trunking" })}
                     className="w-full sm:w-auto justify-center bg-foreground hover:bg-foreground/90 text-background px-8 h-12 sm:h-14 text-sm sm:text-base rounded-full group cursor-pointer shadow-sm"
                   >
-                    Book a Demo
+                    Test Routes & Book Demo
                     <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                   </Button>
                   <Button
@@ -88,7 +88,7 @@ export function CtaSection() {
                 </div>
 
                 <p className="text-xs sm:text-sm text-muted-foreground mt-6 sm:mt-8 font-mono">
-                  Dialer systems first. Practical technology always.
+                  Carrier-grade VoIP routes first. Intelligent dialer systems always.
                 </p>
               </div>
 

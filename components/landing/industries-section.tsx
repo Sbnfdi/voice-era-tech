@@ -30,13 +30,13 @@ const industries: IndustryItem[] = [
     id: "bpo",
     icon: Building2,
     name: "BPO & Multi-Tenant Call Centers",
-    tagline: "High-density multi-tenant dialers with granular client partitioning.",
-    description: "Designed for operations handling millions of calls across hundreds of client campaigns. Dynamic agent seat balancing, white-label client dashboards, and automated per-minute billing.",
+    tagline: "High-density wholesale VoIP termination with multi-tenant dialer partitioning.",
+    description: "Designed for contact centers pushing millions of calls across dozens of client campaigns. Direct CLI routes, dynamic agent seat balancing, white-label reporting, and automated per-minute route billing.",
     metric: { value: "+340%", label: "agent connect velocity" },
     features: [
+      "Dedicated high-CPS wholesale voice trunks with sub-50ms latency",
       "Multi-campaign tenant isolation & custom caller ID pools",
       "Real-time whisper, listen, and live barge-in supervision",
-      "Automated client-level SLA reporting & billable analytics",
       "Predictive pacing algorithms tuned for 99% agent occupancy"
     ],
     compliance: "PCI-DSS & SOC 2 Type II Certified"
@@ -45,8 +45,8 @@ const industries: IndustryItem[] = [
     id: "financial",
     icon: TrendingUp,
     name: "Financial Services & Collections",
-    tagline: "FDCPA and TCPA compliant progressive dialers with PCI safeguards.",
-    description: "Built for banks, loan originators, and recovery agencies where compliance is existential. Automated consent tracking, real-time dual-party recording, and sensitive data masking.",
+    tagline: "STIR/SHAKEN A-attestation VoIP routes with TCPA & FDCPA compliant dialing.",
+    description: "Built for banks, loan originators, and recovery agencies where reputation and compliance are existential. Cryptographically signed caller IDs, automated consent tracking, and dual-party recording.",
     metric: { value: "100%", label: "TCPA & FDCPA guardrail compliance" },
     features: [
       "State-specific calling window auto-enforcement & holiday guards",
@@ -139,7 +139,7 @@ export function IndustriesSection() {
             Engineered for High-Velocity Sectors
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-            Every vertical operates under distinct pacing algorithms, queue dynamics, and regulatory scrutiny. Voice Era Tech LLC provides specialized dialer configurations tailored specifically for your operational environment.
+            Every vertical operates under distinct traffic patterns, routing compliance, and pacing requirements. Voice Era Tech LLC delivers dedicated VoIP carrier routes and specialized dialer configurations tailored specifically for your operational environment.
           </p>
         </div>
 

@@ -6,51 +6,54 @@ import { Copy, Check } from "lucide-react";
 const codeExamples = [
   {
     label: "Install",
-    code: `npm install @voice-era/sdk
+    code: `npm install @voice-era/telephony-sdk
 
 # or
-yarn add @voice-era/sdk
-pnpm add @voice-era/sdk`,
+yarn add @voice-era/telephony-sdk
+pnpm add @voice-era/telephony-sdk`,
   },
   {
-    label: "Initialize",
-    code: `import { VoiceEra } from '@voice-era/sdk'
+    label: "SIP Trunk",
+    code: `import { VoiceEra } from '@voice-era/telephony-sdk'
 
-const voiceEra = new VoiceEra({
-  apiKey: process.env.VOICE_ERA_KEY
+const trunk = await VoiceEra.createSipTrunk({
+  tier: 'direct-cli-route',
+  regions: ['us-east-ashburn', 'us-west-sanjose'],
+  auth: { ip: '198.51.100.24' },
+  codecs: ['G711u', 'Opus'],
+  stirShaken: 'A'
 })`,
   },
   {
-    label: "Deploy",
-    code: `const campaign = await voiceEra.campaign({
-  name: 'my-app',
-  region: 'auto',
-  scaling: {
-    min: 1,
-    max: 100
-  }
+    label: "Dialer Link",
+    code: `// Bind SIP trunk to hosted or BYO dialer
+const dialerBridge = await trunk.bindDialer({
+  mode: 'predictive',
+  concurrency: 200,
+  routes: ['tier1-primary', 'tier1-backup'],
+  callRecording: 'dual-channel'
 })
 
-console.log('Campaign live:', campaign.id)`,
+console.log('SIP Route & Dialer active:', dialerBridge.status)`,
   },
 ];
 
 const features = [
   { 
-    title: "TypeScript native", 
-    description: "Full type safety with auto-generated types."
+    title: "Sub-30ms PDD", 
+    description: "Direct Tier-1 carrier routes with instantaneous ringback."
   },
   { 
-    title: "Zero config", 
-    description: "Sensible defaults that just work."
+    title: "STIR/SHAKEN Level A", 
+    description: "Full cryptographic caller ID signature validation."
   },
   { 
-    title: "Edge-ready", 
-    description: "Runs anywhere: Node, Deno, Bun, browsers."
+    title: "Universal SIP & REST", 
+    description: "Interconnect with Asterisk, Vicidial, FreePBX, or Genesys."
   },
   { 
-    title: "12KB gzipped", 
-    description: "Lightweight with zero dependencies."
+    title: "Real-Time CDR Webhooks", 
+    description: "Instant event streaming for duration, ASR, and call quality."
   },
 ];
 
@@ -119,16 +122,15 @@ export function DevelopersSection() {
           >
             <span className="inline-flex items-center gap-2 sm:gap-3 text-xs sm:text-sm font-mono text-muted-foreground mb-4 sm:mb-6">
               <span className="w-6 sm:w-8 h-px bg-foreground/30" />
-              For every operation
+              Carrier APIs & Telephony SDK
             </span>
             <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display tracking-tight mb-6 sm:mb-8">
-              Built by devs.
+              Engineered for voice.
               <br />
-              <span className="text-muted-foreground">For devs.</span>
+              <span className="text-muted-foreground">Built for high scale.</span>
             </h2>
             <p className="text-base sm:text-xl text-muted-foreground mb-8 sm:mb-12 leading-relaxed">
-              A thoughtfully designed SDK that gets out of your way. 
-              Ship faster with intuitive APIs and exceptional documentation.
+              Programmatic SIP trunking, route telemetry, and dialer controls designed for voice engineers and contact center architects.
             </p>
             
             {/* Features */}

@@ -65,7 +65,7 @@ export function HeroSection() {
       </div>
       
       <div className="relative z-10 max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 pt-28 pb-16 sm:py-32 lg:py-40">
-        {/* Eyebrow */}
+        {/* Category tag */}
         <div 
           className={`mb-6 sm:mb-8 transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
@@ -73,7 +73,7 @@ export function HeroSection() {
         >
           <span className="inline-flex items-center gap-2 sm:gap-3 text-xs sm:text-sm font-mono text-muted-foreground">
             <span className="w-6 sm:w-8 h-px bg-foreground/30" />
-            Dialer systems for modern call centers
+            Carrier-Grade VoIP Routes & Wholesale Voice Termination
           </span>
         </div>
         
@@ -117,7 +117,7 @@ export function HeroSection() {
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            Predictive, power, preview, and auto-dialing systems built to help your agents connect with more people, manage every queue, and turn conversations into growth.
+            Direct Tier-1 CLI routes, ultra-low latency termination, and global SIP trunking engineered for high-concurrency call centers—backed by intelligent predictive and power dialer systems.
           </p>
           
           {/* CTAs */}
@@ -128,10 +128,10 @@ export function HeroSection() {
           >
             <Button 
               size="lg" 
-              onClick={() => openDemo({ interest: "Predictive & Power Dialers" })}
+              onClick={() => openDemo({ interest: "Direct VoIP Routes & SIP Trunking" })}
               className="w-full sm:w-auto justify-center bg-foreground hover:bg-foreground/90 text-background px-8 h-12 sm:h-14 text-sm sm:text-base rounded-full group cursor-pointer shadow-sm"
             >
-              Book a Demo
+              Get VoIP Routes & Demo
               <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
             </Button>
             <Button 
@@ -140,7 +140,7 @@ export function HeroSection() {
               onClick={() => scrollToSection("features")}
               className="w-full sm:w-auto justify-center h-12 sm:h-14 px-8 text-sm sm:text-base rounded-full border-foreground/20 hover:bg-foreground/5 cursor-pointer"
             >
-              Explore Solutions
+              Explore VoIP Routes
             </Button>
           </div>
         </div>
@@ -157,10 +157,10 @@ export function HeroSection() {
           {[...Array(2)].map((_, i) => (
             <div key={i} className="flex gap-8 sm:gap-16">
               {[
-                { value: "1M+", label: "calls handled", company: "VOICE ERA" },
-                { value: "99.99%", label: "platform uptime", company: "VOICE ERA" },
-                { value: "10K+", label: "agents supported", company: "VOICE ERA" },
-                { value: "250+", label: "active clients", company: "VOICE ERA" },
+                { value: "500M+", label: "minutes terminated / mo", company: "VOICE ERA" },
+                { value: "99.999%", label: "voice route SLA", company: "VOICE ERA" },
+                { value: "<30ms", label: "average PDD latency", company: "VOICE ERA" },
+                { value: "10K+", label: "dialer agents supported", company: "VOICE ERA" },
               ].map((stat, statIndex) => (
                 <div key={`${stat.company}-${i}-${statIndex}`} className="flex items-baseline gap-2 sm:gap-4">
                   <span className="text-3xl sm:text-4xl lg:text-5xl font-display">{stat.value}</span>

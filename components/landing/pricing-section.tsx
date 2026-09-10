@@ -6,50 +6,57 @@ import { useDemoModal } from "./demo-modal-context";
 
 const plans = [
   {
-    name: "Starter",
-    description: "For individuals and small projects",
-    price: { monthly: 0, annual: 0 },
+    name: "Wholesale VoIP Routes",
+    description: "Direct Tier-1 CLI voice termination for contact centers, switches & carriers",
+    unitPrice: { monthly: 0.0049, annual: 0.0039 },
+    pricePrefix: "From $",
+    priceSuffix: "/ min",
+    subtext: "Volume-tiered termination",
     features: [
-      "Up to 3 projects",
-      "1GB storage",
-      "Community support",
-      "Basic analytics",
-      "SSL certificates",
+      "Direct CLI routes with 99.999% SLA",
+      "STIR/SHAKEN Level A-attestation",
+      "Sub-30ms PDD (Post-Dial Delay)",
+      "G.711u & Opus HD audio codecs",
+      "Compatible with any BYO dialer / PBX",
+      "Live CDR portal & ASR/ACD analytics",
     ],
-    cta: "Start free",
+    cta: "Test VoIP Routes",
     popular: false,
   },
   {
-    name: "Pro",
-    description: "For growing teams and businesses",
-    price: { monthly: 29, annual: 24 },
+    name: "VoIP Routes + Hosted Dialer",
+    description: "Turnkey stack: premium voice routes bundled with full predictive dialer seats",
+    unitPrice: { monthly: 49, annual: 39 },
+    pricePrefix: "$",
+    priceSuffix: "/ seat / mo",
+    subtext: "Includes preferred route rates",
     features: [
-      "Unlimited projects",
-      "100GB storage",
-      "Priority support",
-      "Advanced analytics",
-      "Custom domains",
-      "Team collaboration",
-      "API access",
+      "Everything in Wholesale VoIP Routes",
+      "Predictive, power & preview dialer suite",
+      "Real-time whisper, listen & barge-in",
+      "Dynamic local caller ID pool rotation",
+      "TCPA quiet hours & automated DNC scrub",
+      "Bi-directional CRM & webhook integration",
     ],
-    cta: "Start trial",
+    cta: "Book Route & Dialer Demo",
     popular: true,
   },
   {
-    name: "Enterprise",
-    description: "For large-scale operations",
-    price: { monthly: null, annual: null },
+    name: "Enterprise Carrier Interconnect",
+    description: "Dedicated infrastructure for telcos, BPOs & high-concurrency operations",
+    unitPrice: null,
+    pricePrefix: "Custom",
+    priceSuffix: "",
+    subtext: "Dedicated SLA & 24/7 NOC",
     features: [
-      "Everything in Pro",
-      "Unlimited storage",
-      "24/7 dedicated support",
-      "Custom integrations",
-      "SLA guarantee",
-      "On-premise option",
-      "Security audit",
-      "Custom contracts",
+      "Private cross-connects & dedicated SIP SBCs",
+      "Custom Least Cost Routing (LCR) tables",
+      "Multi-tenant dialer cluster partitioning",
+      "Unlimited concurrent call channels (CPS)",
+      "Dedicated 24/7/365 US engineering NOC",
+      "Custom billing & Master Services Agreement",
     ],
-    cta: "Contact sales",
+    cta: "Contact Telephony Architect",
     popular: false,
   },
 ];
@@ -64,15 +71,15 @@ export function PricingSection() {
         {/* Header */}
         <div className="max-w-3xl mb-12 sm:mb-16">
           <span className="font-mono text-[11px] sm:text-xs tracking-widest text-muted-foreground uppercase block mb-4 sm:mb-6">
-            Pricing
+            VoIP & Dialer Pricing
           </span>
           <h2 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight text-foreground mb-4 sm:mb-6">
-            Simple, transparent
+            Transparent VoIP rates.
             <br />
-            <span className="text-stroke">pricing</span>
+            <span className="text-muted-foreground">Predictable dialer scaling.</span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-xl leading-relaxed">
-            Start free and scale as you grow. No hidden fees, no surprises.
+            Direct Tier-1 wholesale voice routes with optional hosted dialer seats. No hidden surcharges, no long-term lock-in.
           </p>
         </div>
 
@@ -80,14 +87,15 @@ export function PricingSection() {
         <div className="flex items-center gap-4 mb-12 sm:mb-16">
           <span
             className={`text-sm transition-colors ${
-              !isAnnual ? "text-foreground" : "text-muted-foreground"
+              !isAnnual ? "text-foreground font-medium" : "text-muted-foreground"
             }`}
           >
-            Monthly
+            Standard Rates
           </span>
           <button
             onClick={() => setIsAnnual(!isAnnual)}
             className="relative w-14 h-7 bg-foreground/10 rounded-full p-1 transition-colors hover:bg-foreground/20 cursor-pointer"
+            aria-label="Toggle annual volume discount"
           >
             <div
               className={`w-5 h-5 bg-foreground rounded-full transition-transform duration-300 ${
@@ -97,14 +105,14 @@ export function PricingSection() {
           </button>
           <span
             className={`text-sm transition-colors ${
-              isAnnual ? "text-foreground" : "text-muted-foreground"
+              isAnnual ? "text-foreground font-medium" : "text-muted-foreground"
             }`}
           >
-            Annual
+            High-Volume Tier
           </span>
           {isAnnual && (
             <span className="ml-2 px-2 py-0.5 sm:py-1 bg-foreground text-primary-foreground text-xs font-mono rounded">
-              Save 17%
+              Volume Discount Applied
             </span>
           )}
         </div>
@@ -129,21 +137,28 @@ export function PricingSection() {
                 <span className="font-mono text-xs text-muted-foreground">
                   {String(idx + 1).padStart(2, "0")}
                 </span>
-                <h3 className="font-display text-3xl text-foreground mt-2">{plan.name}</h3>
+                <h3 className="font-display text-2xl sm:text-3xl text-foreground mt-2">{plan.name}</h3>
                 <p className="text-sm text-muted-foreground mt-2">{plan.description}</p>
               </div>
 
               {/* Price */}
               <div className="mb-8 pb-8 border-b border-foreground/10">
-                {plan.price.monthly !== null ? (
-                  <div className="flex items-baseline gap-2">
-                    <span className="font-display text-5xl lg:text-6xl text-foreground">
-                      ${isAnnual ? plan.price.annual : plan.price.monthly}
-                    </span>
-                    <span className="text-muted-foreground">/month</span>
+                {plan.unitPrice !== null ? (
+                  <div>
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="font-display text-4xl lg:text-5xl text-foreground">
+                        {plan.pricePrefix}
+                        {isAnnual ? plan.unitPrice.annual : plan.unitPrice.monthly}
+                      </span>
+                      <span className="text-xs sm:text-sm text-muted-foreground">{plan.priceSuffix}</span>
+                    </div>
+                    <div className="text-xs font-mono text-muted-foreground mt-1.5">{plan.subtext}</div>
                   </div>
                 ) : (
-                  <span className="font-display text-4xl text-foreground">Custom</span>
+                  <div>
+                    <span className="font-display text-4xl text-foreground">{plan.pricePrefix}</span>
+                    <div className="text-xs font-mono text-muted-foreground mt-1.5">{plan.subtext}</div>
+                  </div>
                 )}
               </div>
 
@@ -159,7 +174,7 @@ export function PricingSection() {
 
               {/* CTA */}
               <button
-                onClick={() => openDemo({ plan: plan.name, interest: `${plan.name} Tier` })}
+                onClick={() => openDemo({ plan: plan.name, interest: plan.name })}
                 className={`w-full py-4 flex items-center justify-center gap-2 text-sm font-medium transition-all group cursor-pointer ${
                   plan.popular
                     ? "bg-foreground text-primary-foreground hover:bg-foreground/90"
@@ -175,10 +190,13 @@ export function PricingSection() {
 
         {/* Bottom Note */}
         <p className="mt-12 text-center text-sm text-muted-foreground">
-          All plans include automatic updates, HTTPS, and DDoS protection.{" "}
-          <a href="#" className="underline underline-offset-4 hover:text-foreground transition-colors">
-            Compare all features
-          </a>
+          All routes backed by STIR/SHAKEN Level-A signing, 99.999% SLA, and redundant SIP gateways.{" "}
+          <button
+            onClick={() => openDemo({ interest: "Direct VoIP Routes & SIP Trunking" })}
+            className="underline underline-offset-4 hover:text-foreground transition-colors cursor-pointer"
+          >
+            Request route rate sheet & test trunk
+          </button>
         </p>
       </div>
     </section>

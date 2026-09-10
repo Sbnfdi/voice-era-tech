@@ -7,11 +7,12 @@ import { Menu, X } from "lucide-react";
 import { useDemoModal } from "./demo-modal-context";
 
 const navLinks = [
-  { name: "Solutions", href: "#features" },
+  { name: "VoIP Routes", href: "#features" },
+  { name: "Dialers", href: "#how-it-works" },
   { name: "Industries", href: "#industries" },
+  { name: "Network", href: "#infrastructure" },
   { name: "Pricing", href: "#pricing" },
   { name: "About", href: "#about" },
-  { name: "Resources", href: "#developers" },
   { name: "Contact", href: "#contact" },
 ];
 
@@ -93,7 +94,7 @@ export function Navigation() {
                 </span>
               </div>
               <span className="text-[8px] sm:text-[9px] font-mono uppercase tracking-widest text-muted-foreground hidden md:block -mt-0.5">
-                Dialer Systems &bull; Enterprise AI
+                VoIP Routes &bull; Dialer Systems
               </span>
             </div>
           </a>
@@ -174,7 +175,7 @@ export function Navigation() {
                   Voice Era Tech
                 </span>
                 <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest block">
-                  Dialer Systems
+                  VoIP Routes & Dialers
                 </span>
               </div>
             </div>

@@ -4,32 +4,32 @@ import { useEffect, useState } from "react";
 
 const testimonials = [
   {
-    quote: "Voice Era Tech gave our team a dialer we can actually operate. Queue visibility and agent controls changed our entire floor.",
+    quote: "Switching to Voice Era Tech's direct CLI VoIP routes took our contact center answer rate from 62% to 89%. Their integrated dialer gives our 250+ agents uninterrupted voice traffic.",
     author: "Sarah Chen",
-    role: "CTO",
-    company: "Meridian Labs",
-    metric: "10x faster deployments",
+    role: "VP of Telephony Operations",
+    company: "Meridian Communications",
+    metric: "+27% live answer rate",
   },
   {
-    quote: "We connect more customers every day without losing the context that makes our conversations valuable.",
+    quote: "Their wholesale VoIP routes eliminated our carrier SPAM flags overnight. Having a dialer system natively tuned to their Tier-1 voice trunks is unbeatable.",
     author: "Marcus Webb",
-    role: "Engineering Lead",
-    company: "Flux Systems",
-    metric: "40% more features shipped",
+    role: "Director of Contact Infrastructure",
+    company: "Apex BPO Solutions",
+    metric: "99.999% route uptime",
   },
   {
-    quote: "Supervisors can see agent status, coach live calls, and act on analytics before the shift is over.",
+    quote: "Sub-30ms voice latency across all North American routes. Even when our dialer scales to 15,000 concurrent calls, Voice Era's VoIP routes never flinch.",
     author: "Elena Rodriguez",
-    role: "VP Engineering",
-    company: "Beacon AI",
-    metric: "99.99% uptime",
+    role: "Chief Technology Officer",
+    company: "OmniVoice Global",
+    metric: "<25ms average latency",
   },
   {
-    quote: "The integrations are seamless. We connected our entire stack in a single afternoon.",
+    quote: "The direct SIP interconnect was live in under an hour. Pristine audio quality, zero packet drop, and transparent per-minute wholesale billing.",
     author: "James Liu",
-    role: "Founder",
-    company: "Prism Analytics",
-    metric: "50+ integrations used",
+    role: "Managing Director",
+    company: "Nexus Telecom",
+    metric: "12M+ monthly minutes",
   },
 ];
 

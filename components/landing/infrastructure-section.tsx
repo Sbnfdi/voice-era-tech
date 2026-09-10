@@ -3,12 +3,12 @@
 import { useEffect, useState, useRef } from "react";
 
 const locations = [
-  { city: "Predictive queue", region: "Campaign engine", latency: "Live" },
-  { city: "Agent workspace", region: "Call controls", latency: "Live" },
-  { city: "CRM sync", region: "Customer context", latency: "Live" },
-  { city: "Compliance layer", region: "TCPA / DNC", latency: "Ready" },
-  { city: "Analytics hub", region: "Real-time reporting", latency: "Live" },
-  { city: "IVR routing", region: "Inbound experience", latency: "Ready" },
+  { city: "US-East (Ashburn)", region: "Tier-1 Voice PoP & Interconnect", latency: "< 8ms" },
+  { city: "US-West (San Jose)", region: "Direct CLI Carrier Gateway", latency: "< 12ms" },
+  { city: "Europe (Frankfurt)", region: "E.164 Wholesale Route Hub", latency: "< 18ms" },
+  { city: "UK (London)", region: "Dual-Redundant SIP Gateway", latency: "< 14ms" },
+  { city: "Asia-Pacific (Singapore)", region: "High-Density APAC Node", latency: "< 28ms" },
+  { city: "Central Dialer Cluster", region: "Hosted Predictive Engine & STIR/SHAKEN", latency: "Live" },
 ];
 
 export function InfrastructureSection() {
@@ -47,30 +47,30 @@ export function InfrastructureSection() {
           >
             <span className="inline-flex items-center gap-2 sm:gap-3 text-xs sm:text-sm font-mono text-muted-foreground mb-4 sm:mb-6">
               <span className="w-6 sm:w-8 h-px bg-foreground/30" />
-              Dialer infrastructure
+              Global VoIP Route Network
             </span>
             <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display tracking-tight mb-6 sm:mb-8">
-              Every call.
+              Every packet.
               <br />
-              Fully visible.
+              Carrier-grade routes.
             </h2>
             <p className="text-base sm:text-xl text-muted-foreground leading-relaxed mb-8 sm:mb-12">
-              Put your operation in control. Voice Era Tech brings dialing, routing, agent monitoring, CRM context, analytics, and compliance into one dependable system.
+              Engineered for uncompromising throughput. Voice Era Tech LLC powers high-capacity VoIP termination, direct CLI routes, and dedicated SIP trunking backed by redundant Tier-1 carrier interconnects and integrated dialer systems.
             </p>
 
             {/* Stats */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
               <div className="p-4 sm:p-0 rounded-xl bg-foreground/[0.02] sm:bg-transparent border border-foreground/10 sm:border-0">
-                <div className="text-3xl sm:text-4xl lg:text-5xl font-display mb-1 sm:mb-2">1M+</div>
-                <div className="text-xs sm:text-sm text-muted-foreground">Calls handled</div>
+                <div className="text-3xl sm:text-4xl lg:text-5xl font-display mb-1 sm:mb-2">500M+</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Minutes terminated / mo</div>
               </div>
               <div className="p-4 sm:p-0 rounded-xl bg-foreground/[0.02] sm:bg-transparent border border-foreground/10 sm:border-0">
-                <div className="text-3xl sm:text-4xl lg:text-5xl font-display mb-1 sm:mb-2">99.99%</div>
-                <div className="text-xs sm:text-sm text-muted-foreground">Platform uptime</div>
+                <div className="text-3xl sm:text-4xl lg:text-5xl font-display mb-1 sm:mb-2">99.999%</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Voice route SLA</div>
               </div>
               <div className="p-4 sm:p-0 rounded-xl bg-foreground/[0.02] sm:bg-transparent border border-foreground/10 sm:border-0">
-                <div className="text-3xl sm:text-4xl lg:text-5xl font-display mb-1 sm:mb-2">10K+</div>
-                <div className="text-xs sm:text-sm text-muted-foreground">Agents supported</div>
+                <div className="text-3xl sm:text-4xl lg:text-5xl font-display mb-1 sm:mb-2">&lt;30ms</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Average PDD latency</div>
               </div>
             </div>
           </div>
@@ -84,10 +84,10 @@ export function InfrastructureSection() {
             <div className="border border-foreground/10">
               {/* Header */}
               <div className="px-6 py-4 border-b border-foreground/10 flex items-center justify-between">
-                <span className="text-sm font-mono text-muted-foreground">Voice Era Command Center</span>
+                <span className="text-sm font-mono text-muted-foreground">Voice Era Global Voice Network</span>
                 <span className="flex items-center gap-2 text-xs font-mono text-green-600">
                   <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                  All systems operational
+                  All carrier routes active
                 </span>
               </div>
 

@@ -21,8 +21,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Voice Era Tech LLC | Dialer Systems for Call Centers',
-  description: 'Voice Era Tech LLC builds dialer systems, AI voice agents, and carrier-grade telephony infrastructure for call centers, BPOs, and enterprise customer operations.',
+  title: 'Voice Era Tech LLC | Carrier-Grade VoIP Routes & Dialer Systems',
+  description: 'Voice Era Tech LLC provides carrier-grade VoIP termination, direct CLI voice routes, wholesale SIP trunking, and high-performance dialer systems for call centers and enterprises.',
   icons: {
     icon: [
       { url: '/logo.png', type: 'image/png' },
