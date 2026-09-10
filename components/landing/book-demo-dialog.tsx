@@ -276,44 +276,7 @@ export function BookDemoDialog({ isOpen, onClose, prefill }: BookDemoDialogProps
                 </Button>
               </div>
             </form>
-          </div>
-        ) : (
-          <div className="p-8 md:p-12 text-center">
-            <div className="w-16 h-16 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto mb-6">
-              <CheckCircle2 className="w-9 h-9" />
-            </div>
-            <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground block mb-2">
-              Walkthrough Confirmed
-            </span>
-            <h3 className="text-2xl md:text-3xl font-display tracking-tight text-foreground mb-3">
-              We&apos;re Ready to Show You Voice Era Tech
-            </h3>
-            <p className="text-muted-foreground text-sm max-w-md mx-auto leading-relaxed mb-6">
-              We have reserved your slot for <strong className="text-foreground">{formData.interest}</strong>. A calendar invitation and video link have been dispatched to <span className="underline text-foreground">{formData.workEmail || "your email"}</span>.
-            </p>
-
-            <div className="p-4 rounded-xl border border-foreground/10 bg-foreground/[0.02] max-w-md mx-auto text-left space-y-2 mb-8 text-xs font-mono">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Contact:</span>
-                <span className="text-foreground font-medium">{formData.fullName} ({formData.company})</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Time:</span>
-                <span className="text-foreground font-medium">{formData.timeSlot}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Lead Architect:</span>
-                <span className="text-foreground font-medium">Assigned &amp; Preparing Staging Environment</span>
-              </div>
-            </div>
-
-            <Button
-              onClick={handleResetAndClose}
-              className="bg-foreground text-background rounded-full px-8 h-12 text-sm font-medium hover:bg-foreground/90 transition-all"
-            >
-              Done
-            </Button>
-          </div>
+          </>
         )}
       </DialogContent>
     </Dialog>
