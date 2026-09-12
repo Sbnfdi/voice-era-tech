@@ -9,9 +9,8 @@ import { useDemoModal } from "./demo-modal-context";
 const navLinks = [
   { name: "VoIP Routes", href: "#features" },
   { name: "Dialers", href: "#how-it-works" },
-  { name: "Industries", href: "#industries" },
   { name: "Network", href: "#network" },
-  { name: "Pricing", href: "#pricing" },
+  { name: "Expert Consultation", href: "#expert" },
   { name: "About", href: "#about" },
   { name: "Contact", href: "#contact" },
 ];
@@ -124,11 +123,11 @@ export function Navigation() {
               Client portal
             </a>
             <Button
-              onClick={() => openDemo()}
+              onClick={() => openDemo({ interest: "Expert Telephony Consultation" })}
               size="sm"
               className={`bg-foreground hover:bg-foreground/90 text-background rounded-full transition-all duration-300 cursor-pointer shadow-sm ${isScrolled ? "px-4 h-8 text-xs" : "px-5 sm:px-6 h-10 text-sm"}`}
             >
-              Book a Demo
+              Contact with an Expert
             </Button>
           </div>
 
@@ -228,10 +227,10 @@ export function Navigation() {
               className="w-full sm:flex-1 bg-foreground text-background rounded-full h-12 text-sm cursor-pointer"
               onClick={() => {
                 setIsMobileMenuOpen(false);
-                openDemo();
+                openDemo({ interest: "Expert Telephony Consultation" });
               }}
             >
-              Book a Demo
+              Contact with an Expert
             </Button>
           </div>
         </div>

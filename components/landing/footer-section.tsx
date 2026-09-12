@@ -1,8 +1,11 @@
 "use client";
 
+import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { AnimatedWave } from "./animated-wave";
+import { TermsDialog } from "./terms-dialog";
 
 const footerLinks = {
   Solutions: [
@@ -10,34 +13,35 @@ const footerLinks = {
     { name: "Wholesale SIP Trunking", href: "#features" },
     { name: "Predictive & Power Dialers", href: "#how-it-works" },
     { name: "Global Voice PoPs", href: "#network" },
-    { name: "VoIP & Dialer Pricing", href: "#pricing" },
+    { name: "Contact with an Expert", href: "#expert" },
   ],
-  Developers: [
-    { name: "Telephony SDK", href: "#developers" },
-    { name: "SIP Interconnect Guide", href: "#developers" },
-    { name: "API Documentation", href: "#developers" },
-    { name: "STIR/SHAKEN Compliance", href: "#security" },
+  Platform: [
+    { name: "SIP Interconnect", href: "#features" },
+    { name: "Telephony Routing Architecture", href: "#how-it-works" },
+    { name: "STIR/SHAKEN Level-A", href: "#security" },
+    { name: "24/5 NOC Supervision", href: "#network" },
   ],
   Company: [
     { name: "About Voice Era", href: "#about" },
-    { name: "Industry Verticals", href: "#industries" },
-    { name: "Network Status", href: "#network" },
-    { name: "Contact Specialists", href: "#contact" },
+    { name: "Network Status (24/5)", href: "#network" },
+    { name: "Expert Consultation", href: "#expert" },
+    { name: "Direct Sales & Support", href: "#contact" },
   ],
   Legal: [
     { name: "TCPA & FDCPA Safeguards", href: "#security" },
     { name: "Privacy Policy", href: "#contact" },
-    { name: "Terms of Service", href: "#contact" },
+    { name: "Terms of Service", href: "/terms", isTerms: true },
   ],
 };
 
 const socialLinks = [
-  { name: "Twitter", href: "#" },
-  { name: "GitHub", href: "#" },
-  { name: "LinkedIn", href: "#" },
+  { name: "LinkedIn", href: "https://www.linkedin.com" },
+  { name: "FB", href: "https://www.facebook.com" },
 ];
 
 export function FooterSection() {
+  const [isTermsOpen, setIsTermsOpen] = useState(false);
+
   return (
     <footer className="relative border-t border-foreground/10">
       {/* Animated wave background */}
@@ -71,13 +75,15 @@ export function FooterSection() {
                 Carrier-grade VoIP routes, wholesale voice termination, and intelligent dialer systems for call centers and enterprises that connect with customers.
               </p>
 
-              {/* Social Links */}
+              {/* Social Links: LinkedIn, FB */}
               <div className="flex gap-6">
                 {socialLinks.map((link) => (
                   <a
                     key={link.name}
                     href={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 group"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 group"
                   >
                     {link.name}
                     <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
@@ -93,17 +99,29 @@ export function FooterSection() {
                 <ul className="space-y-4">
                   {links.map((link) => (
                     <li key={link.name}>
-                      <a
-                        href={link.href}
-                        className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2"
-                      >
-                        {link.name}
-                        {"badge" in link && link.badge && (
-                          <span className="text-xs px-2 py-0.5 bg-foreground text-background rounded-full">
-                            {link.badge}
-                          </span>
-                        )}
-                      </a>
+                      {"isTerms" in link && link.isTerms ? (
+                        <button
+                          type="button"
+                          onClick={() => setIsTermsOpen(true)}
+                          className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2 cursor-pointer text-left"
+                        >
+                          {link.name}
+                        </button>
+                      ) : link.href.startsWith("/") ? (
+                        <Link
+                          href={link.href}
+                          className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2"
+                        >
+                          {link.name}
+                        </Link>
+                      ) : (
+                        <a
+                          href={link.href}
+                          className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2"
+                        >
+                          {link.name}
+                        </a>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -112,20 +130,26 @@ export function FooterSection() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
+        {/* Bottom Bar: 2026 Voice Era */}
         <div className="py-8 border-t border-foreground/10 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">
-            2025 Voice Era Tech LLC. All rights reserved.
+            &copy; 2026 Voice Era Tech LLC. All rights reserved.
           </p>
 
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <span className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-green-500" />
-              All systems operational
+              NOC active (24/5) &bull; All routes operational
             </span>
           </div>
         </div>
       </div>
+
+      {/* Interactive Terms of Service Dialog */}
+      <TermsDialog 
+        isOpen={isTermsOpen} 
+        onClose={() => setIsTermsOpen(false)} 
+      />
     </footer>
   );
 }

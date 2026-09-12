@@ -1,23 +1,17 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { useDemoModal } from "./demo-modal-context";
 import { 
   Phone, 
   Mail, 
-  MapPin, 
   Clock, 
   Send, 
   CheckCircle2, 
-  ArrowRight,
-  ShieldCheck,
-  MessageSquare
+  ShieldCheck 
 } from "lucide-react";
 
 export function ContactSection() {
-  const { openDemo } = useDemoModal();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({
@@ -61,29 +55,6 @@ export function ContactSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Left Column: Direct Communication Channels & Info */}
           <div className="lg:col-span-5 space-y-6 sm:space-y-8">
-            {/* Quick Demo Pitch Card */}
-            <div className="p-6 sm:p-8 rounded-2xl border border-foreground/15 bg-foreground/[0.02]">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
-                  Immediate 1-on-1 Walkthrough
-                </span>
-              </div>
-              <h3 className="text-2xl font-display text-foreground mb-3">
-                Prefer a Live Interactive Demo?
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-                Skip the back-and-forth email queue. Choose a specific time with a senior systems architect to test our direct VoIP routes and dialer portal in real time.
-              </p>
-              <Button
-                onClick={() => openDemo({ interest: "Direct VoIP Routes & SIP Trunking" })}
-                className="w-full bg-foreground text-background hover:bg-foreground/90 rounded-full h-12 text-sm font-medium group"
-              >
-                Schedule Interactive Demo
-                <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-              </Button>
-            </div>
-
             {/* Direct Details */}
             <div className="space-y-6 pt-2">
               <div className="flex items-start gap-4">
@@ -104,52 +75,45 @@ export function ContactSection() {
                 </div>
               </div>
 
+              {/* Direct Email - Sales */}
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-lg bg-foreground/5 flex items-center justify-center text-foreground shrink-0 mt-1">
                   <Mail className="w-4 h-4" />
                 </div>
                 <div>
                   <div className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
-                    Direct Email
+                    Direct Sales Email
                   </div>
                   <a
-                    href="mailto:inquiry@voiceeratech.com"
-                    className="text-lg font-medium text-foreground hover:underline mt-0.5 block"
+                    href="mailto:sales@voiceeratech.com"
+                    className="text-base sm:text-lg font-medium text-foreground hover:underline mt-0.5 block font-mono"
                   >
-                    inquiry@voiceeratech.com
+                    sales@voiceeratech.com
                   </a>
-                  <p className="text-xs text-muted-foreground mt-0.5">Average response time: &lt;15 minutes during business hours</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Wholesale route rates, custom trunking &amp; dialer deployments</p>
                 </div>
               </div>
 
+              {/* Direct Email - Info */}
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-lg bg-foreground/5 flex items-center justify-center text-foreground shrink-0 mt-1">
-                  <MapPin className="w-4 h-4" />
+                  <Mail className="w-4 h-4" />
                 </div>
                 <div>
                   <div className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
-                    Corporate Headquarters
+                    General Inquiries &amp; Information
                   </div>
-                  <div className="flex items-center gap-2 mt-1">
-                    <div className="relative w-6 h-6 rounded-md overflow-hidden border border-foreground/20 bg-black shadow-xs shrink-0">
-                      <Image 
-                        src="/logo.png" 
-                        alt="Voice Era Tech LLC" 
-                        width={24} 
-                        height={24} 
-                        className="w-full h-full object-cover" 
-                      />
-                    </div>
-                    <span className="text-sm font-medium text-foreground">
-                      Voice Era Tech LLC
-                    </span>
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    1201 N Orange St, Suite 700 &bull; Wilmington, DE 19801 &bull; USA
-                  </p>
+                  <a
+                    href="mailto:info@voiceeratech.com"
+                    className="text-base sm:text-lg font-medium text-foreground hover:underline mt-0.5 block font-mono"
+                  >
+                    info@voiceeratech.com
+                  </a>
+                  <p className="text-xs text-muted-foreground mt-0.5">Billing, compliance, carrier attestation &amp; administrative support</p>
                 </div>
               </div>
 
+              {/* NOC & Network Operations - 24/5 */}
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-lg bg-foreground/5 flex items-center justify-center text-foreground shrink-0 mt-1">
                   <Clock className="w-4 h-4" />
@@ -159,10 +123,10 @@ export function ContactSection() {
                     NOC &amp; Network Operations
                   </div>
                   <p className="text-sm font-medium text-foreground mt-0.5">
-                    24/7/365 Proactive VoIP Route Supervision
+                    24/5 Proactive VoIP Route Supervision
                   </p>
                   <p className="text-xs text-muted-foreground mt-0.5">
-                    Critical carrier escalation lines available to contracted clients
+                    Continuous monitoring across calling weeks. High-priority escalation lines available to contracted accounts.
                   </p>
                 </div>
               </div>

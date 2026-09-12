@@ -1,15 +1,11 @@
 import { Navigation } from "@/components/landing/navigation";
 import { HeroSection } from "@/components/landing/hero-section";
 import { FeaturesSection } from "@/components/landing/features-section";
-import { IndustriesSection } from "@/components/landing/industries-section";
 import { HowItWorksSection } from "@/components/landing/how-it-works-section";
 import { InfrastructureSection } from "@/components/landing/infrastructure-section";
 import { MetricsSection } from "@/components/landing/metrics-section";
-import { IntegrationsSection } from "@/components/landing/integrations-section";
 import { SecuritySection } from "@/components/landing/security-section";
-import { DevelopersSection } from "@/components/landing/developers-section";
-import { TestimonialsSection } from "@/components/landing/testimonials-section";
-import { PricingSection } from "@/components/landing/pricing-section";
+import { ExpertContactSection } from "@/components/landing/expert-contact-section";
 import { AboutSection } from "@/components/landing/about-section";
 import { CtaSection } from "@/components/landing/cta-section";
 import { ContactSection } from "@/components/landing/contact-section";
@@ -23,15 +19,11 @@ export default function Home() {
         <Navigation />
         <HeroSection />
         <FeaturesSection />
-        <IndustriesSection />
         <HowItWorksSection />
         <InfrastructureSection />
         <MetricsSection />
-        <IntegrationsSection />
         <SecuritySection />
-        <DevelopersSection />
-        <TestimonialsSection />
-        <PricingSection />
+        <ExpertContactSection />
         <AboutSection />
         <CtaSection />
         <ContactSection />
