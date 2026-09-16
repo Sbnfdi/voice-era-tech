@@ -14,23 +14,39 @@ import {
 export function ContactSection() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [assignedTicketId, setAssignedTicketId] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
     company: "",
-    seatCount: "11-50 agents",
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrorMessage("");
 
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const res = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Failed to submit inquiry");
+      }
+      setAssignedTicketId(data.inquiry.id);
       setSubmitted(true);
-    }, 800);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Submission error occurred";
+      setErrorMessage(msg);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -145,12 +161,18 @@ export function ContactSection() {
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div>
                     <h3 className="text-2xl font-display tracking-tight text-foreground mb-2">
-                      Send a Direct Transmission
+                      Send Direct Inquiry
                     </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Leave your details below and a senior voice engineer will review your use case and respond today.
+                      Leave your details below and a senior voice engineer will review your operational requirements and respond today.
                     </p>
                   </div>
+
+                  {errorMessage && (
+                    <div className="p-3 text-xs rounded-lg bg-destructive/10 border border-destructive/20 text-destructive">
+                      {errorMessage}
+                    </div>
+                  )}
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
                     <div>
@@ -185,11 +207,10 @@ export function ContactSection() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
-                        Contact Phone *
+                        Contact Phone
                       </label>
                       <input
                         type="tel"
-                        required
                         value={form.phone}
                         onChange={(e) => setForm({ ...form, phone: e.target.value })}
                         placeholder="+1 (555) 123-4567"
@@ -214,22 +235,6 @@ export function ContactSection() {
 
                   <div>
                     <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Estimated Agent Seat Count
-                    </label>
-                    <select
-                      value={form.seatCount}
-                      onChange={(e) => setForm({ ...form, seatCount: e.target.value })}
-                      className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-background text-sm text-foreground focus:outline-none focus:border-foreground transition-colors"
-                    >
-                      <option value="1-10 agents">1 &ndash; 10 agents</option>
-                      <option value="11-50 agents">11 &ndash; 50 agents</option>
-                      <option value="51-200 agents">51 &ndash; 200 agents</option>
-                      <option value="200+ enterprise seats">200+ enterprise seats</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
                       How Can We Help Your Operation? *
                     </label>
                     <textarea
@@ -245,7 +250,7 @@ export function ContactSection() {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-foreground hover:bg-foreground/90 text-background rounded-full h-12 text-sm font-medium transition-all"
+                    className="w-full bg-foreground hover:bg-foreground/90 text-background rounded-full h-12 text-sm font-medium transition-all cursor-pointer"
                   >
                     {isSubmitting ? (
                       <span className="flex items-center justify-center gap-2">
@@ -272,7 +277,7 @@ export function ContactSection() {
                     Thank You, {form.name}
                   </h3>
                   <p className="text-muted-foreground text-sm max-w-md mx-auto leading-relaxed mb-6">
-                    Your inquiry has been assigned ticket ID <strong className="text-foreground font-mono">VET-{Math.floor(100000 + Math.random() * 900000)}</strong>. A voice infrastructure specialist will contact you at <span className="underline text-foreground">{form.email}</span> within 15 minutes.
+                    Your inquiry has been assigned ticket ID <strong className="text-foreground font-mono">{assignedTicketId || `VET-${Math.floor(100000 + Math.random() * 900000)}`}</strong>. An email notification has been transmitted to our engineering desk, and a voice infrastructure specialist will contact you at <span className="underline text-foreground">{form.email}</span> shortly.
                   </p>
                   <Button
                     onClick={() => {
@@ -282,12 +287,11 @@ export function ContactSection() {
                         email: "",
                         phone: "",
                         company: "",
-                        seatCount: "11-50 agents",
                         message: "",
                       });
                     }}
                     variant="outline"
-                    className="rounded-full px-8 h-11 text-sm font-medium"
+                    className="rounded-full px-8 h-11 text-sm font-medium cursor-pointer"
                   >
                     Send Another Message
                   </Button>

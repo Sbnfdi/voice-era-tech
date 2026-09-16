@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useDemoModal } from "./demo-modal-context";
@@ -115,20 +116,14 @@ export function Navigation() {
 
           {/* Desktop CTA */}
           <div className="hidden sm:flex items-center gap-3 md:gap-4">
-            <a 
-              href="#contact" 
-              onClick={(e) => handleNavClick(e, "#contact")}
-              className={`text-foreground/70 hover:text-foreground transition-all duration-300 font-medium ${isScrolled ? "text-xs" : "text-sm"}`}
+            <Link
+              href="/kyc"
+              className={`inline-flex items-center justify-center bg-foreground hover:bg-foreground/90 text-background font-medium rounded-full transition-all duration-300 shadow-sm ${
+                isScrolled ? "px-4 h-8 text-xs" : "px-5 sm:px-6 h-10 text-sm"
+              }`}
             >
-              Client portal
-            </a>
-            <Button
-              onClick={() => openDemo({ interest: "Expert Telephony Consultation" })}
-              size="sm"
-              className={`bg-foreground hover:bg-foreground/90 text-background rounded-full transition-all duration-300 cursor-pointer shadow-sm ${isScrolled ? "px-4 h-8 text-xs" : "px-5 sm:px-6 h-10 text-sm"}`}
-            >
-              Contact with an Expert
-            </Button>
+              Get Started with Us
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -207,31 +202,20 @@ export function Navigation() {
           </div>
           
           {/* Bottom CTAs */}
-          <div className={`flex flex-col sm:flex-row gap-3 pt-6 border-t border-foreground/10 transition-all duration-300 ${
+          <div className={`flex flex-col gap-3 pt-6 border-t border-foreground/10 transition-all duration-300 ${
             isMobileMenuOpen 
               ? "opacity-100 translate-y-0" 
               : "opacity-0 translate-y-4"
           }`}
           style={{ transitionDelay: isMobileMenuOpen ? "250ms" : "0ms" }}
           >
-            <Button 
-              variant="outline" 
-              className="w-full sm:flex-1 rounded-full h-12 text-sm"
-              onClick={(e) => {
-                handleNavClick(e as unknown as React.MouseEvent<HTMLAnchorElement>, "#contact");
-              }}
+            <Link
+              href="/kyc"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="w-full inline-flex items-center justify-center bg-foreground text-background font-medium rounded-full h-12 text-sm shadow-sm hover:bg-foreground/90 transition-colors"
             >
-              Client portal
-            </Button>
-            <Button 
-              className="w-full sm:flex-1 bg-foreground text-background rounded-full h-12 text-sm cursor-pointer"
-              onClick={() => {
-                setIsMobileMenuOpen(false);
-                openDemo({ interest: "Expert Telephony Consultation" });
-              }}
-            >
-              Contact with an Expert
-            </Button>
+              Get Started with Us
+            </Link>
           </div>
         </div>
       </div>

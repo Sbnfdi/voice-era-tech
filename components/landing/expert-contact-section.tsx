@@ -76,7 +76,7 @@ export function ExpertContactSection() {
             </span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-6xl font-display tracking-tight text-foreground leading-[1.05] mb-4 sm:mb-6">
-            Contact with an Expert
+            Consult with an Expert
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
             Skip sales gatekeepers. Speak directly with senior VoIP architects and telephony engineers who can review your call center volume, SIP routing requirements, and dialer infrastructure in detail.

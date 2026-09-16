@@ -12,8 +12,8 @@ const footerLinks = {
     { name: "Direct CLI VoIP Routes", href: "#features" },
     { name: "Wholesale SIP Trunking", href: "#features" },
     { name: "Predictive & Power Dialers", href: "#how-it-works" },
-    { name: "Global Voice PoPs", href: "#network" },
-    { name: "Contact with an Expert", href: "#expert" },
+    { name: "Carrier KYC Onboarding", href: "/kyc" },
+    { name: "Consult with an Expert", href: "#expert" },
   ],
   Platform: [
     { name: "SIP Interconnect", href: "#features" },
@@ -24,8 +24,9 @@ const footerLinks = {
   Company: [
     { name: "About Voice Era", href: "#about" },
     { name: "Network Status (24/5)", href: "#network" },
-    { name: "Expert Consultation", href: "#expert" },
+    { name: "Consult with an Expert", href: "#expert" },
     { name: "Direct Sales & Support", href: "#contact" },
+    { name: "Admin Portal", href: "/admin" },
   ],
   Legal: [
     { name: "TCPA & FDCPA Safeguards", href: "#security" },
@@ -37,6 +38,8 @@ const footerLinks = {
 const socialLinks = [
   { name: "LinkedIn", href: "https://www.linkedin.com" },
   { name: "FB", href: "https://www.facebook.com" },
+  { name: "Instagram", href: "https://www.instagram.com" },
+  { name: "TikTok", href: "https://www.tiktok.com" },
 ];
 
 export function FooterSection() {
