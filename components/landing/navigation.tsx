@@ -63,7 +63,7 @@ export function Navigation() {
       <nav 
         className={`mx-auto transition-all duration-500 ${
           isScrolled || isMobileMenuOpen
-            ? "bg-background/90 backdrop-blur-xl border border-foreground/10 rounded-2xl shadow-xl max-w-[1200px]"
+            ? "bg-background/90 backdrop-blur-xl border border-primary/20 rounded-2xl shadow-[0_10px_35px_-10px_rgba(0,0,0,0.7)] max-w-[1200px]"
             : "bg-transparent max-w-[1400px]"
         }`}
       >
@@ -74,7 +74,7 @@ export function Navigation() {
         >
           {/* Official Logo & Brand */}
           <a href="#" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
-            <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-xl overflow-hidden border border-foreground/20 bg-black shadow-md flex items-center justify-center shrink-0 group-hover:border-foreground/40 transition-colors">
+            <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-xl overflow-hidden border border-primary/30 bg-black shadow-[0_0_15px_rgba(223,183,108,0.15)] flex items-center justify-center shrink-0 group-hover:border-primary/60 transition-colors">
               <Image 
                 src="/logo.png" 
                 alt="Voice Era Tech LLC" 
@@ -87,9 +87,9 @@ export function Navigation() {
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5">
                 <span className={`font-display font-medium tracking-tight transition-all duration-500 text-foreground ${isScrolled ? "text-lg sm:text-xl" : "text-xl sm:text-2xl"}`}>
-                  Voice Era Tech
+                  Voice <span className="text-gold-gradient">Era</span> Tech
                 </span>
-                <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-muted-foreground border border-foreground/15 rounded px-1 py-0.5 hidden xs:inline-block">
+                <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-[#DFB76C] bg-[#DFB76C]/10 border border-[#DFB76C]/30 rounded px-1.5 py-0.5 hidden xs:inline-block">
                   LLC
                 </span>
               </div>
@@ -106,10 +106,10 @@ export function Navigation() {
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className="text-sm font-medium text-foreground/75 hover:text-foreground transition-colors duration-200 relative group py-1"
+                className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors duration-200 relative group py-1"
               >
                 {link.name}
-                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-foreground transition-all duration-300 group-hover:w-full" />
+                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-gradient-to-r from-[#DFB76C] to-[#F5D77F] transition-all duration-300 group-hover:w-full" />
               </a>
             ))}
           </div>
@@ -118,7 +118,7 @@ export function Navigation() {
           <div className="hidden sm:flex items-center gap-3 md:gap-4">
             <Link
               href="/kyc"
-              className={`inline-flex items-center justify-center bg-foreground hover:bg-foreground/90 text-background font-medium rounded-full transition-all duration-300 shadow-sm ${
+              className={`inline-flex items-center justify-center bg-gold-gradient text-primary-foreground font-semibold rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(223,183,108,0.25)] hover:brightness-110 ${
                 isScrolled ? "px-4 h-8 text-xs" : "px-5 sm:px-6 h-10 text-sm"
               }`}
             >
@@ -155,7 +155,7 @@ export function Navigation() {
           {/* Top Bar inside Mobile Menu */}
           <div className="flex items-center justify-between pb-6 border-b border-foreground/10">
             <div className="flex items-center gap-3">
-              <div className="relative w-9 h-9 rounded-xl overflow-hidden border border-foreground/20 bg-black shadow-sm flex items-center justify-center">
+              <div className="relative w-9 h-9 rounded-xl overflow-hidden border border-primary/30 bg-black shadow-[0_0_15px_rgba(223,183,108,0.15)] flex items-center justify-center">
                 <Image 
                   src="/logo.png" 
                   alt="Voice Era Tech LLC" 
@@ -166,7 +166,7 @@ export function Navigation() {
               </div>
               <div>
                 <span className="font-display text-xl font-medium tracking-tight text-foreground block">
-                  Voice Era Tech
+                  Voice <span className="text-gold-gradient">Era</span> Tech
                 </span>
                 <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest block">
                   VoIP Routes & Dialers
@@ -189,7 +189,7 @@ export function Navigation() {
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className={`text-3xl sm:text-4xl font-display text-foreground hover:text-muted-foreground transition-all duration-300 py-1 ${
+                className={`text-3xl sm:text-4xl font-display text-foreground hover:text-[#DFB76C] transition-all duration-300 py-1 ${
                   isMobileMenuOpen 
                     ? "opacity-100 translate-y-0" 
                     : "opacity-0 translate-y-4"
@@ -212,7 +212,7 @@ export function Navigation() {
             <Link
               href="/kyc"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="w-full inline-flex items-center justify-center bg-foreground text-background font-medium rounded-full h-12 text-sm shadow-sm hover:bg-foreground/90 transition-colors"
+              className="w-full inline-flex items-center justify-center bg-gold-gradient text-primary-foreground font-semibold rounded-full h-12 text-sm shadow-[0_0_20px_rgba(223,183,108,0.25)] hover:brightness-110 transition-all"
             >
               Get Started with Us
             </Link>

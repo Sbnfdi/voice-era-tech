@@ -39,11 +39,11 @@ export function HeroSection() {
       </div>
       
       {/* Subtle grid lines */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
         {[...Array(8)].map((_, i) => (
           <div
             key={`h-${i}`}
-            className="absolute h-px bg-foreground/10"
+            className="absolute h-px bg-primary/20"
             style={{
               top: `${12.5 * (i + 1)}%`,
               left: 0,
@@ -54,7 +54,7 @@ export function HeroSection() {
         {[...Array(12)].map((_, i) => (
           <div
             key={`v-${i}`}
-            className="absolute w-px bg-foreground/10"
+            className="absolute w-px bg-primary/20"
             style={{
               left: `${8.33 * (i + 1)}%`,
               top: 0,
@@ -71,8 +71,8 @@ export function HeroSection() {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
-          <span className="inline-flex items-center gap-2 sm:gap-3 text-xs sm:text-sm font-mono text-muted-foreground">
-            <span className="w-6 sm:w-8 h-px bg-foreground/30" />
+          <span className="inline-flex items-center gap-2 sm:gap-3 text-xs sm:text-sm font-mono text-muted-foreground bg-primary/5 border border-primary/20 px-3.5 py-1.5 rounded-full">
+            <span className="w-2 h-2 rounded-full bg-[#DFB76C] animate-pulse" />
             Carrier-Grade VoIP Routes & Wholesale Voice Termination
           </span>
         </div>
@@ -90,7 +90,7 @@ export function HeroSection() {
               <span className="relative inline-block">
                 <span 
                   key={wordIndex}
-                  className="inline-flex"
+                  className="inline-flex text-gold-gradient"
                 >
                   {words[wordIndex].split("").map((char, i) => (
                     <span
@@ -104,7 +104,7 @@ export function HeroSection() {
                     </span>
                   ))}
                 </span>
-                <span className="absolute -bottom-1.5 sm:-bottom-2 left-0 right-0 h-2 sm:h-3 bg-foreground/10" />
+                <span className="absolute -bottom-1.5 sm:-bottom-2 left-0 right-0 h-2 sm:h-3 bg-gradient-to-r from-[#DFB76C]/30 to-[#F5D77F]/50 rounded-full blur-[2px]" />
               </span>
             </span>
           </h1>
@@ -129,7 +129,7 @@ export function HeroSection() {
             <Button 
               size="lg" 
               onClick={() => openDemo({ interest: "Direct VoIP Routes & SIP Trunking" })}
-              className="w-full sm:w-auto justify-center bg-foreground hover:bg-foreground/90 text-background px-8 h-12 sm:h-14 text-sm sm:text-base rounded-full group cursor-pointer shadow-sm"
+              className="w-full sm:w-auto justify-center bg-gold-gradient hover:brightness-110 text-primary-foreground font-semibold px-8 h-12 sm:h-14 text-sm sm:text-base rounded-full group cursor-pointer shadow-[0_0_30px_rgba(223,183,108,0.3)] transition-all"
             >
               Get VoIP Routes & Demo
               <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
@@ -138,7 +138,7 @@ export function HeroSection() {
               size="lg" 
               variant="outline" 
               onClick={() => scrollToSection("features")}
-              className="w-full sm:w-auto justify-center h-12 sm:h-14 px-8 text-sm sm:text-base rounded-full border-foreground/20 hover:bg-foreground/5 cursor-pointer"
+              className="w-full sm:w-auto justify-center h-12 sm:h-14 px-8 text-sm sm:text-base rounded-full border-primary/30 hover:border-primary/60 hover:bg-primary/10 text-foreground cursor-pointer transition-all"
             >
               Explore VoIP Routes
             </Button>
@@ -163,10 +163,10 @@ export function HeroSection() {
                 { value: "10K+", label: "dialer agents supported", company: "VOICE ERA" },
               ].map((stat, statIndex) => (
                 <div key={`${stat.company}-${i}-${statIndex}`} className="flex items-baseline gap-2 sm:gap-4">
-                  <span className="text-3xl sm:text-4xl lg:text-5xl font-display">{stat.value}</span>
+                  <span className="text-3xl sm:text-4xl lg:text-5xl font-display text-gold-gradient">{stat.value}</span>
                   <span className="text-xs sm:text-sm text-muted-foreground">
                     {stat.label}
-                    <span className="block font-mono text-[10px] sm:text-xs mt-0.5 sm:mt-1">{stat.company}</span>
+                    <span className="block font-mono text-[10px] sm:text-xs text-[#DFB76C]/70 mt-0.5 sm:mt-1">{stat.company}</span>
                   </span>
                 </div>
               ))}

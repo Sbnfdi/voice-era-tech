@@ -74,10 +74,14 @@ export function AnimatedSphere() {
       // Sort by z for depth
       points.sort((a, b) => a.z - b.z);
 
-      // Draw points
+      // Draw points with metallic gold & champagne shimmer
       points.forEach((point) => {
-        const alpha = 0.2 + (point.z + 1) * 0.4;
-        ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
+        const alpha = Math.min(Math.max(0.15, 0.2 + (point.z + 1) * 0.35), 0.95);
+        if (point.z > 0.4) {
+          ctx.fillStyle = `rgba(245, 215, 127, ${alpha})`;
+        } else {
+          ctx.fillStyle = `rgba(223, 183, 108, ${alpha})`;
+        }
         ctx.fillText(point.char, point.x, point.y);
       });
 

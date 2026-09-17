@@ -36,16 +36,16 @@ export function CtaSection() {
     <section ref={sectionRef} className="relative py-16 sm:py-24 lg:py-32 overflow-hidden">
       <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
         <div
-          className={`relative border border-foreground transition-all duration-1000 ${
+          className={`relative border border-primary/30 rounded-3xl bg-card/40 overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] transition-all duration-1000 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
           onMouseMove={handleMouseMove}
         >
-          {/* Spotlight effect */}
+          {/* Gold Spotlight effect */}
           <div 
-            className="absolute inset-0 opacity-10 pointer-events-none transition-opacity duration-300"
+            className="absolute inset-0 opacity-25 pointer-events-none transition-opacity duration-300"
             style={{
-              background: `radial-gradient(600px circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(0,0,0,0.15), transparent 40%)`
+              background: `radial-gradient(600px circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(223,183,108,0.25), transparent 50%)`
             }}
           />
           
@@ -56,7 +56,7 @@ export function CtaSection() {
                 <h2 className="text-3xl sm:text-5xl lg:text-7xl font-display tracking-tight mb-6 sm:mb-8 leading-[0.95]">
                   Ready to elevate
                   <br />
-                  your voice routes?
+                  <span className="text-gold-gradient">your voice routes?</span>
                 </h2>
 
                 <p className="text-base sm:text-xl text-muted-foreground mb-8 sm:mb-12 leading-relaxed max-w-xl">
@@ -67,7 +67,7 @@ export function CtaSection() {
                   <Button
                     size="lg"
                     onClick={() => openDemo({ interest: "Direct VoIP Routes & SIP Trunking" })}
-                    className="w-full sm:w-auto justify-center bg-foreground hover:bg-foreground/90 text-background px-8 h-12 sm:h-14 text-sm sm:text-base rounded-full group cursor-pointer shadow-sm"
+                    className="w-full sm:w-auto justify-center bg-gold-gradient hover:brightness-110 text-primary-foreground font-semibold px-8 h-12 sm:h-14 text-sm sm:text-base rounded-full group cursor-pointer shadow-[0_0_30px_rgba(223,183,108,0.3)] transition-all"
                   >
                     Test Routes & Book Demo
                     <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
@@ -81,7 +81,7 @@ export function CtaSection() {
                         element.scrollIntoView({ behavior: "smooth" });
                       }
                     }}
-                    className="w-full sm:w-auto justify-center h-12 sm:h-14 px-8 text-sm sm:text-base rounded-full border-foreground/20 hover:bg-foreground/5 cursor-pointer"
+                    className="w-full sm:w-auto justify-center h-12 sm:h-14 px-8 text-sm sm:text-base rounded-full border-primary/30 hover:border-primary/60 hover:bg-primary/10 text-foreground cursor-pointer transition-all"
                   >
                     Contact us
                   </Button>
@@ -100,8 +100,8 @@ export function CtaSection() {
           </div>
 
           {/* Decorative corner */}
-          <div className="absolute top-0 right-0 w-32 h-32 border-b border-l border-foreground/10" />
-          <div className="absolute bottom-0 left-0 w-32 h-32 border-t border-r border-foreground/10" />
+          <div className="absolute top-0 right-0 w-32 h-32 border-b border-l border-primary/20 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-32 h-32 border-t border-r border-primary/20 pointer-events-none" />
         </div>
       </div>
     </section>

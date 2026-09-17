@@ -76,7 +76,7 @@ export function ExpertContactSection() {
             </span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-6xl font-display tracking-tight text-foreground leading-[1.05] mb-4 sm:mb-6">
-            Consult with an Expert
+            Consult with an <span className="text-gold-gradient">Expert</span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
             Skip sales gatekeepers. Speak directly with senior VoIP architects and telephony engineers who can review your call center volume, SIP routing requirements, and dialer infrastructure in detail.
@@ -90,16 +90,16 @@ export function ExpertContactSection() {
             return (
               <div 
                 key={area.title}
-                className={`p-6 sm:p-8 rounded-2xl border border-foreground/10 bg-foreground/[0.01] hover:border-foreground/30 hover:bg-foreground/[0.02] transition-all duration-500 flex flex-col justify-between ${
+                className={`p-6 sm:p-8 rounded-2xl border border-primary/20 bg-card/60 hover:border-primary/50 hover:shadow-[0_0_25px_rgba(223,183,108,0.12)] transition-all duration-500 flex flex-col justify-between ${
                   isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                 }`}
                 style={{ transitionDelay: `${i * 120}ms` }}
               >
                 <div>
-                  <div className="w-12 h-12 rounded-xl bg-foreground/5 border border-foreground/10 flex items-center justify-center mb-6 text-foreground">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/25 flex items-center justify-center mb-6 text-primary">
                     <Icon className="w-6 h-6" />
                   </div>
-                  <div className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider mb-1">
+                  <div className="text-[11px] font-mono text-primary uppercase tracking-wider mb-1 font-semibold">
                     {area.tagline}
                   </div>
                   <h3 className="text-xl sm:text-2xl font-display font-medium text-foreground tracking-tight mb-3">
@@ -109,10 +109,10 @@ export function ExpertContactSection() {
                     {area.description}
                   </p>
                   
-                  <div className="space-y-2 mb-8 pt-4 border-t border-foreground/5">
+                  <div className="space-y-2 mb-8 pt-4 border-t border-border">
                     {area.features.map((feat) => (
                       <div key={feat} className="flex items-center gap-2 text-xs font-mono text-muted-foreground">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-foreground shrink-0" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />
                         <span>{feat}</span>
                       </div>
                     ))}
@@ -121,7 +121,7 @@ export function ExpertContactSection() {
 
                 <Button
                   onClick={() => openDemo({ interest: area.interest })}
-                  className="w-full bg-foreground text-background hover:bg-foreground/90 rounded-full h-11 text-xs sm:text-sm font-medium group cursor-pointer"
+                  className="w-full bg-gold-gradient text-primary-foreground font-semibold hover:brightness-110 rounded-full h-11 text-xs sm:text-sm shadow-[0_0_20px_rgba(223,183,108,0.2)] group cursor-pointer transition-all"
                 >
                   {area.actionLabel}
                   <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
@@ -132,7 +132,7 @@ export function ExpertContactSection() {
         </div>
 
         {/* Quick Contact Banner */}
-        <div className="rounded-2xl border border-foreground/15 p-6 sm:p-8 lg:p-10 bg-foreground/[0.02] flex flex-col lg:flex-row items-center justify-between gap-6">
+        <div className="rounded-2xl border border-primary/20 p-6 sm:p-8 lg:p-10 bg-card/50 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-[0_0_30px_rgba(0,0,0,0.3)]">
           <div className="space-y-2 text-center lg:text-left">
             <div className="flex items-center justify-center lg:justify-start gap-2">
               <span className="w-2 h-2 rounded-full bg-green-500" />

@@ -165,25 +165,25 @@ export default function KycPage() {
   return (
     <div className="min-h-screen bg-background text-foreground noise-overlay">
       {/* Top Header */}
-      <header className="border-b border-foreground/10 bg-background/90 backdrop-blur-xl sticky top-0 z-50">
+      <header className="border-b border-border bg-background/90 backdrop-blur-xl sticky top-0 z-50">
         <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-xl overflow-hidden border border-foreground/20 bg-black shadow-md flex items-center justify-center shrink-0">
+            <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-xl overflow-hidden border border-primary/30 bg-black shadow-[0_0_15px_rgba(223,183,108,0.15)] flex items-center justify-center shrink-0 group-hover:border-primary/60 transition-colors">
               <Image 
                 src="/logo.png" 
                 alt="Voice Era Tech LLC" 
                 width={40} 
                 height={40} 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover" 
                 priority
               />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="font-display font-medium text-lg sm:text-xl tracking-tight text-foreground">
-                  Voice Era Tech
+                  Voice <span className="text-gold-gradient">Era</span> Tech
                 </span>
-                <span className="text-[9px] font-mono uppercase tracking-widest text-muted-foreground border border-foreground/15 rounded px-1">
+                <span className="text-[9px] font-mono uppercase tracking-widest text-[#DFB76C] bg-[#DFB76C]/10 border border-[#DFB76C]/30 rounded px-1.5 py-0.5">
                   LLC
                 </span>
               </div>
@@ -194,8 +194,8 @@ export default function KycPage() {
           </Link>
 
           <div className="flex items-center gap-4">
-            <div className="hidden md:flex items-center gap-2 text-xs font-mono text-muted-foreground bg-foreground/5 border border-foreground/10 px-3 py-1.5 rounded-full">
-              <Lock className="w-3.5 h-3.5 text-emerald-500" />
+            <div className="hidden md:flex items-center gap-2 text-xs font-mono text-[#DFB76C] bg-primary/10 border border-primary/20 px-3 py-1.5 rounded-full">
+              <Lock className="w-3.5 h-3.5 text-[#DFB76C]" />
               <span>256-Bit Encrypted Carrier Vault</span>
             </div>
             <Link
@@ -940,11 +940,11 @@ export default function KycPage() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full sm:w-auto min-w-[260px] bg-foreground hover:bg-foreground/90 text-background rounded-full h-14 text-sm font-medium transition-all shadow-md cursor-pointer"
+                  className="w-full sm:w-auto min-w-[260px] bg-gold-gradient hover:brightness-110 text-primary-foreground font-semibold rounded-full h-14 text-sm transition-all shadow-[0_0_25px_rgba(223,183,108,0.25)] cursor-pointer"
                 >
                   {isSubmitting ? (
                     <span className="flex items-center gap-2">
-                      <span className="w-4 h-4 border-2 border-background/30 border-t-background rounded-full animate-spin" />
+                      <span className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
                       {submissionProgress || "Processing Onboarding..."}
                     </span>
                   ) : (

@@ -353,15 +353,15 @@ export default function AdminPage() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-background text-foreground flex items-center justify-center p-4 noise-overlay">
-        <div className="w-full max-w-md border border-foreground/15 rounded-3xl p-6 sm:p-10 bg-card shadow-2xl space-y-6">
+        <div className="w-full max-w-md border border-primary/30 rounded-3xl p-6 sm:p-10 bg-card shadow-[0_0_50px_rgba(0,0,0,0.6)] space-y-6">
           <div className="text-center space-y-2">
-            <div className="w-12 h-12 rounded-xl bg-black border border-foreground/20 overflow-hidden mx-auto shadow-md flex items-center justify-center mb-2">
+            <div className="w-12 h-12 rounded-xl bg-black border border-primary/30 overflow-hidden mx-auto shadow-[0_0_15px_rgba(223,183,108,0.2)] flex items-center justify-center mb-2">
               <Image src="/logo.png" alt="Voice Era Tech" width={44} height={44} className="object-cover" />
             </div>
             <h1 className="text-2xl font-display font-medium text-foreground tracking-tight">
-              Voice Era Tech Portal
+              Voice <span className="text-gold-gradient">Era</span> Tech Portal
             </h1>
-            <p className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
+            <p className="text-xs font-mono uppercase tracking-widest text-[#DFB76C]">
               Carrier Admin &bull; Operations Suite
             </p>
           </div>
@@ -405,7 +405,7 @@ export default function AdminPage() {
 
             <Button
               type="submit"
-              className="w-full bg-foreground hover:bg-foreground/90 text-background rounded-full h-11 text-sm font-medium mt-2 cursor-pointer shadow-md"
+              className="w-full bg-gold-gradient hover:brightness-110 text-primary-foreground font-semibold rounded-full h-11 text-sm mt-2 cursor-pointer shadow-[0_0_20px_rgba(223,183,108,0.25)] transition-all"
             >
               Sign In to Command Center
             </Button>
@@ -425,16 +425,16 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-background text-foreground noise-overlay">
       {/* Top App Bar */}
-      <header className="border-b border-foreground/10 bg-background/90 backdrop-blur-xl sticky top-0 z-40">
+      <header className="border-b border-border bg-background/90 backdrop-blur-xl sticky top-0 z-40">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
           <div className="flex items-center gap-3.5">
-            <Link href="/" className="relative w-9 h-9 rounded-xl overflow-hidden border border-foreground/20 bg-black flex items-center justify-center shrink-0">
+            <Link href="/" className="relative w-9 h-9 rounded-xl overflow-hidden border border-primary/30 bg-black flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(223,183,108,0.15)]">
               <Image src="/logo.png" alt="Voice Era Tech LLC" width={36} height={36} className="w-full h-full object-cover" />
             </Link>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-display font-medium text-lg sm:text-xl text-foreground">Voice Era Tech</span>
-                <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20 font-semibold">
+                <span className="font-display font-medium text-lg sm:text-xl text-foreground">Voice <span className="text-gold-gradient">Era</span> Tech</span>
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[#DFB76C] bg-primary/10 px-1.5 py-0.5 rounded border border-primary/25 font-semibold">
                   Admin Command
                 </span>
               </div>

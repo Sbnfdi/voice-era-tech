@@ -273,13 +273,13 @@ function FeatureCard({ feature, index }: { feature: typeof features[0]; index: n
       <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 py-12 lg:py-20 border-b border-foreground/10">
         {/* Number */}
         <div className="shrink-0">
-          <span className="font-mono text-sm text-muted-foreground">{feature.number}</span>
+          <span className="font-mono text-sm text-primary font-semibold">{feature.number}</span>
         </div>
         
         {/* Content */}
         <div className="flex-1 grid lg:grid-cols-2 gap-8 items-center">
           <div>
-            <h3 className="text-3xl lg:text-4xl font-display mb-4 group-hover:translate-x-2 transition-transform duration-500">
+            <h3 className="text-3xl lg:text-4xl font-display mb-4 group-hover:translate-x-2 group-hover:text-primary transition-all duration-500">
               {feature.title}
             </h3>
             <p className="text-lg text-muted-foreground leading-relaxed">
@@ -289,7 +289,7 @@ function FeatureCard({ feature, index }: { feature: typeof features[0]; index: n
           
           {/* Visual */}
           <div className="flex justify-center lg:justify-end">
-            <div className="w-48 h-40 text-foreground">
+            <div className="w-48 h-40 text-primary">
               <AnimatedVisual type={feature.visual} />
             </div>
           </div>
@@ -325,7 +325,7 @@ export function FeaturesSection() {
         {/* Header */}
         <div className="mb-16 lg:mb-24">
           <span className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-6">
-            <span className="w-8 h-px bg-foreground/30" />
+            <span className="w-8 h-px bg-primary" />
             VoIP Routes & Telephony Infrastructure
           </span>
           <h2
@@ -335,7 +335,7 @@ export function FeaturesSection() {
           >
             Direct VoIP routes.
             <br />
-            <span className="text-muted-foreground">High-performance dialers.</span>
+            <span className="text-gold-gradient">High-performance dialers.</span>
           </h2>
         </div>
 

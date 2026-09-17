@@ -19,16 +19,16 @@ interface TermsDialogProps {
 export function TermsDialog({ isOpen, onClose }: TermsDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-[700px] max-h-[88vh] overflow-y-auto p-6 sm:p-8 border border-foreground/20 bg-background shadow-2xl rounded-2xl">
-        <DialogHeader className="space-y-2 text-left pb-4 border-b border-foreground/10">
+      <DialogContent className="sm:max-w-[700px] max-h-[88vh] overflow-y-auto p-6 sm:p-8 border border-primary/30 bg-card shadow-2xl rounded-2xl">
+        <DialogHeader className="space-y-2 text-left pb-4 border-b border-border">
           <div className="inline-flex items-center gap-2">
-            <FileText className="w-4 h-4 text-foreground" />
-            <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
+            <FileText className="w-4 h-4 text-primary" />
+            <span className="text-xs font-mono uppercase tracking-widest text-[#DFB76C]">
               Voice Era Tech LLC &bull; Legal Framework
             </span>
           </div>
           <DialogTitle className="text-2xl sm:text-3xl font-display tracking-tight text-foreground">
-            Terms of Service
+            Terms of <span className="text-gold-gradient">Service</span>
           </DialogTitle>
           <DialogDescription className="text-xs font-mono text-muted-foreground">
             Last Updated: January 2026 &bull; Master Telephony &amp; Infrastructure Agreement
@@ -37,10 +37,10 @@ export function TermsDialog({ isOpen, onClose }: TermsDialogProps) {
 
         <div className="space-y-6 py-4 text-sm text-muted-foreground leading-relaxed">
           {/* CRITICAL CLAUSE: No Money Back Guarantee (Server) */}
-          <div className="p-4 sm:p-5 rounded-xl border-2 border-foreground/20 bg-foreground/[0.03] space-y-2.5">
-            <div className="flex items-center gap-2 text-foreground font-medium">
-              <ShieldAlert className="w-5 h-5 text-amber-500 shrink-0" />
-              <span className="font-display text-base tracking-tight">
+          <div className="p-4 sm:p-5 rounded-xl border border-primary/30 bg-primary/5 space-y-2.5">
+            <div className="flex items-center gap-2 text-primary font-medium">
+              <ShieldAlert className="w-5 h-5 text-[#DFB76C] shrink-0" />
+              <span className="font-display text-base tracking-tight text-foreground">
                 Server &amp; Infrastructure: No Money Back Guarantee
               </span>
             </div>
@@ -86,10 +86,10 @@ export function TermsDialog({ isOpen, onClose }: TermsDialogProps) {
           </section>
         </div>
 
-        <div className="pt-4 border-t border-foreground/10 flex justify-end">
+        <div className="pt-4 border-t border-border flex justify-end">
           <Button
             onClick={onClose}
-            className="rounded-full px-6 bg-foreground text-background hover:bg-foreground/90 text-xs sm:text-sm cursor-pointer"
+            className="rounded-full px-6 bg-gold-gradient text-primary-foreground font-semibold hover:brightness-110 text-xs sm:text-sm cursor-pointer shadow-[0_0_15px_rgba(223,183,108,0.2)]"
           >
             I Understand &amp; Close
           </Button>

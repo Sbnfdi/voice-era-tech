@@ -59,7 +59,7 @@ export function FooterSection() {
             {/* Brand Column */}
             <div className="col-span-2">
               <a href="#" className="inline-flex items-center gap-3.5 mb-6 group">
-                <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-foreground/20 bg-black shadow-md flex items-center justify-center shrink-0 group-hover:border-foreground/40 transition-colors">
+                <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-primary/30 bg-black shadow-[0_0_15px_rgba(223,183,108,0.15)] flex items-center justify-center shrink-0 group-hover:border-primary/60 transition-colors">
                   <Image 
                     src="/logo.png" 
                     alt="Voice Era Tech LLC" 
@@ -69,8 +69,8 @@ export function FooterSection() {
                   />
                 </div>
                 <div>
-                  <div className="text-xl sm:text-2xl font-display font-medium text-foreground tracking-tight">Voice Era Tech</div>
-                  <div className="text-[9px] font-mono uppercase tracking-widest text-muted-foreground">VoIP Routes &amp; Dialer Systems</div>
+                  <div className="text-xl sm:text-2xl font-display font-medium text-foreground tracking-tight">Voice <span className="text-gold-gradient">Era</span> Tech</div>
+                  <div className="text-[9px] font-mono uppercase tracking-widest text-[#DFB76C]">VoIP Routes &amp; Dialer Systems</div>
                 </div>
               </a>
 
@@ -86,10 +86,10 @@ export function FooterSection() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 group"
+                    className="text-sm font-medium text-muted-foreground hover:text-[#DFB76C] transition-colors flex items-center gap-1 group"
                   >
                     {link.name}
-                    <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                    <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-[#DFB76C]" />
                   </a>
                 ))}
               </div>
@@ -98,7 +98,7 @@ export function FooterSection() {
             {/* Link Columns */}
             {Object.entries(footerLinks).map(([title, links]) => (
               <div key={title}>
-                <h3 className="text-sm font-medium mb-6">{title}</h3>
+                <h3 className="text-sm font-medium mb-6 text-foreground">{title}</h3>
                 <ul className="space-y-4">
                   {links.map((link) => (
                     <li key={link.name}>
@@ -106,21 +106,21 @@ export function FooterSection() {
                         <button
                           type="button"
                           onClick={() => setIsTermsOpen(true)}
-                          className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2 cursor-pointer text-left"
+                          className="text-sm text-muted-foreground hover:text-[#DFB76C] transition-colors inline-flex items-center gap-2 cursor-pointer text-left"
                         >
                           {link.name}
                         </button>
                       ) : link.href.startsWith("/") ? (
                         <Link
                           href={link.href}
-                          className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2"
+                          className="text-sm text-muted-foreground hover:text-[#DFB76C] transition-colors inline-flex items-center gap-2"
                         >
                           {link.name}
                         </Link>
                       ) : (
                         <a
                           href={link.href}
-                          className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2"
+                          className="text-sm text-muted-foreground hover:text-[#DFB76C] transition-colors inline-flex items-center gap-2"
                         >
                           {link.name}
                         </a>

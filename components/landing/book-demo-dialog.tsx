@@ -61,14 +61,14 @@ export function BookDemoDialog({ isOpen, onClose, prefill }: BookDemoDialogProps
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-[620px] max-h-[92vh] overflow-y-auto p-5 sm:p-7 border border-foreground/20 bg-background shadow-2xl rounded-2xl">
+      <DialogContent className="sm:max-w-[620px] max-h-[92vh] overflow-y-auto p-5 sm:p-7 border border-primary/30 bg-card shadow-2xl rounded-2xl">
         {isSuccess ? (
           <div className="py-10 sm:py-12 text-center space-y-4">
-            <div className="w-14 h-14 rounded-full bg-foreground text-background mx-auto flex items-center justify-center">
+            <div className="w-14 h-14 rounded-full bg-gold-gradient text-primary-foreground mx-auto flex items-center justify-center shadow-[0_0_25px_rgba(223,183,108,0.3)]">
               <CheckCircle2 className="w-8 h-8" />
             </div>
             <h3 className="text-2xl font-display font-medium text-foreground tracking-tight">
-              Route Test & Demo Request Confirmed
+              Route Test &amp; Demo Request Confirmed
             </h3>
             <p className="text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
               Thank you, <span className="text-foreground font-medium">{formData.fullName}</span>. A senior VoIP solutions engineer has reserved your slot for <span className="text-foreground font-medium">{formData.timeSlot}</span>. We will send test SIP trunk credentials and a calendar invite to <span className="text-foreground font-medium">{formData.workEmail}</span>.
@@ -79,7 +79,7 @@ export function BookDemoDialog({ isOpen, onClose, prefill }: BookDemoDialogProps
                   setIsSuccess(false);
                   onClose();
                 }}
-                className="rounded-full px-8 bg-foreground text-background hover:bg-foreground/90 cursor-pointer"
+                className="rounded-full px-8 bg-gold-gradient text-primary-foreground font-semibold hover:brightness-110 cursor-pointer shadow-[0_0_15px_rgba(223,183,108,0.25)]"
               >
                 Close Window
               </Button>
@@ -87,9 +87,9 @@ export function BookDemoDialog({ isOpen, onClose, prefill }: BookDemoDialogProps
           </div>
         ) : (
           <>
-            <DialogHeader className="space-y-2 text-left pb-2 border-b border-foreground/10">
+            <DialogHeader className="space-y-2 text-left pb-2 border-b border-border">
               <div className="flex items-center gap-3 mb-1">
-                <div className="relative w-9 h-9 rounded-lg overflow-hidden border border-foreground/20 bg-black shrink-0 flex items-center justify-center">
+                <div className="relative w-9 h-9 rounded-lg overflow-hidden border border-primary/30 bg-black shrink-0 flex items-center justify-center shadow-sm">
                   <Image
                     src="/logo.png"
                     alt="Voice Era Tech LLC"
@@ -99,7 +99,7 @@ export function BookDemoDialog({ isOpen, onClose, prefill }: BookDemoDialogProps
                   />
                 </div>
                 <div>
-                  <div className="text-xs font-mono uppercase tracking-widest text-muted-foreground">Voice Era Tech LLC</div>
+                  <div className="text-xs font-mono uppercase tracking-widest text-[#DFB76C]">Voice Era Tech LLC</div>
                   <div className="flex items-center gap-1.5 text-[11px] font-mono text-foreground">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                     <span>Live VoIP Interconnect &amp; Architecture Walkthrough</span>
@@ -107,7 +107,7 @@ export function BookDemoDialog({ isOpen, onClose, prefill }: BookDemoDialogProps
                 </div>
               </div>
               <DialogTitle className="text-2xl md:text-3xl font-display tracking-tight text-foreground">
-                Request Route Test &amp; Demo
+                Request Route Test &amp; <span className="text-gold-gradient">Demo</span>
               </DialogTitle>
               <DialogDescription className="text-sm text-muted-foreground mt-1.5 leading-relaxed">
                 Experience Voice Era Tech&apos;s direct VoIP route architecture, Tier-1 SIP interconnects, and intelligent dialer systems firsthand with a solutions architect.
@@ -263,11 +263,11 @@ export function BookDemoDialog({ isOpen, onClose, prefill }: BookDemoDialogProps
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="bg-foreground hover:bg-foreground/90 text-background rounded-full px-8 h-12 text-sm font-medium transition-all"
+                  className="bg-gold-gradient hover:brightness-110 text-primary-foreground font-semibold rounded-full px-8 h-12 text-sm shadow-[0_0_20px_rgba(223,183,108,0.25)] transition-all cursor-pointer"
                 >
                   {isSubmitting ? (
                     <span className="flex items-center gap-2">
-                      <span className="w-4 h-4 border-2 border-background/30 border-t-background rounded-full animate-spin" />
+                      <span className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
                       Scheduling...
                     </span>
                   ) : (
