@@ -66,17 +66,17 @@ export function PricingSection() {
   const { openDemo } = useDemoModal();
 
   return (
-    <section id="pricing" className="relative py-20 sm:py-28 lg:py-36 border-t border-foreground/10 scroll-mt-16 sm:scroll-mt-20">
+    <section id="pricing" className="relative py-20 sm:py-28 lg:py-36 border-t border-primary/20 scroll-mt-16 sm:scroll-mt-20">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
         {/* Header */}
         <div className="max-w-3xl mb-12 sm:mb-16">
-          <span className="font-mono text-[11px] sm:text-xs tracking-widest text-muted-foreground uppercase block mb-4 sm:mb-6">
-            VoIP & Dialer Pricing
+          <span className="font-mono text-[11px] sm:text-xs tracking-widest text-primary uppercase block mb-4 sm:mb-6">
+            VoIP &amp; Dialer Pricing
           </span>
           <h2 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight text-foreground mb-4 sm:mb-6">
             Transparent VoIP rates.
             <br />
-            <span className="text-muted-foreground">Predictable dialer scaling.</span>
+            <span className="text-gold-gradient">Predictable dialer scaling.</span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-xl leading-relaxed">
             Direct Tier-1 wholesale voice routes with optional hosted dialer seats. No hidden surcharges, no long-term lock-in.
@@ -94,47 +94,47 @@ export function PricingSection() {
           </span>
           <button
             onClick={() => setIsAnnual(!isAnnual)}
-            className="relative w-14 h-7 bg-foreground/10 rounded-full p-1 transition-colors hover:bg-foreground/20 cursor-pointer"
+            className="relative w-14 h-7 bg-primary/20 border border-primary/30 rounded-full p-1 transition-colors hover:bg-primary/30 cursor-pointer"
             aria-label="Toggle annual volume discount"
           >
             <div
-              className={`w-5 h-5 bg-foreground rounded-full transition-transform duration-300 ${
+              className={`w-5 h-5 bg-primary rounded-full transition-transform duration-300 shadow-[0_0_10px_rgba(223,183,108,0.5)] ${
                 isAnnual ? "translate-x-7" : "translate-x-0"
               }`}
             />
           </button>
           <span
             className={`text-sm transition-colors ${
-              isAnnual ? "text-foreground font-medium" : "text-muted-foreground"
+              isAnnual ? "text-primary font-medium" : "text-muted-foreground"
             }`}
           >
             High-Volume Tier
           </span>
           {isAnnual && (
-            <span className="ml-2 px-2 py-0.5 sm:py-1 bg-foreground text-primary-foreground text-xs font-mono rounded">
+            <span className="ml-2 px-2 py-0.5 sm:py-1 bg-primary/20 text-primary border border-primary/30 text-xs font-mono rounded">
               Volume Discount Applied
             </span>
           )}
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-px rounded-2xl md:rounded-none overflow-hidden md:bg-foreground/10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-px rounded-2xl md:rounded-none overflow-hidden md:bg-primary/20">
           {plans.map((plan, idx) => (
             <div
               key={plan.name}
-              className={`relative p-6 sm:p-8 lg:p-12 bg-background border border-foreground/10 md:border-0 rounded-2xl md:rounded-none ${
-                plan.popular ? "md:-my-4 md:py-12 lg:py-16 md:border-2 md:border-foreground md:shadow-xl" : ""
+              className={`relative p-6 sm:p-8 lg:p-12 bg-[#0C0C10] border border-primary/20 md:border-0 rounded-2xl md:rounded-none ${
+                plan.popular ? "md:-my-4 md:py-12 lg:py-16 md:border-2 md:border-primary md:shadow-[0_0_40px_rgba(223,183,108,0.15)] z-10" : ""
               }`}
             >
               {plan.popular && (
-                <span className="absolute -top-3 left-8 px-3 py-1 bg-foreground text-primary-foreground text-xs font-mono uppercase tracking-widest">
+                <span className="absolute -top-3 left-8 px-3 py-1 bg-gold-gradient text-[#09090D] font-bold text-xs font-mono uppercase tracking-widest shadow-md">
                   Most Popular
                 </span>
               )}
 
               {/* Plan Header */}
               <div className="mb-8">
-                <span className="font-mono text-xs text-muted-foreground">
+                <span className="font-mono text-xs text-primary">
                   {String(idx + 1).padStart(2, "0")}
                 </span>
                 <h3 className="font-display text-2xl sm:text-3xl text-foreground mt-2">{plan.name}</h3>
@@ -142,22 +142,22 @@ export function PricingSection() {
               </div>
 
               {/* Price */}
-              <div className="mb-8 pb-8 border-b border-foreground/10">
+              <div className="mb-8 pb-8 border-b border-primary/15">
                 {plan.unitPrice !== null ? (
                   <div>
                     <div className="flex items-baseline gap-1.5">
-                      <span className="font-display text-4xl lg:text-5xl text-foreground">
+                      <span className={`font-display text-4xl lg:text-5xl ${plan.popular ? "text-gold-gradient font-bold" : "text-foreground"}`}>
                         {plan.pricePrefix}
                         {isAnnual ? plan.unitPrice.annual : plan.unitPrice.monthly}
                       </span>
                       <span className="text-xs sm:text-sm text-muted-foreground">{plan.priceSuffix}</span>
                     </div>
-                    <div className="text-xs font-mono text-muted-foreground mt-1.5">{plan.subtext}</div>
+                    <div className="text-xs font-mono text-primary/80 mt-1.5">{plan.subtext}</div>
                   </div>
                 ) : (
                   <div>
                     <span className="font-display text-4xl text-foreground">{plan.pricePrefix}</span>
-                    <div className="text-xs font-mono text-muted-foreground mt-1.5">{plan.subtext}</div>
+                    <div className="text-xs font-mono text-primary/80 mt-1.5">{plan.subtext}</div>
                   </div>
                 )}
               </div>
@@ -166,7 +166,7 @@ export function PricingSection() {
               <ul className="space-y-4 mb-10">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-3">
-                    <Check className="w-4 h-4 text-foreground mt-0.5 shrink-0" />
+                    <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                     <span className="text-sm text-muted-foreground">{feature}</span>
                   </li>
                 ))}
@@ -177,8 +177,8 @@ export function PricingSection() {
                 onClick={() => openDemo({ plan: plan.name, interest: plan.name })}
                 className={`w-full py-4 flex items-center justify-center gap-2 text-sm font-medium transition-all group cursor-pointer ${
                   plan.popular
-                    ? "bg-foreground text-primary-foreground hover:bg-foreground/90"
-                    : "border border-foreground/20 text-foreground hover:border-foreground hover:bg-foreground/5"
+                    ? "bg-gold-gradient text-[#09090D] font-semibold hover:opacity-90 shadow-[0_0_20px_rgba(223,183,108,0.25)]"
+                    : "border border-primary/30 text-foreground hover:border-primary hover:bg-primary/10"
                 }`}
               >
                 {plan.cta}
@@ -193,9 +193,9 @@ export function PricingSection() {
           All routes backed by STIR/SHAKEN Level-A signing, 99.999% SLA, and redundant SIP gateways.{" "}
           <button
             onClick={() => openDemo({ interest: "Direct VoIP Routes & SIP Trunking" })}
-            className="underline underline-offset-4 hover:text-foreground transition-colors cursor-pointer"
+            className="text-primary underline underline-offset-4 hover:brightness-125 transition-colors cursor-pointer"
           >
-            Request route rate sheet & test trunk
+            Request route rate sheet &amp; test trunk
           </button>
         </p>
       </div>

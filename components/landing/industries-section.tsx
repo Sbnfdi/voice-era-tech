@@ -125,18 +125,18 @@ export function IndustriesSection() {
   const activeIndustry = industries.find((i) => i.id === selectedId) || industries[0];
 
   return (
-    <section id="industries" className="relative py-20 sm:py-28 lg:py-36 border-t border-foreground/10 scroll-mt-16 sm:scroll-mt-20">
+    <section id="industries" className="relative py-20 sm:py-28 lg:py-36 border-t border-primary/20 scroll-mt-16 sm:scroll-mt-20">
       <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
         {/* Header */}
         <div className="max-w-3xl mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 mb-3 sm:mb-4">
-            <span className="w-2 h-2 rounded-full bg-foreground" />
-            <span className="font-mono text-[11px] sm:text-xs uppercase tracking-widest text-muted-foreground">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span className="font-mono text-[11px] sm:text-xs uppercase tracking-widest text-primary">
               Industry Verticals &amp; Architectures
             </span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-6xl font-display tracking-tight text-foreground leading-[1.05] mb-4 sm:mb-6">
-            Engineered for High-Velocity Sectors
+            Engineered for <span className="text-gold-gradient">High-Velocity Sectors</span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
             Every vertical operates under distinct traffic patterns, routing compliance, and pacing requirements. Voice Era Tech LLC delivers dedicated VoIP carrier routes and specialized dialer configurations tailored specifically for your operational environment.
@@ -156,14 +156,14 @@ export function IndustriesSection() {
                   onClick={() => setSelectedId(ind.id)}
                   className={`w-full text-left p-3.5 sm:p-5 rounded-xl border transition-all duration-300 flex items-center justify-between group cursor-pointer ${
                     isSelected
-                      ? "border-foreground bg-foreground text-background shadow-md"
-                      : "border-foreground/10 bg-foreground/[0.01] hover:border-foreground/30 text-foreground"
+                      ? "border-primary bg-primary/15 text-foreground shadow-[0_0_20px_rgba(223,183,108,0.15)] ring-1 ring-primary/40"
+                      : "border-primary/15 bg-[#0C0C10]/60 hover:border-primary/40 text-foreground"
                   }`}
                 >
                   <div className="flex items-center gap-3 sm:gap-4">
                     <div
                       className={`w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center transition-colors shrink-0 ${
-                        isSelected ? "bg-background text-foreground" : "bg-foreground/5 text-foreground group-hover:bg-foreground/10"
+                        isSelected ? "bg-primary text-[#09090D] font-bold" : "bg-primary/10 text-primary group-hover:bg-primary/20"
                       }`}
                     >
                       <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -172,7 +172,7 @@ export function IndustriesSection() {
                       <div className="font-medium text-sm sm:text-base tracking-tight">{ind.name}</div>
                       <div
                         className={`text-xs mt-0.5 line-clamp-1 ${
-                          isSelected ? "text-background/80" : "text-muted-foreground"
+                          isSelected ? "text-primary/90" : "text-muted-foreground"
                         }`}
                       >
                         {ind.tagline}
@@ -181,7 +181,7 @@ export function IndustriesSection() {
                   </div>
                   <ArrowRight
                     className={`w-4 h-4 shrink-0 transition-transform ${
-                      isSelected ? "translate-x-1 opacity-100" : "opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5"
+                      isSelected ? "translate-x-1 text-primary opacity-100" : "opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5"
                     }`}
                   />
                 </button>
@@ -191,21 +191,21 @@ export function IndustriesSection() {
 
           {/* Active Industry Deep-Dive Display Card */}
           <div className="lg:col-span-7">
-            <div className="border border-foreground/15 rounded-2xl p-5 sm:p-8 lg:p-12 bg-card relative overflow-hidden shadow-sm">
+            <div className="border border-primary/25 rounded-2xl p-5 sm:p-8 lg:p-12 bg-[#0C0C10] relative overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.5)]">
               {/* Compliance badge */}
-              <div className="mb-4 sm:mb-0 sm:absolute sm:right-4 sm:top-4 inline-block font-mono text-[10px] tracking-widest uppercase border border-foreground/15 px-3 py-1 rounded-full text-muted-foreground bg-background">
+              <div className="mb-4 sm:mb-0 sm:absolute sm:right-4 sm:top-4 inline-block font-mono text-[10px] tracking-widest uppercase border border-primary/30 px-3 py-1 rounded-full text-primary bg-primary/10">
                 {activeIndustry.compliance}
               </div>
 
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-foreground text-background flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary/10 border border-primary/25 text-primary flex items-center justify-center shrink-0">
                   <activeIndustry.icon className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
                 <div>
                   <h3 className="text-xl sm:text-2xl lg:text-3xl font-display tracking-tight text-foreground">
                     {activeIndustry.name}
                   </h3>
-                  <p className="text-xs font-mono text-muted-foreground mt-0.5">
+                  <p className="text-xs font-mono text-primary/80 mt-0.5">
                     Production Architecture &bull; Ready to Deploy
                   </p>
                 </div>
@@ -216,8 +216,8 @@ export function IndustriesSection() {
               </p>
 
               {/* Key Metric Highlight */}
-              <div className="p-5 rounded-xl bg-foreground/[0.03] border border-foreground/10 flex items-baseline gap-4 mb-8">
-                <span className="text-4xl lg:text-5xl font-display text-foreground font-semibold">
+              <div className="p-5 rounded-xl bg-[#08080B] border border-primary/20 flex items-baseline gap-4 mb-8">
+                <span className="text-4xl lg:text-5xl font-display text-gold-gradient font-bold">
                   {activeIndustry.metric.value}
                 </span>
                 <span className="text-sm font-mono text-muted-foreground">
@@ -230,16 +230,16 @@ export function IndustriesSection() {
 
               {/* Feature Highlights */}
               <div className="space-y-3 mb-10">
-                <div className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                <div className="text-xs font-mono uppercase tracking-wider text-primary">
                   Vertical Capabilities
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {activeIndustry.features.map((feat, i) => (
                     <div
                       key={i}
-                      className="flex items-start gap-2.5 text-sm text-foreground/90 p-3 rounded-lg border border-foreground/5 bg-foreground/[0.01]"
+                      className="flex items-start gap-2.5 text-sm text-foreground/90 p-3 rounded-lg border border-primary/15 bg-primary/[0.03]"
                     >
-                      <CheckCircle2 className="w-4 h-4 text-foreground shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
                       <span className="text-xs leading-snug">{feat}</span>
                     </div>
                   ))}
@@ -247,17 +247,17 @@ export function IndustriesSection() {
               </div>
 
               {/* Action */}
-              <div className="flex flex-col sm:flex-row items-center gap-4 pt-4 border-t border-foreground/10">
+              <div className="flex flex-col sm:flex-row items-center gap-4 pt-4 border-t border-primary/15">
                 <Button
                   onClick={() => openDemo({ interest: activeIndustry.name })}
-                  className="w-full sm:w-auto bg-foreground hover:bg-foreground/90 text-background rounded-full px-8 h-12 text-sm font-medium group"
+                  className="w-full sm:w-auto bg-gold-gradient hover:opacity-90 text-[#09090D] font-semibold rounded-full px-8 h-12 text-sm shadow-[0_0_20px_rgba(223,183,108,0.25)] group cursor-pointer"
                 >
                   Book {activeIndustry.name.split(" ")[0]} Demo
                   <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                 </Button>
                 <a
                   href="#contact"
-                  className="text-xs text-muted-foreground hover:text-foreground underline underline-offset-4 transition-colors font-mono"
+                  className="text-xs text-muted-foreground hover:text-primary underline underline-offset-4 transition-colors font-mono"
                 >
                   Request custom compliance brief
                 </a>

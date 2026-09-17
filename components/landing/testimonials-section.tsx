@@ -51,15 +51,15 @@ export function TestimonialsSection() {
   const activeTestimonial = testimonials[activeIndex];
 
   return (
-    <section className="relative py-20 sm:py-28 lg:py-36 border-t border-foreground/10 lg:pb-14">
+    <section className="relative py-20 sm:py-28 lg:py-36 border-t border-primary/20 lg:pb-14">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
         {/* Section Label */}
         <div className="flex items-center gap-4 mb-12 sm:mb-16">
-          <span className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
+          <span className="font-mono text-xs tracking-widest text-primary uppercase">
             What call leaders say
           </span>
-          <div className="flex-1 h-px bg-foreground/10" />
-          <span className="font-mono text-xs text-muted-foreground">
+          <div className="flex-1 h-px bg-primary/20" />
+          <span className="font-mono text-xs text-primary/80">
             {String(activeIndex + 1).padStart(2, "0")} / {String(testimonials.length).padStart(2, "0")}
           </span>
         </div>
@@ -83,8 +83,8 @@ export function TestimonialsSection() {
                 isAnimating ? "opacity-0" : "opacity-100"
               }`}
             >
-              <div className="w-16 h-16 rounded-full bg-foreground/5 border border-foreground/10 flex items-center justify-center">
-                <span className="font-display text-2xl text-foreground">
+              <div className="w-16 h-16 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
+                <span className="font-display text-2xl text-primary font-bold">
                   {activeTestimonial.author.charAt(0)}
                 </span>
               </div>
@@ -100,14 +100,14 @@ export function TestimonialsSection() {
           {/* Metric Highlight */}
           <div className="lg:col-span-4 flex flex-col justify-center">
             <div
-              className={`p-8 border border-foreground/10 transition-all duration-300 ${
+              className={`p-8 border border-primary/25 bg-[#0C0C10] rounded-2xl shadow-[0_0_25px_rgba(0,0,0,0.5)] transition-all duration-300 ${
                 isAnimating ? "opacity-0 scale-95" : "opacity-100 scale-100"
               }`}
             >
-              <span className="font-mono text-xs tracking-widest text-muted-foreground uppercase block mb-4">
+              <span className="font-mono text-xs tracking-widest text-primary uppercase block mb-4">
                 Key Result
               </span>
-              <p className="font-display text-3xl md:text-4xl text-foreground">
+              <p className="font-display text-3xl md:text-4xl text-gold-gradient font-bold">
                 {activeTestimonial.metric}
               </p>
             </div>
@@ -124,10 +124,10 @@ export function TestimonialsSection() {
                       setIsAnimating(false);
                     }, 300);
                   }}
-                  className={`h-2 transition-all duration-300 ${
+                  className={`h-2 transition-all duration-300 rounded-full ${
                     idx === activeIndex
-                      ? "w-8 bg-foreground"
-                      : "w-2 bg-foreground/20 hover:bg-foreground/40"
+                      ? "w-8 bg-gold-gradient shadow-[0_0_10px_rgba(223,183,108,0.5)]"
+                      : "w-2 bg-primary/25 hover:bg-primary/50"
                   }`}
                 />
               ))}
@@ -136,7 +136,7 @@ export function TestimonialsSection() {
         </div>
 
         {/* Company Logos Marquee Label */}
-        <div className="mt-24 pt-12 border-t border-foreground/10">
+        <div className="mt-24 pt-12 border-t border-primary/20">
           <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase mb-8 text-center">
             Trusted by forward-thinking teams
           </p>

@@ -69,17 +69,17 @@ export function HowItWorksSection() {
     <section
       id="how-it-works"
       ref={sectionRef}
-      className="relative py-24 lg:py-32 bg-foreground text-background overflow-hidden"
+      className="relative py-24 lg:py-32 bg-[#0C0C10] border-y border-primary/20 text-foreground overflow-hidden"
     >
-      {/* Diagonal lines pattern */}
+      {/* Subtle gold diagonal grid pattern */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
         <div className="absolute inset-0" style={{
           backgroundImage: `repeating-linear-gradient(
             -45deg,
             transparent,
             transparent 40px,
-            currentColor 40px,
-            currentColor 41px
+            rgba(223, 183, 108, 0.4) 40px,
+            rgba(223, 183, 108, 0.4) 41px
           )`
         }} />
       </div>
@@ -87,18 +87,18 @@ export function HowItWorksSection() {
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12">
         {/* Header */}
         <div className="mb-16 lg:mb-24">
-          <span className="inline-flex items-center gap-3 text-sm font-mono text-background/50 mb-6">
-            <span className="w-8 h-px bg-background/30" />
+          <span className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-6">
+            <span className="w-8 h-px bg-primary" />
             Routing Architecture
           </span>
           <h2
-            className={`text-4xl lg:text-6xl font-display tracking-tight transition-all duration-700 ${
+            className={`text-4xl lg:text-6xl font-display tracking-tight text-foreground transition-all duration-700 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             From SIP interconnect.
             <br />
-            <span className="text-background/50">To high-volume execution.</span>
+            <span className="text-gold-gradient">To high-volume execution.</span>
           </h2>
         </div>
 
@@ -111,25 +111,29 @@ export function HowItWorksSection() {
                 key={step.number}
                 type="button"
                 onClick={() => setActiveStep(index)}
-                className={`w-full text-left py-8 border-b border-background/10 transition-all duration-500 group ${
-                  activeStep === index ? "opacity-100" : "opacity-40 hover:opacity-70"
+                className={`w-full text-left py-8 border-b border-border transition-all duration-500 group cursor-pointer ${
+                  activeStep === index ? "opacity-100" : "opacity-40 hover:opacity-75"
                 }`}
               >
                 <div className="flex items-start gap-6">
-                  <span className="font-display text-3xl text-background/30">{step.number}</span>
+                  <span className={`font-display text-3xl transition-colors duration-300 ${
+                    activeStep === index ? "text-primary font-semibold" : "text-muted-foreground/40"
+                  }`}>
+                    {step.number}
+                  </span>
                   <div className="flex-1">
-                    <h3 className="text-2xl lg:text-3xl font-display mb-3 group-hover:translate-x-2 transition-transform duration-300">
+                    <h3 className="text-2xl lg:text-3xl font-display mb-3 text-foreground group-hover:translate-x-2 group-hover:text-primary transition-all duration-300">
                       {step.title}
                     </h3>
-                    <p className="text-background/60 leading-relaxed">
+                    <p className="text-muted-foreground leading-relaxed">
                       {step.description}
                     </p>
                     
                     {/* Progress indicator */}
                     {activeStep === index && (
-                      <div className="mt-4 h-px bg-background/20 overflow-hidden">
+                      <div className="mt-4 h-0.5 bg-primary/20 overflow-hidden rounded-full">
                         <div 
-                          className="h-full bg-background w-0"
+                          className="h-full bg-gold-gradient w-0"
                           style={{
                             animation: 'progress 5s linear forwards'
                           }}
@@ -144,20 +148,20 @@ export function HowItWorksSection() {
 
           {/* Code display */}
           <div className="lg:sticky lg:top-32 self-start">
-            <div className="border border-background/10 overflow-hidden">
+            <div className="border border-primary/30 rounded-2xl bg-[#08080B] shadow-[0_0_40px_rgba(0,0,0,0.7)] overflow-hidden backdrop-blur-md">
               {/* Window header */}
-              <div className="px-6 py-4 border-b border-background/10 flex items-center justify-between">
+              <div className="px-6 py-4 border-b border-primary/20 bg-primary/5 flex items-center justify-between">
                 <div className="flex gap-2">
-                  <div className="w-3 h-3 rounded-full bg-background/20" />
-                  <div className="w-3 h-3 rounded-full bg-background/20" />
-                  <div className="w-3 h-3 rounded-full bg-background/20" />
+                  <div className="w-3 h-3 rounded-full bg-primary/40" />
+                  <div className="w-3 h-3 rounded-full bg-primary/30" />
+                  <div className="w-3 h-3 rounded-full bg-primary/20" />
                 </div>
-                <span className="text-xs font-mono text-background/40">workflow.ts</span>
+                <span className="text-xs font-mono text-[#DFB76C]">telephony-pipeline.ts</span>
               </div>
 
               {/* Code content */}
               <div className="p-8 font-mono text-sm min-h-[280px]">
-                <pre className="text-background/70">
+                <pre className="text-[#E2E8F0]">
                   {steps[activeStep].code.split('\n').map((line, lineIndex) => (
                     <div 
                       key={`${activeStep}-${lineIndex}`} 
@@ -166,7 +170,7 @@ export function HowItWorksSection() {
                         animationDelay: `${lineIndex * 80}ms`,
                       }}
                     >
-                      <span className="text-background/20 select-none w-8 inline-block">{lineIndex + 1}</span>
+                      <span className="text-primary/40 select-none w-8 inline-block">{lineIndex + 1}</span>
                       <span className="inline-flex">
                         {line.split('').map((char, charIndex) => (
                           <span
@@ -186,9 +190,9 @@ export function HowItWorksSection() {
               </div>
 
               {/* Status */}
-              <div className="px-6 py-4 border-t border-background/10 flex items-center gap-3">
-                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                <span className="text-xs font-mono text-background/40">Ready</span>
+              <div className="px-6 py-4 border-t border-primary/20 bg-primary/5 flex items-center gap-3">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-xs font-mono text-muted-foreground">Carrier Route Active &bull; SIP Trunk Interconnected</span>
               </div>
             </div>
           </div>

@@ -34,7 +34,7 @@ export function IntegrationsSection() {
   }, []);
 
   return (
-    <section id="integrations" ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="integrations" ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden border-t border-primary/20">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         {/* Header */}
         <div
@@ -42,18 +42,18 @@ export function IntegrationsSection() {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <span className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-6">
-            <span className="w-8 h-px bg-foreground/30" />
+          <span className="inline-flex items-center gap-3 text-sm font-mono text-primary mb-6">
+            <span className="w-8 h-px bg-primary" />
             Integrations
-            <span className="w-8 h-px bg-foreground/30" />
+            <span className="w-8 h-px bg-primary" />
           </span>
           <h2 className="text-4xl lg:text-6xl font-display tracking-tight mb-6">
             Fits the tools you already use
             <br />
-            you already use.
+            <span className="text-gold-gradient">across your voice stack.</span>
           </h2>
           <p className="text-xl text-muted-foreground">
-            200+ pre-built integrations. Connect your entire stack in minutes.
+            200+ pre-built integrations. Connect your entire telephony stack in minutes.
           </p>
         </div>
 
@@ -67,9 +67,9 @@ export function IntegrationsSection() {
               {integrations.map((integration) => (
                 <div
                   key={`${integration.name}-${setIndex}`}
-                  className="shrink-0 px-8 py-6 border border-foreground/10 hover:border-foreground/30 hover:bg-foreground/[0.02] transition-all duration-300 group"
+                  className="shrink-0 px-8 py-6 rounded-xl border border-primary/20 bg-card/40 hover:border-primary/50 hover:bg-card/80 hover:shadow-[0_0_20px_rgba(223,183,108,0.1)] transition-all duration-300 group"
                 >
-                  <div className="text-lg font-medium group-hover:translate-x-1 transition-transform">
+                  <div className="text-lg font-medium text-foreground group-hover:text-primary group-hover:translate-x-1 transition-all">
                     {integration.name}
                   </div>
                   <div className="text-sm text-muted-foreground">{integration.category}</div>
@@ -88,9 +88,9 @@ export function IntegrationsSection() {
               {[...integrations].reverse().map((integration) => (
                 <div
                   key={`${integration.name}-reverse-${setIndex}`}
-                  className="shrink-0 px-8 py-6 border border-foreground/10 hover:border-foreground/30 hover:bg-foreground/[0.02] transition-all duration-300 group"
+                  className="shrink-0 px-8 py-6 rounded-xl border border-primary/20 bg-card/40 hover:border-primary/50 hover:bg-card/80 hover:shadow-[0_0_20px_rgba(223,183,108,0.1)] transition-all duration-300 group"
                 >
-                  <div className="text-lg font-medium group-hover:translate-x-1 transition-transform">
+                  <div className="text-lg font-medium text-foreground group-hover:text-primary group-hover:translate-x-1 transition-all">
                     {integration.name}
                   </div>
                   <div className="text-sm text-muted-foreground">{integration.category}</div>

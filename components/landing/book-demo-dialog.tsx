@@ -126,7 +126,7 @@ export function BookDemoDialog({ isOpen, onClose, prefill }: BookDemoDialogProps
                     value={formData.fullName}
                     onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                     placeholder="Sarah Connor"
-                    className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-foreground transition-colors"
+                    className="w-full h-11 px-3.5 rounded-lg border border-primary/20 bg-[#08080B] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-colors"
                   />
                 </div>
 
@@ -140,7 +140,7 @@ export function BookDemoDialog({ isOpen, onClose, prefill }: BookDemoDialogProps
                     value={formData.workEmail}
                     onChange={(e) => setFormData({ ...formData, workEmail: e.target.value })}
                     placeholder="sarah@enterprise.com"
-                    className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-foreground transition-colors"
+                    className="w-full h-11 px-3.5 rounded-lg border border-primary/20 bg-[#08080B] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-colors"
                   />
                 </div>
               </div>
@@ -156,7 +156,7 @@ export function BookDemoDialog({ isOpen, onClose, prefill }: BookDemoDialogProps
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     placeholder="+1 (555) 000-1234"
-                    className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-foreground transition-colors"
+                    className="w-full h-11 px-3.5 rounded-lg border border-primary/20 bg-[#08080B] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-colors"
                   />
                 </div>
 
@@ -170,7 +170,7 @@ export function BookDemoDialog({ isOpen, onClose, prefill }: BookDemoDialogProps
                     value={formData.company}
                     onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                     placeholder="Apex Communications"
-                    className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-foreground transition-colors"
+                    className="w-full h-11 px-3.5 rounded-lg border border-primary/20 bg-[#08080B] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-colors"
                   />
                 </div>
               </div>
@@ -183,7 +183,7 @@ export function BookDemoDialog({ isOpen, onClose, prefill }: BookDemoDialogProps
                   <select
                     value={formData.teamSize}
                     onChange={(e) => setFormData({ ...formData, teamSize: e.target.value })}
-                    className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-background text-sm text-foreground focus:outline-none focus:border-foreground transition-colors"
+                    className="w-full h-11 px-3.5 rounded-lg border border-primary/20 bg-[#08080B] text-sm text-foreground focus:outline-none focus:border-primary transition-colors"
                   >
                     <option value="1-10 agents">1 - 10 agents</option>
                     <option value="11-50 agents">11 - 50 agents</option>
@@ -199,7 +199,7 @@ export function BookDemoDialog({ isOpen, onClose, prefill }: BookDemoDialogProps
                   <select
                     value={formData.interest}
                     onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
-                    className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-background text-sm text-foreground focus:outline-none focus:border-foreground transition-colors"
+                    className="w-full h-11 px-3.5 rounded-lg border border-primary/20 bg-[#08080B] text-sm text-foreground focus:outline-none focus:border-primary transition-colors"
                   >
                     <option value="Direct VoIP Routes & SIP Trunking">Direct VoIP Routes & SIP Trunking</option>
                     <option value="VoIP Routes + Hosted Dialer Suite">VoIP Routes + Hosted Dialer Suite</option>
@@ -220,7 +220,7 @@ export function BookDemoDialog({ isOpen, onClose, prefill }: BookDemoDialogProps
                     type="date"
                     value={formData.date}
                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                    className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground focus:outline-none focus:border-foreground transition-colors"
+                    className="w-full h-11 px-3.5 rounded-lg border border-primary/20 bg-[#08080B] text-sm text-foreground focus:outline-none focus:border-primary transition-colors"
                   />
                 </div>
 
@@ -231,7 +231,7 @@ export function BookDemoDialog({ isOpen, onClose, prefill }: BookDemoDialogProps
                   <select
                     value={formData.timeSlot}
                     onChange={(e) => setFormData({ ...formData, timeSlot: e.target.value })}
-                    className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-background text-sm text-foreground focus:outline-none focus:border-foreground transition-colors"
+                    className="w-full h-11 px-3.5 rounded-lg border border-primary/20 bg-[#08080B] text-sm text-foreground focus:outline-none focus:border-primary transition-colors"
                   >
                     <option value="09:00 AM EST">09:00 AM EST</option>
                     <option value="11:00 AM EST">11:00 AM EST</option>
@@ -251,7 +251,7 @@ export function BookDemoDialog({ isOpen, onClose, prefill }: BookDemoDialogProps
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                   placeholder="e.g. Currently on VICIdial/Five9, looking to integrate with Salesforce..."
-                  className="w-full p-3 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-foreground transition-colors resize-none"
+                  className="w-full p-3 rounded-lg border border-primary/20 bg-[#08080B] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-colors resize-none"
                 />
               </div>
 

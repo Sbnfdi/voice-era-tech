@@ -151,16 +151,16 @@ export function ExpertContactSection() {
           <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full lg:w-auto">
             <a
               href="mailto:sales@voiceeratech.com"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 h-11 rounded-full bg-foreground text-background text-xs sm:text-sm font-medium hover:bg-foreground/90 transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 h-11 rounded-full bg-gold-gradient text-[#09090D] text-xs sm:text-sm font-semibold hover:opacity-90 shadow-[0_0_20px_rgba(223,183,108,0.2)] transition-all cursor-pointer"
             >
               <Mail className="w-4 h-4" />
               Email Sales Desk
             </a>
             <a
               href="#contact"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 h-11 rounded-full border border-foreground/20 text-xs sm:text-sm font-medium hover:bg-foreground/5 transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 h-11 rounded-full border border-primary/30 text-foreground text-xs sm:text-sm font-medium hover:border-primary hover:bg-primary/10 transition-colors"
             >
-              <Headphones className="w-4 h-4" />
+              <Headphones className="w-4 h-4 text-primary" />
               Open Support Ticket
             </a>
           </div>

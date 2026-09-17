@@ -55,17 +55,16 @@ export function SecuritySection() {
             }`}
           >
             <span className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-6">
-              <span className="w-8 h-px bg-foreground/30" />
-              Security
+              <span className="w-8 h-px bg-primary" />
+              Security &bull; STIR/SHAKEN
             </span>
-            <h2 className="text-4xl lg:text-6xl font-display tracking-tight mb-8">
+            <h2 className="text-4xl lg:text-6xl font-display tracking-tight mb-8 text-foreground">
               Trust is
               <br />
-              non-negotiable.
+              <span className="text-gold-gradient">non-negotiable.</span>
             </h2>
             <p className="text-xl text-muted-foreground leading-relaxed mb-12">
-              Enterprise-grade security isn&apos;t optional. It&apos;s built into every layer 
-              of our platform, from infrastructure to application.
+              Carrier-grade compliance isn&apos;t optional. It&apos;s cryptographically engineered into every voice route, from Level-A STIR/SHAKEN attestation to automated National DNC scrubbing.
             </p>
 
             {/* Certifications */}
@@ -73,7 +72,7 @@ export function SecuritySection() {
               {certifications.map((cert, index) => (
                 <span
                   key={cert}
-                  className={`px-4 py-2 border border-foreground/10 text-sm font-mono transition-all duration-500 ${
+                  className={`px-4 py-2 border border-primary/30 bg-primary/5 rounded-full text-xs sm:text-sm font-mono text-[#DFB76C] transition-all duration-500 ${
                     isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                   }`}
                   style={{ transitionDelay: `${index * 50 + 200}ms` }}
@@ -89,20 +88,20 @@ export function SecuritySection() {
             {securityFeatures.map((feature, index) => (
               <div
                 key={feature.title}
-                className={`p-6 border border-foreground/10 hover:border-foreground/20 transition-all duration-500 group ${
+                className={`p-6 border border-primary/20 rounded-2xl bg-card/60 hover:border-primary/50 hover:shadow-[0_0_25px_rgba(223,183,108,0.12)] transition-all duration-500 group ${
                   isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
                 <div className="flex items-start gap-4">
-                  <div className="shrink-0 w-10 h-10 flex items-center justify-center border border-foreground/10 group-hover:bg-foreground group-hover:text-background transition-colors duration-300">
+                  <div className="shrink-0 w-10 h-10 rounded-xl flex items-center justify-center border border-primary/25 bg-primary/10 text-primary group-hover:bg-gold-gradient group-hover:text-primary-foreground transition-all duration-300">
                     <feature.icon className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-medium mb-1 group-hover:translate-x-1 transition-transform duration-300">
+                    <h3 className="text-lg font-medium mb-1 text-foreground group-hover:translate-x-1 group-hover:text-primary transition-all duration-300">
                       {feature.title}
                     </h3>
-                    <p className="text-muted-foreground">{feature.description}</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
                   </div>
                 </div>
               </div>

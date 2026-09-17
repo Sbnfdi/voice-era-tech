@@ -50,18 +50,18 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact" className="relative py-20 sm:py-28 lg:py-36 border-t border-foreground/10 scroll-mt-16 sm:scroll-mt-20">
+    <section id="contact" className="relative py-20 sm:py-28 lg:py-36 border-t border-primary/20 scroll-mt-16 sm:scroll-mt-20">
       <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
         {/* Header */}
         <div className="max-w-3xl mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 mb-3 sm:mb-4">
-            <span className="w-2 h-2 rounded-full bg-foreground" />
-            <span className="font-mono text-[11px] sm:text-xs uppercase tracking-widest text-muted-foreground">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span className="font-mono text-[11px] sm:text-xs uppercase tracking-widest text-primary">
               Direct Contact &amp; Support
             </span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-6xl font-display tracking-tight text-foreground leading-[1.05] mb-4 sm:mb-6">
-            Speak with a Telephony Specialist
+            Speak with a <span className="text-gold-gradient">Telephony Specialist</span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
             Have questions regarding wholesale VoIP routes, test SIP trunks, custom dialer configurations, or carrier rate sheets? Connect directly with our engineering and solutions team.
@@ -74,16 +74,16 @@ export function ContactSection() {
             {/* Direct Details */}
             <div className="space-y-6 pt-2">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-lg bg-foreground/5 flex items-center justify-center text-foreground shrink-0 mt-1">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/25 flex items-center justify-center text-primary shrink-0 mt-1">
                   <Phone className="w-4 h-4" />
                 </div>
                 <div>
-                  <div className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                  <div className="font-mono text-xs uppercase tracking-wider text-primary">
                     Direct Sales &amp; Inquiries
                   </div>
                   <a
                     href="tel:+18005558642"
-                    className="text-lg font-medium text-foreground hover:underline mt-0.5 block"
+                    className="text-lg font-medium text-foreground hover:text-primary transition-colors mt-0.5 block"
                   >
                     +1 (800) 555-VOICE
                   </a>
@@ -93,16 +93,16 @@ export function ContactSection() {
 
               {/* Direct Email - Sales */}
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-lg bg-foreground/5 flex items-center justify-center text-foreground shrink-0 mt-1">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/25 flex items-center justify-center text-primary shrink-0 mt-1">
                   <Mail className="w-4 h-4" />
                 </div>
                 <div>
-                  <div className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                  <div className="font-mono text-xs uppercase tracking-wider text-primary">
                     Direct Sales Email
                   </div>
                   <a
                     href="mailto:sales@voiceeratech.com"
-                    className="text-base sm:text-lg font-medium text-foreground hover:underline mt-0.5 block font-mono"
+                    className="text-base sm:text-lg font-medium text-foreground hover:text-primary transition-colors mt-0.5 block font-mono"
                   >
                     sales@voiceeratech.com
                   </a>
@@ -112,16 +112,16 @@ export function ContactSection() {
 
               {/* Direct Email - Info */}
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-lg bg-foreground/5 flex items-center justify-center text-foreground shrink-0 mt-1">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/25 flex items-center justify-center text-primary shrink-0 mt-1">
                   <Mail className="w-4 h-4" />
                 </div>
                 <div>
-                  <div className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                  <div className="font-mono text-xs uppercase tracking-wider text-primary">
                     General Inquiries &amp; Information
                   </div>
                   <a
                     href="mailto:info@voiceeratech.com"
-                    className="text-base sm:text-lg font-medium text-foreground hover:underline mt-0.5 block font-mono"
+                    className="text-base sm:text-lg font-medium text-foreground hover:text-primary transition-colors mt-0.5 block font-mono"
                   >
                     info@voiceeratech.com
                   </a>
@@ -131,11 +131,11 @@ export function ContactSection() {
 
               {/* NOC & Network Operations - 24/5 */}
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-lg bg-foreground/5 flex items-center justify-center text-foreground shrink-0 mt-1">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/25 flex items-center justify-center text-primary shrink-0 mt-1">
                   <Clock className="w-4 h-4" />
                 </div>
                 <div>
-                  <div className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                  <div className="font-mono text-xs uppercase tracking-wider text-primary">
                     NOC &amp; Network Operations
                   </div>
                   <p className="text-sm font-medium text-foreground mt-0.5">
@@ -148,15 +148,15 @@ export function ContactSection() {
               </div>
             </div>
 
-            <div className="p-4 rounded-xl border border-foreground/10 bg-foreground/[0.01] flex items-center gap-3 text-xs text-muted-foreground font-mono">
-              <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
+            <div className="p-4 rounded-xl border border-primary/20 bg-primary/5 flex items-center gap-3 text-xs text-muted-foreground font-mono">
+              <ShieldCheck className="w-4 h-4 text-primary shrink-0" />
               <span>All communications protected under enterprise NDA &amp; confidential inquiry policy.</span>
             </div>
           </div>
 
           {/* Right Column: Interactive Form */}
           <div className="lg:col-span-7">
-            <div className="border border-foreground/15 rounded-2xl p-5 sm:p-8 lg:p-12 bg-card shadow-sm">
+            <div className="border border-primary/25 rounded-2xl p-5 sm:p-8 lg:p-12 bg-[#0C0C10] shadow-[0_0_40px_rgba(0,0,0,0.5)]">
               {!submitted ? (
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div>
@@ -185,7 +185,7 @@ export function ContactSection() {
                         value={form.name}
                         onChange={(e) => setForm({ ...form, name: e.target.value })}
                         placeholder="Alex Vance"
-                        className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-foreground transition-colors"
+                        className="w-full h-11 px-3.5 rounded-lg border border-primary/20 bg-[#08080B] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-colors"
                       />
                     </div>
 
@@ -199,7 +199,7 @@ export function ContactSection() {
                         value={form.email}
                         onChange={(e) => setForm({ ...form, email: e.target.value })}
                         placeholder="alex@enterprise.com"
-                        className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-foreground transition-colors"
+                        className="w-full h-11 px-3.5 rounded-lg border border-primary/20 bg-[#08080B] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-colors"
                       />
                     </div>
                   </div>
@@ -214,7 +214,7 @@ export function ContactSection() {
                         value={form.phone}
                         onChange={(e) => setForm({ ...form, phone: e.target.value })}
                         placeholder="+1 (555) 123-4567"
-                        className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-foreground transition-colors"
+                        className="w-full h-11 px-3.5 rounded-lg border border-primary/20 bg-[#08080B] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-colors"
                       />
                     </div>
 
@@ -228,7 +228,7 @@ export function ContactSection() {
                         value={form.company}
                         onChange={(e) => setForm({ ...form, company: e.target.value })}
                         placeholder="Global BPO Inc."
-                        className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-foreground transition-colors"
+                        className="w-full h-11 px-3.5 rounded-lg border border-primary/20 bg-[#08080B] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-colors"
                       />
                     </div>
                   </div>
@@ -243,18 +243,18 @@ export function ContactSection() {
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
                       placeholder="Outline your VoIP route requirements, target destinations, concurrent call volume, or current dialer setup..."
-                      className="w-full p-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-foreground transition-colors resize-none"
+                      className="w-full p-3.5 rounded-lg border border-primary/20 bg-[#08080B] text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-colors resize-none"
                     />
                   </div>
 
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-foreground hover:bg-foreground/90 text-background rounded-full h-12 text-sm font-medium transition-all cursor-pointer"
+                    className="w-full bg-gold-gradient hover:opacity-90 text-[#09090D] font-semibold rounded-full h-12 text-sm transition-all cursor-pointer shadow-[0_0_20px_rgba(223,183,108,0.25)]"
                   >
                     {isSubmitting ? (
                       <span className="flex items-center justify-center gap-2">
-                        <span className="w-4 h-4 border-2 border-background/30 border-t-background rounded-full animate-spin" />
+                        <span className="w-4 h-4 border-2 border-[#09090D]/30 border-t-[#09090D] rounded-full animate-spin" />
                         Transmitting Message...
                       </span>
                     ) : (

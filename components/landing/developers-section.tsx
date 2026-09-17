@@ -120,14 +120,14 @@ export function DevelopersSection() {
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            <span className="inline-flex items-center gap-2 sm:gap-3 text-xs sm:text-sm font-mono text-muted-foreground mb-4 sm:mb-6">
-              <span className="w-6 sm:w-8 h-px bg-foreground/30" />
-              Carrier APIs & Telephony SDK
+            <span className="inline-flex items-center gap-2 sm:gap-3 text-xs sm:text-sm font-mono text-primary mb-4 sm:mb-6">
+              <span className="w-6 sm:w-8 h-px bg-primary" />
+              Carrier APIs &amp; Telephony SDK
             </span>
             <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display tracking-tight mb-6 sm:mb-8">
               Engineered for voice.
               <br />
-              <span className="text-muted-foreground">Built for high scale.</span>
+              <span className="text-gold-gradient">Built for high scale.</span>
             </h2>
             <p className="text-base sm:text-xl text-muted-foreground mb-8 sm:mb-12 leading-relaxed">
               Programmatic SIP trunking, route telemetry, and dialer controls designed for voice engineers and contact center architects.
@@ -143,7 +143,7 @@ export function DevelopersSection() {
                   }`}
                   style={{ transitionDelay: `${index * 50 + 200}ms` }}
                 >
-                  <h3 className="font-medium mb-1">{feature.title}</h3>
+                  <h3 className="font-medium text-foreground mb-1">{feature.title}</h3>
                   <p className="text-sm text-muted-foreground">{feature.description}</p>
                 </div>
               ))}
@@ -156,9 +156,9 @@ export function DevelopersSection() {
               isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
             }`}
           >
-            <div className="border border-foreground/10">
+            <div className="border border-primary/25 rounded-2xl overflow-hidden bg-[#0C0C10] shadow-[0_0_40px_rgba(0,0,0,0.5)]">
               {/* Tabs */}
-              <div className="flex items-center border-b border-foreground/10">
+              <div className="flex items-center border-b border-primary/20 bg-primary/5">
                 {codeExamples.map((example, idx) => (
                   <button
                     key={example.label}
@@ -166,13 +166,13 @@ export function DevelopersSection() {
                     onClick={() => setActiveTab(idx)}
                     className={`px-6 py-4 text-sm font-mono transition-colors relative ${
                       activeTab === idx
-                        ? "text-foreground"
+                        ? "text-primary font-medium"
                         : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     {example.label}
                     {activeTab === idx && (
-                      <span className="absolute bottom-0 left-0 right-0 h-px bg-foreground" />
+                      <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold-gradient" />
                     )}
                   </button>
                 ))}
@@ -180,11 +180,11 @@ export function DevelopersSection() {
                 <button
                   type="button"
                   onClick={handleCopy}
-                  className="px-4 py-4 text-muted-foreground hover:text-foreground transition-colors"
+                  className="px-4 py-4 text-muted-foreground hover:text-primary transition-colors"
                   aria-label="Copy code"
                 >
                   {copied ? (
-                    <Check className="w-4 h-4 text-green-600" />
+                    <Check className="w-4 h-4 text-primary" />
                   ) : (
                     <Copy className="w-4 h-4" />
                   )}
@@ -192,8 +192,8 @@ export function DevelopersSection() {
               </div>
               
               {/* Code content */}
-              <div className="p-4 sm:p-6 md:p-8 font-mono text-xs sm:text-sm bg-foreground/[0.01] min-h-[220px] overflow-x-auto">
-                <pre className="text-foreground/80">
+              <div className="p-4 sm:p-6 md:p-8 font-mono text-xs sm:text-sm bg-[#08080B] min-h-[220px] overflow-x-auto">
+                <pre className="text-[#E2E8F0]">
                   {codeExamples[activeTab].code.split('\n').map((line, lineIndex) => (
                     <div 
                       key={`${activeTab}-${lineIndex}`} 
@@ -221,12 +221,11 @@ export function DevelopersSection() {
             
             {/* Links */}
             <div className="mt-6 flex items-center gap-6 text-sm">
-              <a href="#" className="text-foreground hover:underline underline-offset-4">
+              <a href="#" className="text-primary hover:underline underline-offset-4 font-mono text-xs uppercase tracking-wider">
                 Read the docs
               </a>
-              <span className="text-foreground/20">|</span>
-              <a href="#" className="text-muted-foreground hover:text-foreground">
-                View on GitHub
+              <a href="#contact" className="text-muted-foreground hover:text-foreground font-mono text-xs uppercase tracking-wider">
+                API Changelog
               </a>
             </div>
           </div>
