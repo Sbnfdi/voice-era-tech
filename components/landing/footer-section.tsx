@@ -3,9 +3,23 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Instagram, Linkedin, Facebook } from "lucide-react";
 import { AnimatedWave } from "./animated-wave";
 import { TermsDialog } from "./terms-dialog";
+
+function TikTokIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.86 4.46 6.27 6.27 0 0 0 1.88-4.47V8.58a8.28 8.28 0 0 0 4.85 1.57v-3.46z" />
+    </svg>
+  );
+}
 
 const footerLinks = {
   Solutions: [
@@ -36,10 +50,10 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { name: "LinkedIn", href: "https://www.linkedin.com" },
-  { name: "FB", href: "https://www.facebook.com" },
-  { name: "Instagram", href: "https://www.instagram.com" },
-  { name: "TikTok", href: "https://www.tiktok.com" },
+  { name: "LinkedIn", href: "https://www.linkedin.com", icon: Linkedin },
+  { name: "Facebook", href: "https://www.facebook.com", icon: Facebook },
+  { name: "Instagram", href: "https://www.instagram.com", icon: Instagram },
+  { name: "TikTok", href: "https://www.tiktok.com", icon: TikTokIcon },
 ];
 
 export function FooterSection() {
@@ -78,20 +92,24 @@ export function FooterSection() {
                 Carrier-grade VoIP routes, wholesale voice termination, and intelligent dialer systems for call centers and enterprises that connect with customers.
               </p>
 
-              {/* Social Links: LinkedIn, FB */}
-              <div className="flex gap-6">
-                {socialLinks.map((link) => (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm font-medium text-muted-foreground hover:text-[#DFB76C] transition-colors flex items-center gap-1 group"
-                  >
-                    {link.name}
-                    <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-[#DFB76C]" />
-                  </a>
-                ))}
+              {/* Social Links: LinkedIn, FB, Instagram, TikTok Icons */}
+              <div className="flex items-center gap-2.5">
+                {socialLinks.map((link) => {
+                  const Icon = link.icon;
+                  return (
+                    <a
+                      key={link.name}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={link.name}
+                      title={link.name}
+                      className="w-9 h-9 rounded-xl border border-foreground/15 bg-foreground/[0.03] flex items-center justify-center text-muted-foreground hover:text-[#DFB76C] hover:border-[#DFB76C]/50 hover:bg-[#DFB76C]/10 transition-all duration-200 group shadow-sm"
+                    >
+                      <Icon className="w-4 h-4 transition-transform group-hover:scale-110" />
+                    </a>
+                  );
+                })}
               </div>
             </div>
 
