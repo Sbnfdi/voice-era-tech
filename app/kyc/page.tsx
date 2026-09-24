@@ -265,7 +265,7 @@ export default function KycPage() {
             </div>
 
             <div className="pt-6 border-t border-foreground/10 text-xs text-muted-foreground leading-relaxed">
-              Our engineering &amp; compliance NOC typically validates interconnect IP whitelists and rate decks within <strong>1 to 2 business hours</strong>. For expedited test trunks, contact your assigned engineer or call <strong className="text-foreground">+1 (800) 555-VOICE</strong>.
+              Our engineering &amp; compliance NOC typically validates interconnect IP whitelists and rate decks within <strong>1 to 2 business hours</strong>. For expedited test trunks, contact your assigned engineer or call <strong className="text-foreground">+1 (512) 333-2777</strong>.
             </div>
           </div>
         ) : (

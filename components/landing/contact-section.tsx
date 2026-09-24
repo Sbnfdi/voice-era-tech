@@ -79,53 +79,53 @@ export function ContactSection() {
                 </div>
                 <div>
                   <div className="font-mono text-xs uppercase tracking-wider text-primary">
-                    Direct Sales &amp; Inquiries
+                    Direct Support &amp; Inquiries
                   </div>
                   <a
-                    href="tel:+18005558642"
+                    href="tel:+15123332777"
                     className="text-lg font-medium text-foreground hover:text-primary transition-colors mt-0.5 block"
                   >
-                    +1 (800) 555-VOICE
+                    +1 (512) 333-2777
                   </a>
                   <p className="text-xs text-muted-foreground mt-0.5">Monday &ndash; Friday, 8:00 AM &ndash; 8:00 PM EST</p>
                 </div>
               </div>
 
-              {/* Direct Email - Sales */}
+              {/* Direct Email - Support */}
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/25 flex items-center justify-center text-primary shrink-0 mt-1">
                   <Mail className="w-4 h-4" />
                 </div>
                 <div>
                   <div className="font-mono text-xs uppercase tracking-wider text-primary">
-                    Direct Sales Email
+                    Customer &amp; Technical Support
                   </div>
                   <a
-                    href="mailto:sales@voiceeratech.com"
+                    href="mailto:support@voiceeratech.com"
                     className="text-base sm:text-lg font-medium text-foreground hover:text-primary transition-colors mt-0.5 block font-mono"
                   >
-                    sales@voiceeratech.com
+                    support@voiceeratech.com
                   </a>
-                  <p className="text-xs text-muted-foreground mt-0.5">Wholesale route rates, custom trunking &amp; dialer deployments</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Technical inquiries, route provisioning, dialer support &amp; general assistance</p>
                 </div>
               </div>
 
-              {/* Direct Email - Info */}
+              {/* Direct Email - KYC */}
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/25 flex items-center justify-center text-primary shrink-0 mt-1">
                   <Mail className="w-4 h-4" />
                 </div>
                 <div>
                   <div className="font-mono text-xs uppercase tracking-wider text-primary">
-                    General Inquiries &amp; Information
+                    KYC &amp; Regulatory Compliance
                   </div>
                   <a
-                    href="mailto:info@voiceeratech.com"
+                    href="mailto:kyc@voiceeratech.com"
                     className="text-base sm:text-lg font-medium text-foreground hover:text-primary transition-colors mt-0.5 block font-mono"
                   >
-                    info@voiceeratech.com
+                    kyc@voiceeratech.com
                   </a>
-                  <p className="text-xs text-muted-foreground mt-0.5">Billing, compliance, carrier attestation &amp; administrative support</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Carrier compliance, KYC verification, STIR/SHAKEN attestation &amp; onboarding</p>
                 </div>
               </div>
 

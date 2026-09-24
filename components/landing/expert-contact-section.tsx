@@ -150,11 +150,11 @@ export function ExpertContactSection() {
 
           <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full lg:w-auto">
             <a
-              href="mailto:sales@voiceeratech.com"
+              href="mailto:support@voiceeratech.com"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 h-11 rounded-full bg-gold-gradient text-[#09090D] text-xs sm:text-sm font-semibold hover:opacity-90 shadow-[0_0_20px_rgba(223,183,108,0.2)] transition-all cursor-pointer"
             >
               <Mail className="w-4 h-4" />
-              Email Sales Desk
+              Email Support Desk
             </a>
             <a
               href="#contact"

@@ -305,10 +305,10 @@ export default function TermsContent() {
                   <p className="pt-2 text-xs font-mono text-muted-foreground">
                     Phone:{" "}
                     <a
-                      href="tel:+13027039133"
+                      href="tel:+15123332777"
                       className="text-foreground hover:text-amber-500 underline"
                     >
-                      +1 (302) 703-9133
+                      +1 (512) 333-2777
                     </a>
                   </p>
                 </div>
@@ -320,17 +320,7 @@ export default function TermsContent() {
                   <ul className="space-y-1.5 font-mono text-xs">
                     <li className="flex items-center gap-2">
                       <Mail className="w-3.5 h-3.5 text-amber-500" />
-                      <span>Legal &amp; Compliance:</span>
-                      <a
-                        href="mailto:legal@voiceeratech.com"
-                        className="text-foreground hover:text-amber-500 underline"
-                      >
-                        legal@voiceeratech.com
-                      </a>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Mail className="w-3.5 h-3.5 text-amber-500" />
-                      <span>Support &amp; Disputes:</span>
+                      <span>Customer Support:</span>
                       <a
                         href="mailto:support@voiceeratech.com"
                         className="text-foreground hover:text-amber-500 underline"
@@ -340,12 +330,12 @@ export default function TermsContent() {
                     </li>
                     <li className="flex items-center gap-2">
                       <Mail className="w-3.5 h-3.5 text-amber-500" />
-                      <span>Sales &amp; MSA Contracts:</span>
+                      <span>KYC &amp; Compliance:</span>
                       <a
-                        href="mailto:sales@voiceeratech.com"
+                        href="mailto:kyc@voiceeratech.com"
                         className="text-foreground hover:text-amber-500 underline"
                       >
-                        sales@voiceeratech.com
+                        kyc@voiceeratech.com
                       </a>
                     </li>
                   </ul>

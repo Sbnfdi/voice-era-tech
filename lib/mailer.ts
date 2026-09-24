@@ -111,7 +111,7 @@ export async function sendInquiryEmail(inquiry: Inquiry) {
         </div>
 
         <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid #e2e8f0; font-size: 12px; color: #64748b; text-align: center;">
-          Sent from Voice Era Tech Direct Transmission Engine • Admin Portal: <a href="https://voiceeratech.com/admin" style="color: #2563eb;">voiceeratech.com/admin</a>
+          Sent from Voice Era Tech Direct Transmission Engine • +1 (512) 333-2777 • support@voiceeratech.com • Admin Portal: <a href="https://voiceeratech.com/admin" style="color: #2563eb;">voiceeratech.com/admin</a>
         </div>
       </div>
     </div>
@@ -247,7 +247,7 @@ export async function sendKycEmail(
         </div>
 
         <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid #e2e8f0; font-size: 12px; color: #64748b; text-align: center;">
-          Voice Era Tech Carrier Compliance Team • Review in Admin Panel: <a href="https://voiceeratech.com/admin" style="color: #2563eb;">voiceeratech.com/admin</a>
+          Voice Era Tech Carrier Compliance Team • +1 (512) 333-2777 • kyc@voiceeratech.com • Review in Admin Panel: <a href="https://voiceeratech.com/admin" style="color: #2563eb;">voiceeratech.com/admin</a>
         </div>
       </div>
     </div>

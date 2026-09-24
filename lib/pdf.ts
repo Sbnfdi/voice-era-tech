@@ -114,7 +114,7 @@ export async function generateKycPdf(kyc: KycSubmission): Promise<{ buffer: Buff
       color: borderColor,
     });
 
-    page.drawText("Voice Era Tech LLC • VoIP Routes & Intelligent Dialer Systems • kyc@voiceeratech.com", {
+    page.drawText("Voice Era Tech LLC • +1 (512) 333-2777 • support@voiceeratech.com • kyc@voiceeratech.com", {
       x: 40,
       y: 28,
       size: 7,

@@ -260,7 +260,7 @@ export default function WholesaleKycPage() {
     try {
       setTimeout(() => setSubmissionProgress("Auditing FCC 499, FRN & ITG Traceback compliance records..."), 800);
       setTimeout(() => setSubmissionProgress("Compiling certified carrier verification package & PDF..."), 1600);
-      setTimeout(() => setSubmissionProgress("Securing bilateral transmission to carrier-ops@voiceeratech.com..."), 2400);
+      setTimeout(() => setSubmissionProgress("Securing bilateral transmission to kyc@voiceeratech.com..."), 2400);
 
       const res = await fetch("/api/kyc", {
         method: "POST",
@@ -435,7 +435,7 @@ export default function WholesaleKycPage() {
               </div>
               <div className="flex justify-between items-center text-xs">
                 <span className="text-zinc-400 font-mono">NOC Notification:</span>
-                <span className="font-mono text-zinc-300">carrier-ops@voiceeratech.com</span>
+                <span className="font-mono text-zinc-300">kyc@voiceeratech.com</span>
               </div>
             </div>
 

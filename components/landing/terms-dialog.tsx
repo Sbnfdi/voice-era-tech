@@ -81,7 +81,7 @@ export function TermsDialog({ isOpen, onClose }: TermsDialogProps) {
               4. Direct Inquiries &amp; Legal Notices
             </h4>
             <p className="text-xs sm:text-sm">
-              Any notices, questions, or contract inquiries regarding these terms may be transmitted to our designated team at <a href="mailto:info@voiceeratech.com" className="text-foreground underline">info@voiceeratech.com</a> or <a href="mailto:sales@voiceeratech.com" className="text-foreground underline">sales@voiceeratech.com</a>.
+              Any notices, questions, or contract inquiries regarding these terms may be transmitted to our designated team at <a href="mailto:support@voiceeratech.com" className="text-foreground underline">support@voiceeratech.com</a> or <a href="mailto:kyc@voiceeratech.com" className="text-foreground underline">kyc@voiceeratech.com</a>.
             </p>
           </section>
         </div>
