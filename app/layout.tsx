@@ -2,6 +2,7 @@ import React from "react"
 import type { Metadata } from 'next'
 import { Instrument_Sans, Instrument_Serif, JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { FloatingWhatsApp } from '@/components/landing/floating-whatsapp'
 import './globals.css'
 
 const instrumentSans = Instrument_Sans({ 
@@ -45,6 +46,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${instrumentSans.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
         {children}
+        <FloatingWhatsApp />
         <Analytics />
       </body>
     </html>
