@@ -4,11 +4,20 @@ import path from "path";
 import { KycSubmission, PDFS_DIR } from "./db";
 
 export async function generateKycPdf(kyc: KycSubmission): Promise<{ buffer: Buffer; filePath: string; filename: string }> {
+  const isWholesale = kyc.category === "wholesaler";
   const pdfDoc = await PDFDocument.create();
-  pdfDoc.setTitle(`Voice Era Tech LLC - Carrier KYC Application - ${kyc.referenceId}`);
+  pdfDoc.setTitle(
+    isWholesale
+      ? `Voice Era Tech LLC - Wholesale Carrier Application - ${kyc.referenceId}`
+      : `Voice Era Tech LLC - Carrier KYC Application - ${kyc.referenceId}`
+  );
   pdfDoc.setAuthor("Voice Era Tech LLC");
-  pdfDoc.setSubject("Carrier Verification & Customer Onboarding KYC");
-  pdfDoc.setKeywords(["KYC", "VoIP", "Voice Era Tech", "SIP Trunking", "Compliance"]);
+  pdfDoc.setSubject(
+    isWholesale
+      ? "Wholesale Carrier Interconnect & Regulatory Application"
+      : "Carrier Verification & Customer Onboarding KYC"
+  );
+  pdfDoc.setKeywords(["KYC", "Wholesale", "VoIP", "Voice Era Tech", "SIP Trunking", "Compliance"]);
 
   const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
@@ -41,13 +50,18 @@ export async function generateKycPdf(kyc: KycSubmission): Promise<{ buffer: Buff
       color: primaryColor,
     });
 
-    page.drawText("CARRIER SERVICES & TELEPHONY ONBOARDING - FORM VET-KYC-01", {
-      x: 40,
-      y: height - 54,
-      size: 8,
-      font: fontRegular,
-      color: mutedColor,
-    });
+    page.drawText(
+      isWholesale
+        ? "WHOLESALE CARRIER INTERCONNECT & REGULATORY ONBOARDING - FORM VET-WHL-01"
+        : "CARRIER SERVICES & TELEPHONY ONBOARDING - FORM VET-KYC-01",
+      {
+        x: 40,
+        y: height - 54,
+        size: 8,
+        font: fontRegular,
+        color: mutedColor,
+      }
+    );
 
     // Reference & Date Badge (Top Right)
     page.drawRectangle({
@@ -201,55 +215,104 @@ export async function generateKycPdf(kyc: KycSubmission): Promise<{ buffer: Buff
   const page1 = pdfDoc.addPage([595.28, 841.89]); // A4
   let y = 841.89 - 88;
 
-  // Section 1
-  y = drawSectionTitle(page1, y, "1", "Corporate Legal Identity & Registration");
-  y = drawFieldRow(page1, y, "Legal Company Name", kyc.companyName, "Doing Business As (DBA)", kyc.dba || "None");
-  y = drawFieldRow(page1, y, "Tax ID / EIN", kyc.taxId, "Registration / Incorporation No.", kyc.registrationNumber);
-  y = drawFieldRow(page1, y, "Country of Incorporation", kyc.country, "Corporate Website", kyc.website);
-  y = drawFieldRow(page1, y, "Registered Street Address", kyc.address, "City, State & Postal Code", `${kyc.city}, ${kyc.state} ${kyc.postalCode}`);
+  if (isWholesale) {
+    // Section 1
+    y = drawSectionTitle(page1, y, "1", "Wholesale Corporate & Regulatory Information");
+    y = drawFieldRow(page1, y, "Legal Business Name", kyc.companyName, "Doing Business As (DBA)", kyc.dba || "None");
+    y = drawFieldRow(page1, y, "Tax ID / EIN", kyc.taxId, "Registration / Filing No.", kyc.registrationNumber);
+    y = drawFieldRow(page1, y, "Provider Classification", kyc.providerType || "Wholesale Carrier", "Jurisdiction / Country", kyc.country);
+    y = drawFieldRow(page1, y, "FCC 499 Filer ID", kyc.fcc499Id || "Foreign / Not Registered", "FCC FRN / RMD ID", `${kyc.fccFrn || "N/A"} / ${kyc.rmdId || "N/A"}`);
+    y = drawFieldRow(page1, y, "ITG Traceback Status", kyc.itgRegistered || "Active Participant", "Traceback SLA Commitment", kyc.tracebackSlaHours || "< 4 Hours");
+    y = drawFieldRow(page1, y, "Registered Headquarters", kyc.address, "City, State & Postal", `${kyc.city}, ${kyc.state} ${kyc.postalCode}`);
 
-  y -= 8;
+    y -= 8;
 
-  // Section 2
-  y = drawSectionTitle(page1, y, "2", "Authorized Signatory / Representative");
-  y = drawFieldRow(page1, y, "Full Legal Name", kyc.signatoryName, "Job Title / Designation", kyc.signatoryTitle);
-  y = drawFieldRow(page1, y, "Corporate Work Email", kyc.signatoryEmail, "Direct Phone Number", kyc.signatoryPhone);
-  y = drawFieldRow(page1, y, "Signer Gov ID / Passport No.", kyc.signatoryIdNumber || "Verified via Upload", "Application Status", "Official Submission Received");
+    // Section 2
+    y = drawSectionTitle(page1, y, "2", "Authorized Signatory & Identity Verification");
+    y = drawFieldRow(page1, y, "Signatory Full Name", kyc.signatoryName, "Designation / Title", kyc.signatoryTitle);
+    y = drawFieldRow(page1, y, "Direct Corporate Email", kyc.signatoryEmail, "Direct Telephone", kyc.signatoryPhone);
+    y = drawFieldRow(page1, y, "Nationality / Citizenship", kyc.signatoryNationality || "Disclosed in Vault", "Identity Document", `${kyc.idDocType || "Gov ID"}: ${kyc.idDocNumber || "Verified"}`);
 
-  y -= 8;
+    y -= 8;
 
-  // Section 3
-  y = drawSectionTitle(page1, y, "3", "Operational & Billing Contacts");
-  y = drawFieldRow(page1, y, "Technical NOC Contact Name", kyc.nocName, "NOC Operations Email", kyc.nocEmail);
-  y = drawFieldRow(page1, y, "NOC Phone / Escalation", kyc.nocPhone, "Accounts / Billing Contact", kyc.billingName);
-  y = drawFieldRow(page1, y, "Billing Accounts Email", kyc.billingEmail, "Billing Direct Phone", kyc.billingPhone);
+    // Section 3
+    y = drawSectionTitle(page1, y, "3", "Wholesale Traffic & Capacity Profile");
+    const servicesList = Array.isArray(kyc.servicesRequested) ? kyc.servicesRequested.join(", ") : "Wholesale SIP Trunking";
+    y = drawFieldRow(page1, y, "Requested Services", servicesList, "Traffic Classification", kyc.trafficProfileNature || kyc.trafficType);
+    y = drawFieldRow(page1, y, "Est. Daily / Monthly Minutes", `${kyc.estimatedDailyMinutes || "100k+"} / ${kyc.estimatedMonthlyMinutes}`, "Concurrent Channels / CPS", `${kyc.concurrentChannels} (Peak CPS: ${kyc.peakCps || "30"})`);
+    y = drawFieldRow(page1, y, "Target Destinations", kyc.targetCountries, "Supported Codecs", kyc.codecs);
+  } else {
+    // Section 1
+    y = drawSectionTitle(page1, y, "1", "Corporate Legal Identity & Registration");
+    y = drawFieldRow(page1, y, "Legal Company Name", kyc.companyName, "Doing Business As (DBA)", kyc.dba || "None");
+    y = drawFieldRow(page1, y, "Tax ID / EIN", kyc.taxId, "Registration / Incorporation No.", kyc.registrationNumber);
+    y = drawFieldRow(page1, y, "Country of Incorporation", kyc.country, "Corporate Website", kyc.website);
+    y = drawFieldRow(page1, y, "Registered Street Address", kyc.address, "City, State & Postal Code", `${kyc.city}, ${kyc.state} ${kyc.postalCode}`);
 
-  y -= 8;
+    y -= 8;
 
-  // Section 4
-  y = drawSectionTitle(page1, y, "4", "Telephony Services & Traffic Specifications");
-  const servicesList = Array.isArray(kyc.servicesRequested) ? kyc.servicesRequested.join(", ") : "Standard Wholesale Routes";
-  y = drawFieldRow(page1, y, "Services Requested", servicesList, "Primary Traffic Profile", kyc.trafficType);
-  y = drawFieldRow(page1, y, "Est. Monthly Call Volume", kyc.estimatedMonthlyMinutes, "Concurrent Channels / Ports", kyc.concurrentChannels);
-  y = drawFieldRow(page1, y, "Target Destination Countries", kyc.targetCountries, "Supported Codecs", kyc.codecs);
+    // Section 2
+    y = drawSectionTitle(page1, y, "2", "Authorized Signatory / Representative");
+    y = drawFieldRow(page1, y, "Full Legal Name", kyc.signatoryName, "Job Title / Designation", kyc.signatoryTitle);
+    y = drawFieldRow(page1, y, "Corporate Work Email", kyc.signatoryEmail, "Direct Phone Number", kyc.signatoryPhone);
+    y = drawFieldRow(page1, y, "Signer Gov ID / Passport No.", kyc.signatoryIdNumber || "Verified via Upload", "Application Status", "Official Submission Received");
+
+    y -= 8;
+
+    // Section 3
+    y = drawSectionTitle(page1, y, "3", "Operational & Billing Contacts");
+    y = drawFieldRow(page1, y, "Technical NOC Contact Name", kyc.nocName, "NOC Operations Email", kyc.nocEmail);
+    y = drawFieldRow(page1, y, "NOC Phone / Escalation", kyc.nocPhone, "Accounts / Billing Contact", kyc.billingName);
+    y = drawFieldRow(page1, y, "Billing Accounts Email", kyc.billingEmail, "Billing Direct Phone", kyc.billingPhone);
+
+    y -= 8;
+
+    // Section 4
+    y = drawSectionTitle(page1, y, "4", "Telephony Services & Traffic Specifications");
+    const servicesList = Array.isArray(kyc.servicesRequested) ? kyc.servicesRequested.join(", ") : "Standard Wholesale Routes";
+    y = drawFieldRow(page1, y, "Services Requested", servicesList, "Primary Traffic Profile", kyc.trafficType);
+    y = drawFieldRow(page1, y, "Est. Monthly Call Volume", kyc.estimatedMonthlyMinutes, "Concurrent Channels / Ports", kyc.concurrentChannels);
+    y = drawFieldRow(page1, y, "Target Destination Countries", kyc.targetCountries, "Supported Codecs", kyc.codecs);
+  }
 
   // PAGE 2: Interconnect IPs, Document Manifest & Compliance Attestation
   const page2 = pdfDoc.addPage([595.28, 841.89]);
   let y2 = 841.89 - 88;
 
-  // Section 5
-  y2 = drawSectionTitle(page2, y2, "5", "Network Interconnect & Whitelisting");
-  y2 = drawFieldRow(page2, y2, "Signaling Switch IPs / FQDN", kyc.signalingIps, "Media Audio RTP IPs", kyc.mediaIps || "Same as Signaling");
+  if (isWholesale) {
+    // Section 4: Wholesale Contacts & Rates
+    y2 = drawSectionTitle(page2, y2, "4", "Operations, Billing, Rates & 24/7 NOC");
+    y2 = drawFieldRow(page2, y2, "Primary / Executive Contact", `${kyc.primaryContactName || kyc.signatoryName} (${kyc.primaryContactEmail || kyc.signatoryEmail})`, "Billing / Invoicing Contact", `${kyc.billingName} (${kyc.billingInvoiceEmail || kyc.billingEmail})`);
+    y2 = drawFieldRow(page2, y2, "Rates & Deck Distribution", `${kyc.ratesContactName || "Carrier Rates"} (${kyc.ratesContactEmail || kyc.billingEmail})`, "24/7 NOC Hotline & Escalation", `${kyc.nocPhone} (${kyc.nocEmail})`);
 
-  y2 -= 12;
+    y2 -= 6;
 
-  // Section 6
-  y2 = drawSectionTitle(page2, y2, "6", "Submitted Documentation Manifest");
-  const incDoc = kyc.documents?.incorporationDocName || "Uploaded to secure vault";
-  const taxDoc = kyc.documents?.taxDocName || "Uploaded to secure vault";
-  const idDoc = kyc.documents?.signerIdDocName || "Uploaded to secure vault";
-  y2 = drawFieldRow(page2, y2, "Certificate of Incorporation", incDoc, "Tax / EIN Form Document", taxDoc);
-  y2 = drawFieldRow(page2, y2, "Signer Photo Identification", idDoc, "Submission Channel", "Encrypted Voice Era Carrier Portal");
+    // Section 5: Banking & Settlement
+    y2 = drawSectionTitle(page2, y2, "5", "Settlement Terms, Banking & Trade References");
+    y2 = drawFieldRow(page2, y2, "Beneficiary Bank Name", kyc.bankName || "Disclosed on file", "Bank Country & Branch", kyc.bankCountry || kyc.country);
+    y2 = drawFieldRow(page2, y2, "Account / IBAN", kyc.accountNumberIban || "Confidential in Vault", "Payment Settlement Terms", kyc.paymentTerms || "Prepaid");
+    y2 = drawFieldRow(page2, y2, "Trade Reference 1", `${kyc.tradeRef1Company || "Disclosed"}: ${kyc.tradeRef1Contact || "Verified"}`, "Trade Reference 2", `${kyc.tradeRef2Company || "Disclosed"}: ${kyc.tradeRef2Contact || "Verified"}`);
+
+    y2 -= 6;
+
+    // Section 6: Whitelisting IPs
+    y2 = drawSectionTitle(page2, y2, "6", "Network Interconnect & Whitelisting");
+    y2 = drawFieldRow(page2, y2, "Signaling Switch IPs / FQDN", kyc.signalingIps, "Media Audio RTP IPs", kyc.mediaIps || "Same as Signaling");
+  } else {
+    // Section 5
+    y2 = drawSectionTitle(page2, y2, "5", "Network Interconnect & Whitelisting");
+    y2 = drawFieldRow(page2, y2, "Signaling Switch IPs / FQDN", kyc.signalingIps, "Media Audio RTP IPs", kyc.mediaIps || "Same as Signaling");
+
+    y2 -= 12;
+
+    // Section 6
+    y2 = drawSectionTitle(page2, y2, "6", "Submitted Documentation Manifest");
+    const incDoc = kyc.documents?.incorporationDocName || "Uploaded to secure vault";
+    const taxDoc = kyc.documents?.taxDocName || "Uploaded to secure vault";
+    const idDoc = kyc.documents?.signerIdDocName || "Uploaded to secure vault";
+    y2 = drawFieldRow(page2, y2, "Certificate of Incorporation", incDoc, "Tax / EIN Form Document", taxDoc);
+    y2 = drawFieldRow(page2, y2, "Signer Photo Identification", idDoc, "Submission Channel", "Encrypted Voice Era Carrier Portal");
+  }
 
   y2 -= 12;
 

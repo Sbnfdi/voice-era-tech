@@ -25,7 +25,9 @@ export interface Inquiry {
 export interface KycSubmission {
   id: string;
   referenceId: string;
-  // Company Information
+  category?: "end_user" | "wholesaler";
+
+  // Company Information (Common & Wholesale)
   companyName: string;
   dba?: string;
   registrationNumber: string;
@@ -36,30 +38,112 @@ export interface KycSubmission {
   state: string;
   postalCode: string;
   website: string;
-  // Authorized Signatory
+
+  // Wholesale STEP 1: Personal Information
   signatoryName: string;
   signatoryTitle: string;
   signatoryEmail: string;
   signatoryPhone: string;
   signatoryIdNumber?: string;
-  // Technical & Billing Contacts
+  signatoryNationality?: string;
+  signatoryDob?: string;
+  idDocType?: string;
+  idDocNumber?: string;
+  idDocIssuingCountry?: string;
+  idDocExpiryDate?: string;
+  idDocFileName?: string;
+  idDocBackFileName?: string;
+
+  // Wholesale STEP 2: Business Information
+  incorporationDate?: string;
+  incorporationJurisdiction?: string;
+  providerType?: string;
+  yearsInOperation?: string;
+  // FCC / Regulatory IDs
+  fcc499Id?: string;
+  fccFrn?: string;
+  rmdId?: string;
+  stateTelecomLicense?: string;
+  // STIR/SHAKEN
+  stirShakenStatus?: string;
+  ocnSpcTokenIssuer?: string;
+  didAttestationCapability?: string;
+  // Tracebacks
+  itgRegistered?: string;
+  itgEscalationContact?: string;
+  tracebackSlaHours?: string;
+  fccHistoryOrCitations?: string;
+  fccHistoryDetails?: string;
+  // Traffic Profile
+  trafficProfileNature?: string;
+  estimatedDailyMinutes?: string;
+  peakCps?: string;
+  acdSeconds?: string;
+  targetAsr?: string;
+  operationalAddress?: string;
+  // Services & Capacity
+  interconnectProtocols?: string[];
+
+  // Technical & Operational Contacts
   nocName: string;
   nocEmail: string;
   nocPhone: string;
+  nocEscalation?: string;
   billingName: string;
   billingEmail: string;
   billingPhone: string;
-  // Traffic & Telephony Profile
+  billingInvoiceEmail?: string;
+  billingAddress?: string;
+
+  // Wholesale STEP 3: Additional Contacts & Compliance
+  primaryContactName?: string;
+  primaryContactTitle?: string;
+  primaryContactEmail?: string;
+  primaryContactPhone?: string;
+  ratesContactName?: string;
+  ratesContactEmail?: string;
+  ratesContactPhone?: string;
+  // Banking
+  bankName?: string;
+  bankCountry?: string;
+  beneficiaryName?: string;
+  accountNumberIban?: string;
+  routingSwiftBic?: string;
+  paymentTerms?: string;
+  // Trade References
+  tradeRef1Company?: string;
+  tradeRef1Contact?: string;
+  tradeRef1Email?: string;
+  tradeRef1Phone?: string;
+  tradeRef1Relation?: string;
+  tradeRef2Company?: string;
+  tradeRef2Contact?: string;
+  tradeRef2Email?: string;
+  tradeRef2Phone?: string;
+  tradeRef2Relation?: string;
+  // Compliance Declarations
+  tsrTcpaCompliant?: boolean;
+  antiSpoofingCompliant?: boolean;
+  knowYourCustomerChainCompliant?: boolean;
+  zeroToleranceAgreed?: boolean;
+  // Fraud / Traceback Details
+  fraudEmergencyEmail?: string;
+  fraudEmergencyPhone?: string;
+  immediateSuspensionConsent?: boolean;
+
+  // Traffic & Telephony Profile (Standard & Wholesale)
   servicesRequested: string[];
   targetCountries: string;
   estimatedMonthlyMinutes: string;
   concurrentChannels: string;
   trafficType: string;
+
   // Interconnect Technical Details
   signalingIps: string;
   mediaIps?: string;
   codecs: string;
-  // Document References
+
+  // Wholesale STEP 4: Verification Documents
   documents?: {
     incorporationDocName?: string;
     incorporationDocPath?: string;
@@ -67,14 +151,25 @@ export interface KycSubmission {
     taxDocPath?: string;
     signerIdDocName?: string;
     signerIdDocPath?: string;
+    proofOfAddressDocName?: string;
+    proofOfAddressDocPath?: string;
+    itgScreenshotDocName?: string;
+    itgScreenshotDocPath?: string;
   };
+  proofOfAddressDocName?: string;
+  itgScreenshotDocName?: string;
+  termsAgreed?: boolean;
+  dataProcessingConsent?: boolean;
+
   pdfPath?: string;
+
   // Attestations
   stirShakenAgreed: boolean;
   tcpaAgreed: boolean;
   accuracyAgreed: boolean;
   digitalSignature: string;
   signatureDate: string;
+
   // Review Status
   status: "pending" | "under_review" | "approved" | "rejected" | "info_requested";
   adminNotes?: string;
@@ -197,9 +292,11 @@ export async function createKyc(
   const list = await getKycList();
   const timestamp = Date.now().toString().slice(-5);
   const randomSuffix = Math.floor(1000 + Math.random() * 9000);
-  const refId = `VET-KYC-${new Date().getFullYear()}-${timestamp}${randomSuffix}`;
+  const prefix = data.category === "wholesaler" ? "VET-WHL" : "VET-KYC";
+  const refId = `${prefix}-${new Date().getFullYear()}-${timestamp}${randomSuffix}`;
 
   const newKyc: KycSubmission = {
+    category: data.category || "end_user",
     ...data,
     id: `kyc_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
     referenceId: refId,

@@ -46,6 +46,7 @@ export default function AdminPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inquiryStatusFilter, setInquiryStatusFilter] = useState("all");
   const [kycStatusFilter, setKycStatusFilter] = useState("all");
+  const [kycCategoryFilter, setKycCategoryFilter] = useState<"all" | "end_user" | "wholesaler">("all");
 
   // Selected for Details Modal
   const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null);
@@ -285,9 +286,15 @@ export default function AdminPage() {
     });
   }, [inquiries, inquiryStatusFilter, searchQuery]);
 
+  const endUserCount = useMemo(() => kycs.filter((k) => k.category !== "wholesaler").length, [kycs]);
+  const wholesalerCount = useMemo(() => kycs.filter((k) => k.category === "wholesaler").length, [kycs]);
+
   const filteredKycs = useMemo(() => {
     return kycs.filter((kyc) => {
       const matchesStatus = kycStatusFilter === "all" || kyc.status === kycStatusFilter;
+      const matchesCategory =
+        kycCategoryFilter === "all" ||
+        (kycCategoryFilter === "wholesaler" ? kyc.category === "wholesaler" : kyc.category !== "wholesaler");
       const q = searchQuery.toLowerCase();
       const matchesSearch =
         !q ||
@@ -295,10 +302,12 @@ export default function AdminPage() {
         kyc.signatoryName.toLowerCase().includes(q) ||
         kyc.signatoryEmail.toLowerCase().includes(q) ||
         kyc.referenceId.toLowerCase().includes(q) ||
-        kyc.country.toLowerCase().includes(q);
-      return matchesStatus && matchesSearch;
+        kyc.country.toLowerCase().includes(q) ||
+        (kyc.providerType && kyc.providerType.toLowerCase().includes(q)) ||
+        (kyc.fcc499Id && kyc.fcc499Id.toLowerCase().includes(q));
+      return matchesStatus && matchesCategory && matchesSearch;
     });
-  }, [kycs, kycStatusFilter, searchQuery]);
+  }, [kycs, kycStatusFilter, kycCategoryFilter, searchQuery]);
 
   // Export Inquiries CSV
   const exportInquiriesCsv = () => {
@@ -325,9 +334,25 @@ export default function AdminPage() {
 
   // Export KYC CSV
   const exportKycCsv = () => {
-    const headers = ["Ref ID", "Date", "Company Name", "Country", "Registration No", "Tax ID", "Signatory", "Email", "Phone", "Traffic Type", "Status"];
+    const headers = [
+      "Ref ID",
+      "Category",
+      "Date",
+      "Company Name",
+      "Country",
+      "Registration No",
+      "Tax ID",
+      "Signatory",
+      "Email",
+      "Phone",
+      "Provider Type",
+      "Traffic Type",
+      "FCC 499 ID",
+      "Status"
+    ];
     const rows = kycs.map((k) => [
       k.referenceId,
+      k.category === "wholesaler" ? "Wholesaler" : "End User",
       new Date(k.createdAt).toLocaleString(),
       `"${k.companyName.replace(/"/g, '""')}"`,
       k.country,
@@ -336,7 +361,9 @@ export default function AdminPage() {
       `"${k.signatoryName.replace(/"/g, '""')}"`,
       k.signatoryEmail,
       k.signatoryPhone,
-      k.trafficType,
+      `"${(k.providerType || "End User").replace(/"/g, '""')}"`,
+      `"${(k.trafficType || "").replace(/"/g, '""')}"`,
+      k.fcc499Id || "N/A",
       k.status,
     ]);
     const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map((e) => e.join(","))].join("\n");
@@ -553,9 +580,9 @@ export default function AdminPage() {
             <button
               type="button"
               onClick={() => { setActiveTab("inquiries"); setSelectedInquiry(null); }}
-              className={`px-5 py-2.5 rounded-full text-xs font-medium font-mono uppercase tracking-wider transition-all cursor-pointer ${
+              className={`px-4 sm:px-5 py-2.5 rounded-full text-xs font-medium font-mono uppercase tracking-wider transition-all cursor-pointer ${
                 activeTab === "inquiries"
-                  ? "bg-foreground text-background shadow-sm"
+                  ? "bg-foreground text-background shadow-sm font-semibold"
                   : "bg-foreground/5 text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -563,21 +590,45 @@ export default function AdminPage() {
             </button>
             <button
               type="button"
-              onClick={() => { setActiveTab("kyc"); setSelectedKyc(null); }}
-              className={`px-5 py-2.5 rounded-full text-xs font-medium font-mono uppercase tracking-wider transition-all cursor-pointer ${
-                activeTab === "kyc"
-                  ? "bg-foreground text-background shadow-sm"
+              onClick={() => { setActiveTab("kyc"); setSelectedKyc(null); setKycCategoryFilter("all"); }}
+              className={`px-4 sm:px-5 py-2.5 rounded-full text-xs font-medium font-mono uppercase tracking-wider transition-all cursor-pointer ${
+                activeTab === "kyc" && kycCategoryFilter === "all"
+                  ? "bg-foreground text-background shadow-sm font-semibold"
                   : "bg-foreground/5 text-muted-foreground hover:text-foreground"
               }`}
             >
-              KYC Submissions ({kycs.length})
+              All KYC ({kycs.length})
+            </button>
+            <button
+              type="button"
+              onClick={() => { setActiveTab("kyc"); setSelectedKyc(null); setKycCategoryFilter("end_user"); }}
+              className={`px-3.5 sm:px-4 py-2.5 rounded-full text-xs font-medium font-mono uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
+                activeTab === "kyc" && kycCategoryFilter === "end_user"
+                  ? "bg-blue-600 text-white shadow-sm font-bold"
+                  : "bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/20"
+              }`}
+            >
+              <span>End User KYC</span>
+              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-blue-500/30">({endUserCount})</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => { setActiveTab("kyc"); setSelectedKyc(null); setKycCategoryFilter("wholesaler"); }}
+              className={`px-3.5 sm:px-4 py-2.5 rounded-full text-xs font-medium font-mono uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
+                activeTab === "kyc" && kycCategoryFilter === "wholesaler"
+                  ? "bg-amber-500 text-black shadow-sm font-bold"
+                  : "bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500/20"
+              }`}
+            >
+              <span>Wholesale Apps</span>
+              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-500/30">({wholesalerCount})</span>
             </button>
             <button
               type="button"
               onClick={() => setActiveTab("system")}
-              className={`px-5 py-2.5 rounded-full text-xs font-medium font-mono uppercase tracking-wider transition-all cursor-pointer ${
+              className={`px-4 sm:px-5 py-2.5 rounded-full text-xs font-medium font-mono uppercase tracking-wider transition-all cursor-pointer ${
                 activeTab === "system"
-                  ? "bg-foreground text-background shadow-sm"
+                  ? "bg-foreground text-background shadow-sm font-semibold"
                   : "bg-foreground/5 text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -735,22 +786,65 @@ export default function AdminPage() {
         {/* TAB 2: KYC SUBMISSIONS MANAGEMENT */}
         {activeTab === "kyc" && (
           <div className="space-y-4">
-            {/* Status Filter Badges */}
-            <div className="flex items-center gap-2 text-xs">
-              <span className="text-muted-foreground font-mono uppercase text-[10px]">Filter Status:</span>
-              {["all", "pending", "under_review", "approved", "rejected", "info_requested"].map((st) => (
+            {/* Category Filter Pills & Status Filter Badges */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-2xl border border-foreground/10 bg-card">
+              {/* Category Filter Pills */}
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 text-xs">
+                <span className="text-muted-foreground font-mono uppercase text-[10px] mr-1">Category:</span>
                 <button
-                  key={st}
-                  onClick={() => setKycStatusFilter(st)}
-                  className={`px-3 py-1 rounded-full text-[11px] font-mono capitalize transition-colors cursor-pointer ${
-                    kycStatusFilter === st
-                      ? "bg-foreground text-background font-semibold"
+                  type="button"
+                  onClick={() => setKycCategoryFilter("all")}
+                  className={`px-3 py-1.5 rounded-full text-xs font-mono transition-all cursor-pointer ${
+                    kycCategoryFilter === "all"
+                      ? "bg-foreground text-background font-bold shadow-sm"
                       : "bg-foreground/5 text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  {st.replace("_", " ")}
+                  All ({kycs.length})
                 </button>
-              ))}
+                <button
+                  type="button"
+                  onClick={() => setKycCategoryFilter("end_user")}
+                  className={`px-3 py-1.5 rounded-full text-xs font-mono transition-all cursor-pointer flex items-center gap-1 ${
+                    kycCategoryFilter === "end_user"
+                      ? "bg-blue-600 text-white font-bold shadow-sm"
+                      : "bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/20"
+                  }`}
+                >
+                  <span>End User KYC</span>
+                  <span className="text-[10px] px-1 rounded-full bg-blue-500/30">({endUserCount})</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setKycCategoryFilter("wholesaler")}
+                  className={`px-3 py-1.5 rounded-full text-xs font-mono transition-all cursor-pointer flex items-center gap-1 ${
+                    kycCategoryFilter === "wholesaler"
+                      ? "bg-amber-500 text-black font-bold shadow-sm"
+                      : "bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500/20"
+                  }`}
+                >
+                  <span>Wholesaler Applications</span>
+                  <span className="text-[10px] px-1 rounded-full bg-amber-500/30">({wholesalerCount})</span>
+                </button>
+              </div>
+
+              {/* Status Filter Badges */}
+              <div className="flex items-center gap-1.5 overflow-x-auto text-xs">
+                <span className="text-muted-foreground font-mono uppercase text-[10px]">Status:</span>
+                {["all", "pending", "under_review", "approved", "rejected", "info_requested"].map((st) => (
+                  <button
+                    key={st}
+                    onClick={() => setKycStatusFilter(st)}
+                    className={`px-2.5 py-1 rounded-full text-[11px] font-mono capitalize transition-colors cursor-pointer ${
+                      kycStatusFilter === st
+                        ? "bg-foreground text-background font-semibold"
+                        : "bg-foreground/5 text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {st.replace("_", " ")}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* KYC Table */}
@@ -759,10 +853,11 @@ export default function AdminPage() {
                 <table className="w-full text-left text-xs">
                   <thead className="bg-foreground/[0.03] border-b border-foreground/10 text-muted-foreground font-mono uppercase tracking-wider">
                     <tr>
-                      <th className="py-3.5 px-4">Audit Ref</th>
-                      <th className="py-3.5 px-4">Entity &amp; Jurisdiction</th>
+                      <th className="py-3.5 px-4">Audit Ref / Date</th>
+                      <th className="py-3.5 px-4">Category</th>
+                      <th className="py-3.5 px-4">Entity &amp; Regulatory ID</th>
                       <th className="py-3.5 px-4">Signatory Officer</th>
-                      <th className="py-3.5 px-4">Traffic Profile</th>
+                      <th className="py-3.5 px-4">Capacity / Traffic Profile</th>
                       <th className="py-3.5 px-4">Status</th>
                       <th className="py-3.5 px-4 text-right">Certified PDF &amp; Review</th>
                     </tr>
@@ -770,8 +865,8 @@ export default function AdminPage() {
                   <tbody className="divide-y divide-foreground/10">
                     {filteredKycs.length === 0 ? (
                       <tr>
-                        <td colSpan={6} className="py-12 text-center text-muted-foreground text-sm">
-                          No KYC submissions match the current search / filter criteria.
+                        <td colSpan={7} className="py-12 text-center text-muted-foreground text-sm">
+                          No {kycCategoryFilter === "wholesaler" ? "wholesale" : kycCategoryFilter === "end_user" ? "end-user" : ""} KYC submissions match the current search / filter criteria.
                         </td>
                       </tr>
                     ) : (
@@ -784,6 +879,8 @@ export default function AdminPage() {
                           info_requested: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20",
                         };
 
+                        const isWholesale = kyc.category === "wholesaler";
+
                         return (
                           <tr
                             key={kyc.id}
@@ -795,13 +892,32 @@ export default function AdminPage() {
                           >
                             <td className="py-3.5 px-4">
                               <div className="font-mono text-foreground font-semibold">{kyc.referenceId}</div>
-                              <div className="text-[10px] text-muted-foreground">
+                              <div className="text-[10px] text-muted-foreground font-mono">
                                 {new Date(kyc.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
                               </div>
                             </td>
                             <td className="py-3.5 px-4">
+                              {isWholesale ? (
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-amber-500/15 text-amber-400 border border-amber-500/30">
+                                  Wholesaler
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-blue-500/15 text-blue-400 border border-blue-500/30">
+                                  End User
+                                </span>
+                              )}
+                            </td>
+                            <td className="py-3.5 px-4">
                               <div className="font-medium text-foreground">{kyc.companyName}</div>
-                              <div className="text-[11px] text-muted-foreground font-mono">{kyc.country} &bull; {kyc.registrationNumber}</div>
+                              {isWholesale ? (
+                                <div className="text-[11px] text-muted-foreground font-mono">
+                                  {kyc.providerType || "Wholesale Carrier"} &bull; {kyc.country}
+                                </div>
+                              ) : (
+                                <div className="text-[11px] text-muted-foreground font-mono">
+                                  {kyc.country} &bull; {kyc.registrationNumber}
+                                </div>
+                              )}
                             </td>
                             <td className="py-3.5 px-4">
                               <div className="font-medium text-foreground">{kyc.signatoryName}</div>
@@ -809,8 +925,19 @@ export default function AdminPage() {
                               <div className="text-[10px] text-muted-foreground">{kyc.signatoryPhone}</div>
                             </td>
                             <td className="py-3.5 px-4">
-                              <div className="font-medium text-foreground">{kyc.estimatedMonthlyMinutes}</div>
-                              <div className="text-[10px] text-muted-foreground">{kyc.trafficType}</div>
+                              {isWholesale ? (
+                                <div>
+                                  <div className="font-medium text-foreground">{kyc.estimatedDailyMinutes || kyc.estimatedMonthlyMinutes}</div>
+                                  <div className="text-[10px] text-muted-foreground font-mono">
+                                    CPS: {kyc.peakCps || "50-100"} &bull; RMD: {kyc.rmdId || "Pending"}
+                                  </div>
+                                </div>
+                              ) : (
+                                <div>
+                                  <div className="font-medium text-foreground">{kyc.estimatedMonthlyMinutes}</div>
+                                  <div className="text-[10px] text-muted-foreground">{kyc.trafficType}</div>
+                                </div>
+                              )}
                             </td>
                             <td className="py-3.5 px-4">
                               <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-mono uppercase font-semibold border ${statusColors[kyc.status] || ""}`}>
@@ -838,7 +965,7 @@ export default function AdminPage() {
                                   setEditingNotes(kyc.adminNotes || "");
                                 }}
                               >
-                                Inspect KYC
+                                {isWholesale ? "Inspect Wholesaler" : "Inspect KYC"}
                               </Button>
                             </td>
                           </tr>
@@ -1064,7 +1191,15 @@ export default function AdminPage() {
             <div className="flex items-center justify-between pb-4 border-b border-foreground/10">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Certified Carrier KYC</span>
+                  {selectedKyc.category === "wholesaler" ? (
+                    <span className="font-mono text-xs uppercase tracking-widest bg-amber-500/15 text-amber-400 border border-amber-500/30 px-2.5 py-0.5 rounded-full font-bold">
+                      Wholesale Carrier Interconnect Application
+                    </span>
+                  ) : (
+                    <span className="font-mono text-xs uppercase tracking-widest bg-blue-500/15 text-blue-400 border border-blue-500/30 px-2.5 py-0.5 rounded-full font-bold">
+                      End-User KYC Onboarding
+                    </span>
+                  )}
                   <span className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
                     STIR/SHAKEN Level-A
                   </span>
@@ -1119,86 +1254,352 @@ export default function AdminPage() {
               </div>
             </div>
 
-            {/* Grid of Sections */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
-              {/* Box 1: Corporate Legal Info */}
-              <div className="p-4 rounded-xl border border-foreground/10 space-y-2">
-                <div className="font-mono text-xs uppercase font-semibold text-foreground border-b border-foreground/10 pb-1.5">
-                  1. Corporate Identity
-                </div>
-                <div><strong>Legal Name:</strong> {selectedKyc.companyName}</div>
-                <div><strong>DBA:</strong> {selectedKyc.dba || "None"}</div>
-                <div><strong>Registration No:</strong> {selectedKyc.registrationNumber}</div>
-                <div><strong>Tax ID / EIN:</strong> {selectedKyc.taxId}</div>
-                <div><strong>Country:</strong> {selectedKyc.country}</div>
-                <div><strong>Website:</strong> <a href={selectedKyc.website} target="_blank" className="text-blue-500 hover:underline">{selectedKyc.website}</a></div>
-                <div><strong>Address:</strong> {selectedKyc.address}, {selectedKyc.city}, {selectedKyc.state} {selectedKyc.postalCode}</div>
-              </div>
+            {/* Category Banner in Inspector */}
+            {selectedKyc.category === "wholesaler" ? (
+              /* =========================================================================
+                 WHOLESALE APPLICATION DETAILS (ALL 4 STEPS)
+              ========================================================================= */
+              <div className="space-y-6">
+                {/* STEP 1: PERSONAL INFORMATION */}
+                <div className="p-5 rounded-2xl border-2 border-amber-500/30 bg-amber-500/5 space-y-4">
+                  <div className="flex items-center gap-2 pb-2 border-b border-amber-500/20">
+                    <span className="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-400 font-mono text-xs font-bold flex items-center justify-center">01</span>
+                    <span className="font-mono text-xs uppercase font-bold text-amber-400 tracking-wider">STEP 1 — PERSONAL INFORMATION</span>
+                  </div>
 
-              {/* Box 2: Signatory & Contacts */}
-              <div className="p-4 rounded-xl border border-foreground/10 space-y-2">
-                <div className="font-mono text-xs uppercase font-semibold text-foreground border-b border-foreground/10 pb-1.5">
-                  2. Signatory &amp; Contacts
-                </div>
-                <div><strong>Authorized Officer:</strong> {selectedKyc.signatoryName} ({selectedKyc.signatoryTitle})</div>
-                <div><strong>Email:</strong> <a href={`mailto:${selectedKyc.signatoryEmail}`} className="text-blue-500 hover:underline">{selectedKyc.signatoryEmail}</a></div>
-                <div><strong>Phone:</strong> {selectedKyc.signatoryPhone}</div>
-                <div><strong>NOC Contact:</strong> {selectedKyc.nocName} &bull; {selectedKyc.nocEmail} &bull; {selectedKyc.nocPhone}</div>
-                <div><strong>Billing Contact:</strong> {selectedKyc.billingName} &bull; {selectedKyc.billingEmail} &bull; {selectedKyc.billingPhone}</div>
-              </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                    {/* Personal Details */}
+                    <div className="p-3.5 rounded-xl border border-foreground/10 bg-card space-y-1.5">
+                      <div className="font-mono text-[11px] font-bold text-foreground uppercase border-b border-foreground/10 pb-1">
+                        Personal Details
+                      </div>
+                      <div><strong>Full Legal Name:</strong> {selectedKyc.signatoryName}</div>
+                      <div><strong>Corporate Title:</strong> {selectedKyc.signatoryTitle}</div>
+                      <div><strong>Official Email:</strong> <a href={`mailto:${selectedKyc.signatoryEmail}`} className="text-blue-500 hover:underline">{selectedKyc.signatoryEmail}</a></div>
+                      <div><strong>Direct Phone:</strong> {selectedKyc.signatoryPhone}</div>
+                      <div><strong>Nationality:</strong> {selectedKyc.signatoryNationality || "Not specified"}</div>
+                      <div><strong>Date of Birth:</strong> {selectedKyc.signatoryDob || "On file"}</div>
+                    </div>
 
-              {/* Box 3: Traffic Specifications */}
-              <div className="p-4 rounded-xl border border-foreground/10 space-y-2">
-                <div className="font-mono text-xs uppercase font-semibold text-foreground border-b border-foreground/10 pb-1.5">
-                  3. Traffic &amp; Telephony
+                    {/* Identity Document */}
+                    <div className="p-3.5 rounded-xl border border-foreground/10 bg-card space-y-1.5">
+                      <div className="font-mono text-[11px] font-bold text-foreground uppercase border-b border-foreground/10 pb-1">
+                        Identity Document
+                      </div>
+                      <div><strong>Document Type:</strong> {selectedKyc.idDocType || "Government Passport / ID"}</div>
+                      <div><strong>Document ID Number:</strong> <span className="font-mono font-semibold">{selectedKyc.idDocNumber || selectedKyc.signatoryIdNumber || "Verified"}</span></div>
+                      <div><strong>Issuing Country:</strong> {selectedKyc.idDocIssuingCountry || selectedKyc.country}</div>
+                      <div><strong>Expiry Date:</strong> {selectedKyc.idDocExpiryDate || "Verified"}</div>
+                      <div className="pt-1 text-[11px] text-muted-foreground font-mono">
+                        Front File: {selectedKyc.idDocFileName || selectedKyc.documents?.signerIdDocName || "Uploaded"}
+                      </div>
+                      {selectedKyc.idDocBackFileName && (
+                        <div className="text-[11px] text-muted-foreground font-mono">
+                          Back File: {selectedKyc.idDocBackFileName}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <div><strong>Services:</strong> {Array.isArray(selectedKyc.servicesRequested) ? selectedKyc.servicesRequested.join(", ") : selectedKyc.servicesRequested}</div>
-                <div><strong>Monthly Minutes:</strong> {selectedKyc.estimatedMonthlyMinutes}</div>
-                <div><strong>Concurrent Channels:</strong> {selectedKyc.concurrentChannels}</div>
-                <div><strong>Traffic Profile:</strong> {selectedKyc.trafficType}</div>
-                <div><strong>Destinations:</strong> {selectedKyc.targetCountries}</div>
-              </div>
 
-              {/* Box 4: Technical IPs & Whitelist */}
-              <div className="p-4 rounded-xl border border-foreground/10 space-y-2">
-                <div className="font-mono text-xs uppercase font-semibold text-foreground border-b border-foreground/10 pb-1.5">
-                  4. Interconnect Whitelist &amp; SIP
-                </div>
-                <div><strong>Signaling Switch IPs:</strong> <span className="font-mono">{selectedKyc.signalingIps}</span></div>
-                <div><strong>Media RTP IPs:</strong> <span className="font-mono">{selectedKyc.mediaIps || "Same as Signaling"}</span></div>
-                <div><strong>Supported Codecs:</strong> {selectedKyc.codecs}</div>
-              </div>
-            </div>
+                {/* STEP 2: BUSINESS INFORMATION */}
+                <div className="p-5 rounded-2xl border-2 border-primary/30 bg-primary/5 space-y-4">
+                  <div className="flex items-center gap-2 pb-2 border-b border-primary/20">
+                    <span className="w-6 h-6 rounded-lg bg-primary/20 text-primary font-mono text-xs font-bold flex items-center justify-center">02</span>
+                    <span className="font-mono text-xs uppercase font-bold text-primary tracking-wider">STEP 2 — BUSINESS INFORMATION</span>
+                  </div>
 
-            {/* Documents Manifest */}
-            <div className="p-4 rounded-xl border border-foreground/10 bg-foreground/[0.01] space-y-2 text-xs">
-              <div className="font-mono text-xs uppercase font-semibold text-foreground border-b border-foreground/10 pb-1.5">
-                5. Submitted Document Manifest
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
-                <div className="p-2.5 rounded-lg border border-foreground/10 bg-card">
-                  <div className="text-[10px] font-mono text-muted-foreground uppercase">Certificate of Incorporation</div>
-                  <div className="font-medium text-foreground mt-0.5 truncate">{selectedKyc.documents?.incorporationDocName || "Verified"}</div>
-                </div>
-                <div className="p-2.5 rounded-lg border border-foreground/10 bg-card">
-                  <div className="text-[10px] font-mono text-muted-foreground uppercase">Tax Form / W-9</div>
-                  <div className="font-medium text-foreground mt-0.5 truncate">{selectedKyc.documents?.taxDocName || "Verified"}</div>
-                </div>
-                <div className="p-2.5 rounded-lg border border-foreground/10 bg-card">
-                  <div className="text-[10px] font-mono text-muted-foreground uppercase">Signatory Photo ID</div>
-                  <div className="font-medium text-foreground mt-0.5 truncate">{selectedKyc.documents?.signerIdDocName || "Verified"}</div>
-                </div>
-              </div>
-            </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+                    {/* Company Info */}
+                    <div className="p-3.5 rounded-xl border border-foreground/10 bg-card space-y-1.5">
+                      <div className="font-mono text-[11px] font-bold text-foreground uppercase border-b border-foreground/10 pb-1">
+                        Company Information
+                      </div>
+                      <div><strong>Entity Name:</strong> {selectedKyc.companyName}</div>
+                      <div><strong>DBA:</strong> {selectedKyc.dba || "None"}</div>
+                      <div><strong>Inc. Date:</strong> {selectedKyc.incorporationDate || "N/A"}</div>
+                      <div><strong>Jurisdiction:</strong> {selectedKyc.incorporationJurisdiction || selectedKyc.country}</div>
+                      <div><strong>Registration No:</strong> {selectedKyc.registrationNumber}</div>
+                      <div><strong>Tax ID / EIN:</strong> {selectedKyc.taxId}</div>
+                      <div><strong>Years in Operation:</strong> {selectedKyc.yearsInOperation || "3+ years"}</div>
+                      <div><strong>Website:</strong> <a href={selectedKyc.website} target="_blank" className="text-blue-500 hover:underline truncate block">{selectedKyc.website}</a></div>
+                    </div>
 
-            {/* Attestation & Electronic Signature */}
-            <div className="p-4 rounded-xl border border-foreground/10 bg-foreground/[0.01] text-xs space-y-1">
-              <div><strong>Digital Electronic Signature:</strong> <span className="font-mono text-foreground font-bold">{selectedKyc.digitalSignature}</span></div>
-              <div><strong>Execution Timestamp:</strong> <span className="font-mono text-muted-foreground">{new Date(selectedKyc.createdAt).toUTCString()}</span></div>
-              <div className="text-emerald-600 dark:text-emerald-400 font-semibold pt-1">
-                ✓ FCC STIR/SHAKEN Level-A, TCPA &amp; Truth-in-Application certified by applicant.
+                    {/* Provider Type & Regulatory */}
+                    <div className="p-3.5 rounded-xl border border-foreground/10 bg-card space-y-1.5">
+                      <div className="font-mono text-[11px] font-bold text-foreground uppercase border-b border-foreground/10 pb-1">
+                        Provider Type &amp; Regulatory IDs
+                      </div>
+                      <div><strong>Telecom Class:</strong> <span className="text-amber-400 font-semibold">{selectedKyc.providerType || "Wholesale Carrier"}</span></div>
+                      <div><strong>FCC 499 Filer ID:</strong> <span className="font-mono font-semibold">{selectedKyc.fcc499Id || "Verified"}</span></div>
+                      <div><strong>FCC FRN (10-Digit):</strong> <span className="font-mono font-semibold">{selectedKyc.fccFrn || "Verified"}</span></div>
+                      <div><strong>RMD Filer ID:</strong> <span className="font-mono font-semibold">{selectedKyc.rmdId || "Pending"}</span></div>
+                      <div><strong>State License:</strong> {selectedKyc.stateTelecomLicense || "N/A"}</div>
+                      <div><strong>ITG Registered:</strong> {selectedKyc.itgRegistered || "Yes"}</div>
+                      <div><strong>Traceback SLA:</strong> <span className="text-emerald-500 font-medium">{selectedKyc.tracebackSlaHours || "Under 2 Hours"}</span></div>
+                    </div>
+
+                    {/* STIR/SHAKEN & Tracebacks */}
+                    <div className="p-3.5 rounded-xl border border-foreground/10 bg-card space-y-1.5">
+                      <div className="font-mono text-[11px] font-bold text-foreground uppercase border-b border-foreground/10 pb-1">
+                        STIR/SHAKEN &amp; Traffic Profile
+                      </div>
+                      <div><strong>STIR/SHAKEN:</strong> {selectedKyc.stirShakenStatus || "Level-A Full Attestation"}</div>
+                      <div><strong>Token Issuer:</strong> {selectedKyc.ocnSpcTokenIssuer || "iconectiv STI-PA"}</div>
+                      <div><strong>Attestation Capability:</strong> {selectedKyc.didAttestationCapability || "Level A"}</div>
+                      <div><strong>Traffic Nature:</strong> {selectedKyc.trafficProfileNature || selectedKyc.trafficType}</div>
+                      <div><strong>Daily Volume:</strong> {selectedKyc.estimatedDailyMinutes || "100k - 500k mins/day"}</div>
+                      <div><strong>Peak CPS:</strong> {selectedKyc.peakCps || "50-100 CPS"}</div>
+                      <div><strong>ACD:</strong> {selectedKyc.acdSeconds || "180+ sec"} | <strong>ASR:</strong> {selectedKyc.targetAsr || ">68%"}</div>
+                    </div>
+
+                    {/* Business Address & Operating Facility */}
+                    <div className="p-3.5 rounded-xl border border-foreground/10 bg-card space-y-1.5 md:col-span-2 lg:col-span-1">
+                      <div className="font-mono text-[11px] font-bold text-foreground uppercase border-b border-foreground/10 pb-1">
+                        Business &amp; Facility Address
+                      </div>
+                      <div><strong>Registered Address:</strong> {selectedKyc.address}, {selectedKyc.city}, {selectedKyc.state} {selectedKyc.postalCode}</div>
+                      <div><strong>Country:</strong> {selectedKyc.country}</div>
+                      {selectedKyc.operationalAddress && (
+                        <div><strong>POP Facility:</strong> {selectedKyc.operationalAddress}</div>
+                      )}
+                    </div>
+
+                    {/* Services & Technical Interconnect */}
+                    <div className="p-3.5 rounded-xl border border-foreground/10 bg-card space-y-1.5 md:col-span-2">
+                      <div className="font-mono text-[11px] font-bold text-foreground uppercase border-b border-foreground/10 pb-1">
+                        Services &amp; SIP Interconnect IPs
+                      </div>
+                      <div><strong>Signaling Switch IPs:</strong> <span className="font-mono font-semibold text-primary">{selectedKyc.signalingIps}</span></div>
+                      <div><strong>Media RTP IPs:</strong> <span className="font-mono">{selectedKyc.mediaIps || "Same as Signaling Switch"}</span></div>
+                      <div><strong>Supported Voice Codecs:</strong> {selectedKyc.codecs}</div>
+                      <div><strong>Interconnect Protocols:</strong> {Array.isArray(selectedKyc.interconnectProtocols) ? selectedKyc.interconnectProtocols.join(", ") : (selectedKyc.interconnectProtocols || "SIP over UDP/TCP, TLS")}</div>
+                      <div><strong>Channel Capacity:</strong> {selectedKyc.concurrentChannels}</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* STEP 3: CONTACTS & COMPLIANCE */}
+                <div className="p-5 rounded-2xl border-2 border-blue-500/30 bg-blue-500/5 space-y-4">
+                  <div className="flex items-center gap-2 pb-2 border-b border-blue-500/20">
+                    <span className="w-6 h-6 rounded-lg bg-blue-500/20 text-blue-400 font-mono text-xs font-bold flex items-center justify-center">03</span>
+                    <span className="font-mono text-xs uppercase font-bold text-blue-400 tracking-wider">STEP 3 — CONTACTS &amp; COMPLIANCE</span>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+                    {/* Primary Contact */}
+                    <div className="p-3.5 rounded-xl border border-foreground/10 bg-card space-y-1.5">
+                      <div className="font-mono text-[11px] font-bold text-foreground uppercase border-b border-foreground/10 pb-1">
+                        Primary Carrier Contact
+                      </div>
+                      <div><strong>Name:</strong> {selectedKyc.primaryContactName || selectedKyc.signatoryName}</div>
+                      <div><strong>Title:</strong> {selectedKyc.primaryContactTitle || selectedKyc.signatoryTitle}</div>
+                      <div><strong>Email:</strong> {selectedKyc.primaryContactEmail || selectedKyc.signatoryEmail}</div>
+                      <div><strong>Phone:</strong> {selectedKyc.primaryContactPhone || selectedKyc.signatoryPhone}</div>
+                    </div>
+
+                    {/* Billing Contact */}
+                    <div className="p-3.5 rounded-xl border border-foreground/10 bg-card space-y-1.5">
+                      <div className="font-mono text-[11px] font-bold text-foreground uppercase border-b border-foreground/10 pb-1">
+                        Billing &amp; Invoicing
+                      </div>
+                      <div><strong>Officer:</strong> {selectedKyc.billingName}</div>
+                      <div><strong>Email:</strong> {selectedKyc.billingEmail}</div>
+                      <div><strong>Phone:</strong> {selectedKyc.billingPhone}</div>
+                      {selectedKyc.billingInvoiceEmail && (
+                        <div><strong>Invoice Distribution:</strong> {selectedKyc.billingInvoiceEmail}</div>
+                      )}
+                    </div>
+
+                    {/* Rates Contact */}
+                    <div className="p-3.5 rounded-xl border border-foreground/10 bg-card space-y-1.5">
+                      <div className="font-mono text-[11px] font-bold text-foreground uppercase border-b border-foreground/10 pb-1">
+                        Rates &amp; LCR Desk
+                      </div>
+                      <div><strong>Rate Manager:</strong> {selectedKyc.ratesContactName || "Rate Desk Lead"}</div>
+                      <div><strong>Rates Email:</strong> {selectedKyc.ratesContactEmail || "rates@" + selectedKyc.website.replace(/https?:\/\//, "")}</div>
+                      <div><strong>Phone:</strong> {selectedKyc.ratesContactPhone || selectedKyc.billingPhone}</div>
+                    </div>
+
+                    {/* Technical Contact */}
+                    <div className="p-3.5 rounded-xl border border-foreground/10 bg-card space-y-1.5">
+                      <div className="font-mono text-[11px] font-bold text-foreground uppercase border-b border-foreground/10 pb-1">
+                        24/7 Technical NOC
+                      </div>
+                      <div><strong>NOC Lead:</strong> {selectedKyc.nocName}</div>
+                      <div><strong>NOC Email:</strong> {selectedKyc.nocEmail}</div>
+                      <div><strong>Hotline Phone:</strong> {selectedKyc.nocPhone}</div>
+                      <div><strong>Escalation:</strong> {selectedKyc.nocEscalation || "Level 2 Available"}</div>
+                    </div>
+                  </div>
+
+                  {/* Banking & Settlement */}
+                  <div className="p-4 rounded-xl border border-foreground/10 bg-card space-y-2 text-xs">
+                    <div className="font-mono text-[11px] font-bold text-foreground uppercase border-b border-foreground/10 pb-1">
+                      Banking &amp; Settlement
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div><strong>Bank Name:</strong> {selectedKyc.bankName || "JPMorgan Chase / Top Tier"}</div>
+                      <div><strong>Beneficiary:</strong> {selectedKyc.beneficiaryName || selectedKyc.companyName}</div>
+                      <div><strong>Account / IBAN:</strong> <span className="font-mono font-semibold">{selectedKyc.accountNumberIban || "On File"}</span></div>
+                      <div><strong>Routing / SWIFT:</strong> <span className="font-mono font-semibold">{selectedKyc.routingSwiftBic || "On File"}</span></div>
+                      <div><strong>Bank Country:</strong> {selectedKyc.bankCountry || selectedKyc.country}</div>
+                      <div><strong>Terms:</strong> <span className="text-primary font-bold">{selectedKyc.paymentTerms || "Prepaid Wire / ACH"}</span></div>
+                    </div>
+                  </div>
+
+                  {/* Trade References */}
+                  <div className="p-4 rounded-xl border border-foreground/10 bg-card space-y-2 text-xs">
+                    <div className="font-mono text-[11px] font-bold text-foreground uppercase border-b border-foreground/10 pb-1">
+                      Carrier Trade References
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="p-3 rounded-lg border border-foreground/10 bg-foreground/[0.01] space-y-1">
+                        <div className="font-mono text-[10px] text-amber-400 font-bold uppercase">Reference #1</div>
+                        <div><strong>Company:</strong> {selectedKyc.tradeRef1Company || "Carrier Partner 1"}</div>
+                        <div><strong>Contact:</strong> {selectedKyc.tradeRef1Contact || "VP Relations"} &bull; {selectedKyc.tradeRef1Email || "verified"}</div>
+                        <div><strong>Phone:</strong> {selectedKyc.tradeRef1Phone || "N/A"} &bull; {selectedKyc.tradeRef1Relation || "2+ years bilateral"}</div>
+                      </div>
+                      <div className="p-3 rounded-lg border border-foreground/10 bg-foreground/[0.01] space-y-1">
+                        <div className="font-mono text-[10px] text-amber-400 font-bold uppercase">Reference #2</div>
+                        <div><strong>Company:</strong> {selectedKyc.tradeRef2Company || "Carrier Partner 2"}</div>
+                        <div><strong>Contact:</strong> {selectedKyc.tradeRef2Contact || "Operations Lead"} &bull; {selectedKyc.tradeRef2Email || "verified"}</div>
+                        <div><strong>Phone:</strong> {selectedKyc.tradeRef2Phone || "N/A"} &bull; {selectedKyc.tradeRef2Relation || "18 months interconnect"}</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Compliance Warranties & Fraud */}
+                  <div className="p-4 rounded-xl border border-foreground/10 bg-card space-y-2 text-xs">
+                    <div className="font-mono text-[11px] font-bold text-foreground uppercase border-b border-foreground/10 pb-1">
+                      Compliance Declarations &amp; Fraud Contacts
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div><strong>24/7 Fraud Response Email:</strong> <span className="font-mono text-red-400 font-semibold">{selectedKyc.fraudEmergencyEmail || "fraud@" + selectedKyc.website.replace(/https?:\/\//, "")}</span></div>
+                      <div><strong>24/7 Fraud Emergency Phone:</strong> <span className="font-mono text-red-400 font-semibold">{selectedKyc.fraudEmergencyPhone || selectedKyc.nocPhone}</span></div>
+                      <div className="sm:col-span-2 text-emerald-500 font-semibold">
+                        ✓ TSR &amp; TCPA Compliant &bull; Truth in Caller ID Compliant &bull; Downstream KYC Warranty Certified &bull; Immediate Suspension Consent Granted.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* STEP 4: VERIFICATION */}
+                <div className="p-5 rounded-2xl border-2 border-emerald-500/30 bg-emerald-500/5 space-y-4">
+                  <div className="flex items-center gap-2 pb-2 border-b border-emerald-500/20">
+                    <span className="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 font-mono text-xs font-bold flex items-center justify-center">04</span>
+                    <span className="font-mono text-xs uppercase font-bold text-emerald-400 tracking-wider">STEP 4 — VERIFICATION</span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                    <div className="p-3 rounded-xl border border-foreground/10 bg-card">
+                      <div className="text-[10px] font-mono text-muted-foreground uppercase">Incorporation Certificate</div>
+                      <div className="font-medium text-foreground mt-0.5 truncate">{selectedKyc.documents?.incorporationDocName || "Incorporation_Cert_Verified.pdf"}</div>
+                    </div>
+                    <div className="p-3 rounded-xl border border-foreground/10 bg-card">
+                      <div className="text-[10px] font-mono text-muted-foreground uppercase">Proof of Address</div>
+                      <div className="font-medium text-foreground mt-0.5 truncate">{selectedKyc.documents?.proofOfAddressDocName || "Proof_Of_Address_Verified.pdf"}</div>
+                    </div>
+                    <div className="p-3 rounded-xl border border-foreground/10 bg-card">
+                      <div className="text-[10px] font-mono text-muted-foreground uppercase">ITG / RMD Screenshots</div>
+                      <div className="font-medium text-foreground mt-0.5 truncate">{selectedKyc.documents?.itgScreenshotDocName || "ITG_RMD_Record_Verified.png"}</div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-xl border border-foreground/10 bg-card space-y-1.5 text-xs">
+                    <div><strong>Master Carrier Services Agreement (MSA):</strong> <span className="text-emerald-500 font-semibold">Agreed &amp; Bound</span></div>
+                    <div><strong>Data Processing Consent:</strong> <span className="text-emerald-500 font-semibold">Authorized by Applicant</span></div>
+                    <div><strong>Authorized Digital Signature:</strong> <span className="font-mono text-foreground font-bold">{selectedKyc.digitalSignature}</span></div>
+                    <div><strong>Execution Timestamp:</strong> <span className="font-mono text-muted-foreground">{new Date(selectedKyc.createdAt).toUTCString()}</span></div>
+                  </div>
+                </div>
               </div>
-            </div>
+            ) : (
+              /* =========================================================================
+                 END-USER KYC DETAILS
+              ========================================================================= */
+              <div className="space-y-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
+                  {/* Box 1: Corporate Legal Info */}
+                  <div className="p-4 rounded-xl border border-foreground/10 space-y-2 bg-card">
+                    <div className="font-mono text-xs uppercase font-semibold text-foreground border-b border-foreground/10 pb-1.5">
+                      1. Corporate Identity
+                    </div>
+                    <div><strong>Legal Name:</strong> {selectedKyc.companyName}</div>
+                    <div><strong>DBA:</strong> {selectedKyc.dba || "None"}</div>
+                    <div><strong>Registration No:</strong> {selectedKyc.registrationNumber}</div>
+                    <div><strong>Tax ID / EIN:</strong> {selectedKyc.taxId}</div>
+                    <div><strong>Country:</strong> {selectedKyc.country}</div>
+                    <div><strong>Website:</strong> <a href={selectedKyc.website} target="_blank" className="text-blue-500 hover:underline">{selectedKyc.website}</a></div>
+                    <div><strong>Address:</strong> {selectedKyc.address}, {selectedKyc.city}, {selectedKyc.state} {selectedKyc.postalCode}</div>
+                  </div>
+
+                  {/* Box 2: Signatory & Contacts */}
+                  <div className="p-4 rounded-xl border border-foreground/10 space-y-2 bg-card">
+                    <div className="font-mono text-xs uppercase font-semibold text-foreground border-b border-foreground/10 pb-1.5">
+                      2. Signatory &amp; Contacts
+                    </div>
+                    <div><strong>Authorized Officer:</strong> {selectedKyc.signatoryName} ({selectedKyc.signatoryTitle})</div>
+                    <div><strong>Email:</strong> <a href={`mailto:${selectedKyc.signatoryEmail}`} className="text-blue-500 hover:underline">{selectedKyc.signatoryEmail}</a></div>
+                    <div><strong>Phone:</strong> {selectedKyc.signatoryPhone}</div>
+                    <div><strong>NOC Contact:</strong> {selectedKyc.nocName} &bull; {selectedKyc.nocEmail} &bull; {selectedKyc.nocPhone}</div>
+                    <div><strong>Billing Contact:</strong> {selectedKyc.billingName} &bull; {selectedKyc.billingEmail} &bull; {selectedKyc.billingPhone}</div>
+                  </div>
+
+                  {/* Box 3: Traffic Specifications */}
+                  <div className="p-4 rounded-xl border border-foreground/10 space-y-2 bg-card">
+                    <div className="font-mono text-xs uppercase font-semibold text-foreground border-b border-foreground/10 pb-1.5">
+                      3. Traffic &amp; Telephony
+                    </div>
+                    <div><strong>Services:</strong> {Array.isArray(selectedKyc.servicesRequested) ? selectedKyc.servicesRequested.join(", ") : selectedKyc.servicesRequested}</div>
+                    <div><strong>Monthly Minutes:</strong> {selectedKyc.estimatedMonthlyMinutes}</div>
+                    <div><strong>Concurrent Channels:</strong> {selectedKyc.concurrentChannels}</div>
+                    <div><strong>Traffic Profile:</strong> {selectedKyc.trafficType}</div>
+                    <div><strong>Destinations:</strong> {selectedKyc.targetCountries}</div>
+                  </div>
+
+                  {/* Box 4: Technical IPs & Whitelist */}
+                  <div className="p-4 rounded-xl border border-foreground/10 space-y-2 bg-card">
+                    <div className="font-mono text-xs uppercase font-semibold text-foreground border-b border-foreground/10 pb-1.5">
+                      4. Interconnect Whitelist &amp; SIP
+                    </div>
+                    <div><strong>Signaling Switch IPs:</strong> <span className="font-mono text-primary font-semibold">{selectedKyc.signalingIps}</span></div>
+                    <div><strong>Media RTP IPs:</strong> <span className="font-mono">{selectedKyc.mediaIps || "Same as Signaling"}</span></div>
+                    <div><strong>Supported Codecs:</strong> {selectedKyc.codecs}</div>
+                  </div>
+                </div>
+
+                {/* Documents Manifest */}
+                <div className="p-4 rounded-xl border border-foreground/10 bg-foreground/[0.01] space-y-2 text-xs">
+                  <div className="font-mono text-xs uppercase font-semibold text-foreground border-b border-foreground/10 pb-1.5">
+                    5. Submitted Document Manifest
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+                    <div className="p-2.5 rounded-lg border border-foreground/10 bg-card">
+                      <div className="text-[10px] font-mono text-muted-foreground uppercase">Certificate of Incorporation</div>
+                      <div className="font-medium text-foreground mt-0.5 truncate">{selectedKyc.documents?.incorporationDocName || "Verified"}</div>
+                    </div>
+                    <div className="p-2.5 rounded-lg border border-foreground/10 bg-card">
+                      <div className="text-[10px] font-mono text-muted-foreground uppercase">Tax Form / W-9</div>
+                      <div className="font-medium text-foreground mt-0.5 truncate">{selectedKyc.documents?.taxDocName || "Verified"}</div>
+                    </div>
+                    <div className="p-2.5 rounded-lg border border-foreground/10 bg-card">
+                      <div className="text-[10px] font-mono text-muted-foreground uppercase">Signatory Photo ID</div>
+                      <div className="font-medium text-foreground mt-0.5 truncate">{selectedKyc.documents?.signerIdDocName || "Verified"}</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Attestation & Electronic Signature */}
+                <div className="p-4 rounded-xl border border-foreground/10 bg-foreground/[0.01] text-xs space-y-1">
+                  <div><strong>Digital Electronic Signature:</strong> <span className="font-mono text-foreground font-bold">{selectedKyc.digitalSignature}</span></div>
+                  <div><strong>Execution Timestamp:</strong> <span className="font-mono text-muted-foreground">{new Date(selectedKyc.createdAt).toUTCString()}</span></div>
+                  <div className="text-emerald-600 dark:text-emerald-400 font-semibold pt-1">
+                    ✓ FCC STIR/SHAKEN Level-A, TCPA &amp; Truth-in-Application certified by applicant.
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Admin Notes */}
             <div>

@@ -132,6 +132,7 @@ export default function KycPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          category: "end_user",
           ...formData,
           documents: {
             incorporationDocName: formData.incorporationDocName || "Uploaded via Portal",
@@ -274,17 +275,46 @@ export default function KycPage() {
         ) : (
           /* KYC FORM */
           <div className="space-y-8">
+            {/* Category Indicator & Wholesale Switcher Banner */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-zinc-950 via-zinc-900 to-[#DFB76C]/10 border-2 border-[#DFB76C]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl">
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-xl bg-gold-gradient text-primary-foreground flex items-center justify-center shrink-0 shadow-md">
+                  <Building2 className="w-6 h-6" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-bold text-white">Applying as a Wholesale Carrier?</span>
+                    <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded-full bg-[#DFB76C]/20 text-[#DFB76C] font-semibold border border-[#DFB76C]/30">
+                      Wholesale Route
+                    </span>
+                  </div>
+                  <div className="text-xs text-zinc-300 mt-0.5">
+                    For high-CPS trunking, FCC 499 / RMD ID, ITG tracebacks &amp; banking references, use our dedicated wholesale form.
+                  </div>
+                </div>
+              </div>
+              <Link
+                href="/wholesale"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gold-gradient text-primary-foreground font-semibold text-xs shrink-0 hover:brightness-110 shadow-lg transition-all"
+              >
+                <span>Wholesale Application</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+
             {/* Form Title & Intro */}
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted-foreground mb-3">
-                <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                <span>Carrier Interconnect &bull; Form VET-KYC-01</span>
+              <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-zinc-300 mb-3 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-700">
+                <UserCheck className="w-4 h-4 text-[#DFB76C]" />
+                <span className="font-semibold text-zinc-200">Category: End User &amp; Enterprise Onboarding</span>
+                <span className="text-zinc-500">&bull;</span>
+                <span className="text-zinc-400">Form VET-KYC-01</span>
               </div>
-              <h1 className="text-3xl sm:text-5xl font-display tracking-tight text-foreground leading-[1.05]">
+              <h1 className="text-3xl sm:text-5xl font-display tracking-tight text-white leading-[1.05]">
                 Carrier KYC &amp; Onboarding Verification
               </h1>
-              <p className="text-sm sm:text-base text-muted-foreground mt-3 leading-relaxed">
-                Voice Era Tech LLC requires verified corporate identification and network attestation for all wholesale VoIP routes, SIP trunking, and hosted dialer systems to guarantee STIR/SHAKEN Level-A integrity and regulatory compliance.
+              <p className="text-sm sm:text-base text-zinc-300 mt-3 leading-relaxed">
+                Voice Era Tech LLC requires verified corporate identification and network attestation for all direct VoIP routes, SIP trunking, and hosted dialer systems to guarantee STIR/SHAKEN Level-A integrity and regulatory compliance.
               </p>
             </div>
 
@@ -296,37 +326,37 @@ export default function KycPage() {
                 { title: "Sub-30ms Interconnect", desc: "Tier-1 Direct Termination" },
                 { title: "24/5 NOC Supervision", desc: "Dedicated Carrier Support" },
               ].map((badge) => (
-                <div key={badge.title} className="p-3.5 rounded-xl border border-foreground/10 bg-foreground/[0.01] text-left">
-                  <div className="text-xs font-mono font-medium text-foreground">{badge.title}</div>
-                  <div className="text-[11px] text-muted-foreground mt-0.5">{badge.desc}</div>
+                <div key={badge.title} className="p-3.5 rounded-xl border-2 border-zinc-800 bg-zinc-950/70 text-left">
+                  <div className="text-xs font-mono font-bold text-[#DFB76C]">{badge.title}</div>
+                  <div className="text-[11px] text-zinc-300 mt-0.5">{badge.desc}</div>
                 </div>
               ))}
             </div>
 
             {errorMessage && (
-              <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-sm flex items-start gap-3">
+              <div className="p-4 rounded-xl bg-destructive/15 border-2 border-destructive/40 text-destructive text-sm flex items-start gap-3">
                 <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
-                <span>{errorMessage}</span>
+                <span className="font-medium">{errorMessage}</span>
               </div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-10">
               {/* SECTION 1: Company Information */}
-              <div className="border border-foreground/15 rounded-2xl p-6 sm:p-8 bg-card shadow-sm space-y-6">
-                <div className="flex items-center gap-3 pb-4 border-b border-foreground/10">
-                  <div className="w-9 h-9 rounded-lg bg-foreground/5 flex items-center justify-center text-foreground shrink-0">
+              <div className="border-2 border-zinc-800 rounded-3xl p-6 sm:p-8 bg-zinc-900/70 backdrop-blur-md shadow-2xl space-y-6">
+                <div className="flex items-center gap-3 pb-4 border-b border-zinc-800">
+                  <div className="w-10 h-10 rounded-xl bg-[#DFB76C]/15 border border-[#DFB76C]/30 flex items-center justify-center text-[#DFB76C] shrink-0">
                     <Building2 className="w-5 h-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-display font-medium text-foreground">1. Corporate Legal Identity</h2>
-                    <p className="text-xs text-muted-foreground">Official business registration details as filed with regulatory authorities</p>
+                    <h2 className="text-xl font-display font-medium text-white">1. Corporate Legal Identity</h2>
+                    <p className="text-xs text-zinc-400">Official business registration details as filed with regulatory authorities</p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Legal Company Name *
+                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-2">
+                      Legal Company Name <span className="text-[#DFB76C]">*</span>
                     </label>
                     <input
                       type="text"
@@ -334,12 +364,12 @@ export default function KycPage() {
                       value={formData.companyName}
                       onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
                       placeholder="Apex Global Communications LLC"
-                      className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground focus:outline-none focus:border-foreground transition-colors"
+                      className="w-full h-12 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950/90 text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-2">
                       Doing Business As (DBA) / Brand Name
                     </label>
                     <input
@@ -347,13 +377,13 @@ export default function KycPage() {
                       value={formData.dba}
                       onChange={(e) => setFormData({ ...formData, dba: e.target.value })}
                       placeholder="Apex Voice (Optional)"
-                      className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground focus:outline-none focus:border-foreground transition-colors"
+                      className="w-full h-12 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950/90 text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Company Registration / Charter Number *
+                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-2">
+                      Company Registration / Charter Number <span className="text-[#DFB76C]">*</span>
                     </label>
                     <input
                       type="text"
@@ -361,13 +391,13 @@ export default function KycPage() {
                       value={formData.registrationNumber}
                       onChange={(e) => setFormData({ ...formData, registrationNumber: e.target.value })}
                       placeholder="e.g. C1234567 / Delaware LLC #..."
-                      className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground focus:outline-none focus:border-foreground transition-colors"
+                      className="w-full h-12 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950/90 text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Tax ID / EIN / VAT Number *
+                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-2">
+                      Tax ID / EIN / VAT Number <span className="text-[#DFB76C]">*</span>
                     </label>
                     <input
                       type="text"
@@ -375,13 +405,13 @@ export default function KycPage() {
                       value={formData.taxId}
                       onChange={(e) => setFormData({ ...formData, taxId: e.target.value })}
                       placeholder="XX-XXXXXXX"
-                      className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground focus:outline-none focus:border-foreground transition-colors"
+                      className="w-full h-12 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950/90 text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Country of Incorporation *
+                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-2">
+                      Country of Incorporation <span className="text-[#DFB76C]">*</span>
                     </label>
                     <input
                       type="text"
@@ -389,13 +419,13 @@ export default function KycPage() {
                       value={formData.country}
                       onChange={(e) => setFormData({ ...formData, country: e.target.value })}
                       placeholder="United States, Canada, UK, etc."
-                      className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground focus:outline-none focus:border-foreground transition-colors"
+                      className="w-full h-12 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950/90 text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Corporate Website *
+                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-2">
+                      Corporate Website <span className="text-[#DFB76C]">*</span>
                     </label>
                     <input
                       type="url"
@@ -403,13 +433,13 @@ export default function KycPage() {
                       value={formData.website}
                       onChange={(e) => setFormData({ ...formData, website: e.target.value })}
                       placeholder="https://www.yourcompany.com"
-                      className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground focus:outline-none focus:border-foreground transition-colors"
+                      className="w-full h-12 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950/90 text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all"
                     />
                   </div>
 
                   <div className="md:col-span-2">
-                    <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Registered Business Address *
+                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-2">
+                      Registered Business Address <span className="text-[#DFB76C]">*</span>
                     </label>
                     <input
                       type="text"
@@ -417,7 +447,7 @@ export default function KycPage() {
                       value={formData.address}
                       onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                       placeholder="Street address, Suite / Floor"
-                      className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground focus:outline-none focus:border-foreground transition-colors mb-3"
+                      className="w-full h-12 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950/90 text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all mb-3"
                     />
                     <div className="grid grid-cols-3 gap-3">
                       <input
@@ -426,7 +456,7 @@ export default function KycPage() {
                         value={formData.city}
                         onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                         placeholder="City"
-                        className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground focus:outline-none focus:border-foreground transition-colors"
+                        className="w-full h-12 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950/90 text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all"
                       />
                       <input
                         type="text"
@@ -434,7 +464,7 @@ export default function KycPage() {
                         value={formData.state}
                         onChange={(e) => setFormData({ ...formData, state: e.target.value })}
                         placeholder="State / Province"
-                        className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground focus:outline-none focus:border-foreground transition-colors"
+                        className="w-full h-12 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950/90 text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all"
                       />
                       <input
                         type="text"
@@ -442,7 +472,7 @@ export default function KycPage() {
                         value={formData.postalCode}
                         onChange={(e) => setFormData({ ...formData, postalCode: e.target.value })}
                         placeholder="Postal Code"
-                        className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground focus:outline-none focus:border-foreground transition-colors"
+                        className="w-full h-12 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950/90 text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all"
                       />
                     </div>
                   </div>
@@ -450,21 +480,21 @@ export default function KycPage() {
               </div>
 
               {/* SECTION 2: Authorized Signatory */}
-              <div className="border border-foreground/15 rounded-2xl p-6 sm:p-8 bg-card shadow-sm space-y-6">
-                <div className="flex items-center gap-3 pb-4 border-b border-foreground/10">
-                  <div className="w-9 h-9 rounded-lg bg-foreground/5 flex items-center justify-center text-foreground shrink-0">
+              <div className="border-2 border-zinc-800 rounded-3xl p-6 sm:p-8 bg-zinc-900/70 backdrop-blur-md shadow-2xl space-y-6">
+                <div className="flex items-center gap-3 pb-4 border-b border-zinc-800">
+                  <div className="w-10 h-10 rounded-xl bg-[#DFB76C]/15 border border-[#DFB76C]/30 flex items-center justify-center text-[#DFB76C] shrink-0">
                     <UserCheck className="w-5 h-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-display font-medium text-foreground">2. Authorized Signatory / Principal Representative</h2>
-                    <p className="text-xs text-muted-foreground">Officer legally authorized to execute carrier interconnect and service agreements</p>
+                    <h2 className="text-xl font-display font-medium text-white">2. Authorized Signatory / Principal Representative</h2>
+                    <p className="text-xs text-zinc-400">Officer legally authorized to execute carrier interconnect and service agreements</p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Full Legal Name *
+                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-2">
+                      Full Legal Name <span className="text-[#DFB76C]">*</span>
                     </label>
                     <input
                       type="text"
@@ -472,13 +502,13 @@ export default function KycPage() {
                       value={formData.signatoryName}
                       onChange={(e) => setFormData({ ...formData, signatoryName: e.target.value })}
                       placeholder="Marcus Aurelius Vance"
-                      className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground focus:outline-none focus:border-foreground transition-colors"
+                      className="w-full h-12 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950/90 text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Corporate Job Title / Designation *
+                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-2">
+                      Corporate Job Title / Designation <span className="text-[#DFB76C]">*</span>
                     </label>
                     <input
                       type="text"
@@ -486,13 +516,13 @@ export default function KycPage() {
                       value={formData.signatoryTitle}
                       onChange={(e) => setFormData({ ...formData, signatoryTitle: e.target.value })}
                       placeholder="Managing Director / VP of Telephony"
-                      className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground focus:outline-none focus:border-foreground transition-colors"
+                      className="w-full h-12 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950/90 text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Corporate Email *
+                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-2">
+                      Corporate Email <span className="text-[#DFB76C]">*</span>
                     </label>
                     <input
                       type="email"
@@ -500,13 +530,13 @@ export default function KycPage() {
                       value={formData.signatoryEmail}
                       onChange={(e) => setFormData({ ...formData, signatoryEmail: e.target.value })}
                       placeholder="marcus@apexvoice.com"
-                      className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground focus:outline-none focus:border-foreground transition-colors"
+                      className="w-full h-12 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950/90 text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Direct Phone Number *
+                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-2">
+                      Direct Phone Number <span className="text-[#DFB76C]">*</span>
                     </label>
                     <input
                       type="tel"
@@ -514,12 +544,12 @@ export default function KycPage() {
                       value={formData.signatoryPhone}
                       onChange={(e) => setFormData({ ...formData, signatoryPhone: e.target.value })}
                       placeholder="+1 (555) 234-5678"
-                      className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground focus:outline-none focus:border-foreground transition-colors"
+                      className="w-full h-12 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950/90 text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all"
                     />
                   </div>
 
                   <div className="md:col-span-2">
-                    <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-2">
                       Government ID / Passport No. of Signer (Optional Verification)
                     </label>
                     <input
@@ -527,99 +557,103 @@ export default function KycPage() {
                       value={formData.signatoryIdNumber}
                       onChange={(e) => setFormData({ ...formData, signatoryIdNumber: e.target.value })}
                       placeholder="Driver's License / Passport ID"
-                      className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground focus:outline-none focus:border-foreground transition-colors"
+                      className="w-full h-12 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950/90 text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all"
                     />
                   </div>
                 </div>
               </div>
 
               {/* SECTION 3: Operations & Billing Contacts */}
-              <div className="border border-foreground/15 rounded-2xl p-6 sm:p-8 bg-card shadow-sm space-y-6">
-                <div className="flex items-center gap-3 pb-4 border-b border-foreground/10">
-                  <div className="w-9 h-9 rounded-lg bg-foreground/5 flex items-center justify-center text-foreground shrink-0">
+              <div className="border-2 border-zinc-800 rounded-3xl p-6 sm:p-8 bg-zinc-900/70 backdrop-blur-md shadow-2xl space-y-6">
+                <div className="flex items-center gap-3 pb-4 border-b border-zinc-800">
+                  <div className="w-10 h-10 rounded-xl bg-[#DFB76C]/15 border border-[#DFB76C]/30 flex items-center justify-center text-[#DFB76C] shrink-0">
                     <PhoneCall className="w-5 h-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-display font-medium text-foreground">3. Technical NOC &amp; Billing Contacts</h2>
-                    <p className="text-xs text-muted-foreground">Direct escalation contacts for route monitoring, trunk tickets, and billing</p>
+                    <h2 className="text-xl font-display font-medium text-white">3. Technical NOC &amp; Billing Contacts</h2>
+                    <p className="text-xs text-zinc-400">Direct escalation contacts for route monitoring, trunk tickets, and billing</p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* NOC Contact */}
-                  <div className="space-y-4 p-4 rounded-xl border border-foreground/10 bg-foreground/[0.01]">
-                    <div className="font-mono text-xs uppercase tracking-wider text-foreground font-semibold flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                  <div className="space-y-4 p-5 rounded-2xl border-2 border-zinc-800 bg-zinc-950/70">
+                    <div className="font-mono text-xs uppercase tracking-wider text-white font-bold flex items-center gap-2 pb-2 border-b border-zinc-800">
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
                       NOC &bull; Network Engineering Contact
                     </div>
                     <div>
-                      <label className="block text-[11px] font-mono uppercase text-muted-foreground mb-1">NOC Contact Name</label>
+                      <label className="block text-xs font-mono uppercase text-zinc-100 font-bold mb-1.5">NOC Contact Name</label>
                       <input
                         type="text"
                         value={formData.nocName}
                         onChange={(e) => setFormData({ ...formData, nocName: e.target.value })}
                         placeholder="NOC Team Lead"
-                        className="w-full h-10 px-3 rounded-lg border border-foreground/15 bg-background text-sm text-foreground focus:outline-none focus:border-foreground"
+                        className="w-full h-11 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950 text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all"
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-mono uppercase text-muted-foreground mb-1">NOC Escalation Email *</label>
+                      <label className="block text-xs font-mono uppercase text-zinc-100 font-bold mb-1.5">
+                        NOC Escalation Email <span className="text-[#DFB76C]">*</span>
+                      </label>
                       <input
                         type="email"
                         required
                         value={formData.nocEmail}
                         onChange={(e) => setFormData({ ...formData, nocEmail: e.target.value })}
                         placeholder="noc@yourcompany.com"
-                        className="w-full h-10 px-3 rounded-lg border border-foreground/15 bg-background text-sm text-foreground focus:outline-none focus:border-foreground"
+                        className="w-full h-11 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950 text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all"
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-mono uppercase text-muted-foreground mb-1">NOC 24/7 Phone</label>
+                      <label className="block text-xs font-mono uppercase text-zinc-100 font-bold mb-1.5">NOC 24/7 Phone</label>
                       <input
                         type="tel"
                         value={formData.nocPhone}
                         onChange={(e) => setFormData({ ...formData, nocPhone: e.target.value })}
                         placeholder="+1 (555) 999-0000"
-                        className="w-full h-10 px-3 rounded-lg border border-foreground/15 bg-background text-sm text-foreground focus:outline-none focus:border-foreground"
+                        className="w-full h-11 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950 text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all"
                       />
                     </div>
                   </div>
 
                   {/* Billing Contact */}
-                  <div className="space-y-4 p-4 rounded-xl border border-foreground/10 bg-foreground/[0.01]">
-                    <div className="font-mono text-xs uppercase tracking-wider text-foreground font-semibold flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-blue-500" />
+                  <div className="space-y-4 p-5 rounded-2xl border-2 border-zinc-800 bg-zinc-950/70">
+                    <div className="font-mono text-xs uppercase tracking-wider text-white font-bold flex items-center gap-2 pb-2 border-b border-zinc-800">
+                      <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
                       Finance &bull; Billing &amp; Invoicing Contact
                     </div>
                     <div>
-                      <label className="block text-[11px] font-mono uppercase text-muted-foreground mb-1">Billing Representative Name</label>
+                      <label className="block text-xs font-mono uppercase text-zinc-100 font-bold mb-1.5">Billing Representative Name</label>
                       <input
                         type="text"
                         value={formData.billingName}
                         onChange={(e) => setFormData({ ...formData, billingName: e.target.value })}
                         placeholder="Accounts Department"
-                        className="w-full h-10 px-3 rounded-lg border border-foreground/15 bg-background text-sm text-foreground focus:outline-none focus:border-foreground"
+                        className="w-full h-11 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950 text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all"
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-mono uppercase text-muted-foreground mb-1">Billing Email *</label>
+                      <label className="block text-xs font-mono uppercase text-zinc-100 font-bold mb-1.5">
+                        Billing Email <span className="text-[#DFB76C]">*</span>
+                      </label>
                       <input
                         type="email"
                         required
                         value={formData.billingEmail}
                         onChange={(e) => setFormData({ ...formData, billingEmail: e.target.value })}
                         placeholder="billing@yourcompany.com"
-                        className="w-full h-10 px-3 rounded-lg border border-foreground/15 bg-background text-sm text-foreground focus:outline-none focus:border-foreground"
+                        className="w-full h-11 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950 text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all"
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-mono uppercase text-muted-foreground mb-1">Billing Phone</label>
+                      <label className="block text-xs font-mono uppercase text-zinc-100 font-bold mb-1.5">Billing Phone</label>
                       <input
                         type="tel"
                         value={formData.billingPhone}
                         onChange={(e) => setFormData({ ...formData, billingPhone: e.target.value })}
                         placeholder="+1 (555) 888-1111"
-                        className="w-full h-10 px-3 rounded-lg border border-foreground/15 bg-background text-sm text-foreground focus:outline-none focus:border-foreground"
+                        className="w-full h-11 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950 text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all"
                       />
                     </div>
                   </div>
@@ -627,21 +661,21 @@ export default function KycPage() {
               </div>
 
               {/* SECTION 4: Telephony Services & Traffic */}
-              <div className="border border-foreground/15 rounded-2xl p-6 sm:p-8 bg-card shadow-sm space-y-6">
-                <div className="flex items-center gap-3 pb-4 border-b border-foreground/10">
-                  <div className="w-9 h-9 rounded-lg bg-foreground/5 flex items-center justify-center text-foreground shrink-0">
+              <div className="border-2 border-zinc-800 rounded-3xl p-6 sm:p-8 bg-zinc-900/70 backdrop-blur-md shadow-2xl space-y-6">
+                <div className="flex items-center gap-3 pb-4 border-b border-zinc-800">
+                  <div className="w-10 h-10 rounded-xl bg-[#DFB76C]/15 border border-[#DFB76C]/30 flex items-center justify-center text-[#DFB76C] shrink-0">
                     <Server className="w-5 h-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-display font-medium text-foreground">4. Services &amp; Traffic Specifications</h2>
-                    <p className="text-xs text-muted-foreground">Select required voice termination products and anticipated traffic parameters</p>
+                    <h2 className="text-xl font-display font-medium text-white">4. Services &amp; Traffic Specifications</h2>
+                    <p className="text-xs text-zinc-400">Select required voice termination products and anticipated traffic parameters</p>
                   </div>
                 </div>
 
                 {/* Services Checkboxes */}
                 <div>
-                  <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-2.5">
-                    Requested Carrier Services (Select all that apply) *
+                  <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-3">
+                    Requested Carrier Services (Select all that apply) <span className="text-[#DFB76C]">*</span>
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                     {[
@@ -658,14 +692,14 @@ export default function KycPage() {
                           type="button"
                           key={service}
                           onClick={() => toggleService(service)}
-                          className={`p-3 rounded-xl border text-left flex items-center justify-between text-xs font-medium transition-all cursor-pointer ${
+                          className={`p-3.5 rounded-xl border-2 text-left flex items-center justify-between text-xs transition-all cursor-pointer ${
                             selected
-                              ? "border-foreground bg-foreground text-background"
-                              : "border-foreground/15 bg-foreground/[0.01] text-foreground hover:border-foreground/30"
+                              ? "border-[#DFB76C] bg-[#DFB76C]/20 text-white font-bold shadow-md"
+                              : "border-zinc-700 bg-zinc-950/80 text-zinc-200 hover:border-zinc-500 font-medium"
                           }`}
                         >
                           <span>{service}</span>
-                          {selected && <Check className="w-4 h-4 shrink-0" />}
+                          {selected && <Check className="w-4 h-4 text-[#DFB76C] shrink-0 font-bold" />}
                         </button>
                       );
                     })}
@@ -674,13 +708,13 @@ export default function KycPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Estimated Monthly Minutes *
+                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-2">
+                      Estimated Monthly Minutes <span className="text-[#DFB76C]">*</span>
                     </label>
                     <select
                       value={formData.estimatedMonthlyMinutes}
                       onChange={(e) => setFormData({ ...formData, estimatedMonthlyMinutes: e.target.value })}
-                      className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-background text-sm text-foreground focus:outline-none focus:border-foreground"
+                      className="w-full h-12 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950 text-sm font-medium text-white focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all cursor-pointer"
                     >
                       <option value="50,000 - 250,000 minutes">50,000 &ndash; 250,000 minutes</option>
                       <option value="250,000 - 1,000,000 minutes">250,000 &ndash; 1,000,000 minutes</option>
@@ -690,13 +724,13 @@ export default function KycPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Concurrent Call Channels (CPS / Ports) *
+                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-2">
+                      Concurrent Call Channels (CPS / Ports) <span className="text-[#DFB76C]">*</span>
                     </label>
                     <select
                       value={formData.concurrentChannels}
                       onChange={(e) => setFormData({ ...formData, concurrentChannels: e.target.value })}
-                      className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-background text-sm text-foreground focus:outline-none focus:border-foreground"
+                      className="w-full h-12 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950 text-sm font-medium text-white focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all cursor-pointer"
                     >
                       <option value="24 - 48 channels">24 &ndash; 48 channels</option>
                       <option value="48 - 120 channels">48 &ndash; 120 channels</option>
@@ -706,13 +740,13 @@ export default function KycPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Primary Traffic Profile *
+                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-2">
+                      Primary Traffic Profile <span className="text-[#DFB76C]">*</span>
                     </label>
                     <select
                       value={formData.trafficType}
                       onChange={(e) => setFormData({ ...formData, trafficType: e.target.value })}
-                      className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-background text-sm text-foreground focus:outline-none focus:border-foreground"
+                      className="w-full h-12 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950 text-sm font-medium text-white focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all cursor-pointer"
                     >
                       <option value="Call Center / Conversational Outbound">Call Center / Conversational Outbound</option>
                       <option value="BPO Predictive Dialer (High CPS)">BPO Predictive Dialer (High CPS)</option>
@@ -723,8 +757,8 @@ export default function KycPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Target Countries / Destination Decks *
+                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-2">
+                      Target Countries / Destination Decks <span className="text-[#DFB76C]">*</span>
                     </label>
                     <input
                       type="text"
@@ -732,28 +766,28 @@ export default function KycPage() {
                       value={formData.targetCountries}
                       onChange={(e) => setFormData({ ...formData, targetCountries: e.target.value })}
                       placeholder="e.g. US Domestic, Canada, UK, Australia"
-                      className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground focus:outline-none focus:border-foreground"
+                      className="w-full h-12 px-4 rounded-xl border-2 border-zinc-700 bg-zinc-950/90 text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all"
                     />
                   </div>
                 </div>
               </div>
 
               {/* SECTION 5: Network Whitelisting & SIP IPs */}
-              <div className="border border-foreground/15 rounded-2xl p-6 sm:p-8 bg-card shadow-sm space-y-6">
-                <div className="flex items-center gap-3 pb-4 border-b border-foreground/10">
-                  <div className="w-9 h-9 rounded-lg bg-foreground/5 flex items-center justify-center text-foreground shrink-0">
+              <div className="border-2 border-zinc-800 rounded-3xl p-6 sm:p-8 bg-zinc-900/70 backdrop-blur-md shadow-2xl space-y-6">
+                <div className="flex items-center gap-3 pb-4 border-b border-zinc-800">
+                  <div className="w-10 h-10 rounded-xl bg-[#DFB76C]/15 border border-[#DFB76C]/30 flex items-center justify-center text-[#DFB76C] shrink-0">
                     <FileText className="w-5 h-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-display font-medium text-foreground">5. SIP Signaling &amp; Whitelisting Details</h2>
-                    <p className="text-xs text-muted-foreground">Public static IPs / FQDNs for session border controller (SBC) whitelisting</p>
+                    <h2 className="text-xl font-display font-medium text-white">5. SIP Signaling &amp; Whitelisting Details</h2>
+                    <p className="text-xs text-zinc-400">Public static IPs / FQDNs for session border controller (SBC) whitelisting</p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Switch Signaling IPs / FQDN *
+                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-2">
+                      Switch Signaling IPs / FQDN <span className="text-[#DFB76C]">*</span>
                     </label>
                     <textarea
                       required
@@ -761,13 +795,13 @@ export default function KycPage() {
                       value={formData.signalingIps}
                       onChange={(e) => setFormData({ ...formData, signalingIps: e.target.value })}
                       placeholder="e.g. 198.51.100.24, 203.0.113.10 or sbc.yourdomain.com"
-                      className="w-full p-3 rounded-lg border border-foreground/15 bg-foreground/[0.02] font-mono text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-foreground resize-none"
+                      className="w-full p-4 rounded-xl border-2 border-zinc-700 bg-zinc-950/90 font-mono text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all resize-none"
                     />
-                    <span className="text-[10px] text-muted-foreground block mt-1">Comma-separated or one per line</span>
+                    <span className="text-[11px] text-zinc-400 block mt-1.5 font-mono">Comma-separated or one per line</span>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-2">
                       Media RTP Audio IPs (If different from Signaling)
                     </label>
                     <textarea
@@ -775,68 +809,68 @@ export default function KycPage() {
                       value={formData.mediaIps}
                       onChange={(e) => setFormData({ ...formData, mediaIps: e.target.value })}
                       placeholder="Leave blank if identical to signaling switch IPs"
-                      className="w-full p-3 rounded-lg border border-foreground/15 bg-foreground/[0.02] font-mono text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-foreground resize-none"
+                      className="w-full p-4 rounded-xl border-2 border-zinc-700 bg-zinc-950/90 font-mono text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all resize-none"
                     />
                   </div>
                 </div>
               </div>
 
               {/* SECTION 6: Supporting Documents */}
-              <div className="border border-foreground/15 rounded-2xl p-6 sm:p-8 bg-card shadow-sm space-y-6">
-                <div className="flex items-center gap-3 pb-4 border-b border-foreground/10">
-                  <div className="w-9 h-9 rounded-lg bg-foreground/5 flex items-center justify-center text-foreground shrink-0">
+              <div className="border-2 border-zinc-800 rounded-3xl p-6 sm:p-8 bg-zinc-900/70 backdrop-blur-md shadow-2xl space-y-6">
+                <div className="flex items-center gap-3 pb-4 border-b border-zinc-800">
+                  <div className="w-10 h-10 rounded-xl bg-[#DFB76C]/15 border border-[#DFB76C]/30 flex items-center justify-center text-[#DFB76C] shrink-0">
                     <UploadCloud className="w-5 h-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-display font-medium text-foreground">6. Required Verification Documents</h2>
-                    <p className="text-xs text-muted-foreground">Upload official documentation for verification (PDF, PNG, JPG)</p>
+                    <h2 className="text-xl font-display font-medium text-white">6. Required Verification Documents</h2>
+                    <p className="text-xs text-zinc-400">Upload official documentation for verification (PDF, PNG, JPG)</p>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                   {/* Doc 1 */}
-                  <div className="p-4 rounded-xl border border-dashed border-foreground/20 hover:border-foreground/40 transition-colors bg-foreground/[0.01] text-center">
-                    <div className="text-xs font-mono font-medium text-foreground mb-1">Certificate of Incorporation</div>
-                    <p className="text-[11px] text-muted-foreground mb-3">State registration certificate or business license</p>
-                    <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-foreground/20 text-xs font-medium hover:bg-foreground/5 cursor-pointer">
-                      <UploadCloud className="w-3.5 h-3.5" />
-                      <span>{formData.incorporationDocName ? "Replace" : "Select File"}</span>
+                  <div className="p-5 rounded-2xl border-2 border-dashed border-zinc-600 hover:border-[#DFB76C] transition-all bg-zinc-950/70 text-center">
+                    <div className="text-xs font-mono font-bold text-white mb-1">Certificate of Incorporation</div>
+                    <p className="text-[11px] text-zinc-300 mb-3">State registration certificate or business license</p>
+                    <label className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border-2 border-[#DFB76C]/60 bg-[#DFB76C]/10 text-xs font-bold text-white hover:bg-[#DFB76C]/20 cursor-pointer transition-all">
+                      <UploadCloud className="w-4 h-4 text-[#DFB76C]" />
+                      <span>{formData.incorporationDocName ? "Replace File" : "Choose File"}</span>
                       <input type="file" className="hidden" onChange={(e) => handleFileChange("incorporationDocName", e)} />
                     </label>
                     {formData.incorporationDocName && (
-                      <div className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 mt-2 truncate">
+                      <div className="text-xs font-mono text-emerald-400 mt-2.5 truncate font-semibold">
                         ✓ {formData.incorporationDocName}
                       </div>
                     )}
                   </div>
 
                   {/* Doc 2 */}
-                  <div className="p-4 rounded-xl border border-dashed border-foreground/20 hover:border-foreground/40 transition-colors bg-foreground/[0.01] text-center">
-                    <div className="text-xs font-mono font-medium text-foreground mb-1">Tax Document / W-9 / W-8</div>
-                    <p className="text-[11px] text-muted-foreground mb-3">IRS Tax Letter, W-9, or foreign tax declaration</p>
-                    <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-foreground/20 text-xs font-medium hover:bg-foreground/5 cursor-pointer">
-                      <UploadCloud className="w-3.5 h-3.5" />
-                      <span>{formData.taxDocName ? "Replace" : "Select File"}</span>
+                  <div className="p-5 rounded-2xl border-2 border-dashed border-zinc-600 hover:border-[#DFB76C] transition-all bg-zinc-950/70 text-center">
+                    <div className="text-xs font-mono font-bold text-white mb-1">Tax Document / W-9 / W-8</div>
+                    <p className="text-[11px] text-zinc-300 mb-3">IRS Tax Letter, W-9, or foreign tax declaration</p>
+                    <label className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border-2 border-[#DFB76C]/60 bg-[#DFB76C]/10 text-xs font-bold text-white hover:bg-[#DFB76C]/20 cursor-pointer transition-all">
+                      <UploadCloud className="w-4 h-4 text-[#DFB76C]" />
+                      <span>{formData.taxDocName ? "Replace File" : "Choose File"}</span>
                       <input type="file" className="hidden" onChange={(e) => handleFileChange("taxDocName", e)} />
                     </label>
                     {formData.taxDocName && (
-                      <div className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 mt-2 truncate">
+                      <div className="text-xs font-mono text-emerald-400 mt-2.5 truncate font-semibold">
                         ✓ {formData.taxDocName}
                       </div>
                     )}
                   </div>
 
                   {/* Doc 3 */}
-                  <div className="p-4 rounded-xl border border-dashed border-foreground/20 hover:border-foreground/40 transition-colors bg-foreground/[0.01] text-center">
-                    <div className="text-xs font-mono font-medium text-foreground mb-1">Authorized Signer Photo ID</div>
-                    <p className="text-[11px] text-muted-foreground mb-3">Passport, Driver&apos;s License or Gov-issued ID</p>
-                    <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-foreground/20 text-xs font-medium hover:bg-foreground/5 cursor-pointer">
-                      <UploadCloud className="w-3.5 h-3.5" />
-                      <span>{formData.signerIdDocName ? "Replace" : "Select File"}</span>
+                  <div className="p-5 rounded-2xl border-2 border-dashed border-zinc-600 hover:border-[#DFB76C] transition-all bg-zinc-950/70 text-center">
+                    <div className="text-xs font-mono font-bold text-white mb-1">Authorized Signer Photo ID</div>
+                    <p className="text-[11px] text-zinc-300 mb-3">Passport, Driver&apos;s License or Gov ID</p>
+                    <label className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border-2 border-[#DFB76C]/60 bg-[#DFB76C]/10 text-xs font-bold text-white hover:bg-[#DFB76C]/20 cursor-pointer transition-all">
+                      <UploadCloud className="w-4 h-4 text-[#DFB76C]" />
+                      <span>{formData.signerIdDocName ? "Replace File" : "Choose File"}</span>
                       <input type="file" className="hidden" onChange={(e) => handleFileChange("signerIdDocName", e)} />
                     </label>
                     {formData.signerIdDocName && (
-                      <div className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 mt-2 truncate">
+                      <div className="text-xs font-mono text-emerald-400 mt-2.5 truncate font-semibold">
                         ✓ {formData.signerIdDocName}
                       </div>
                     )}
@@ -845,63 +879,63 @@ export default function KycPage() {
               </div>
 
               {/* SECTION 7: Compliance Attestation & Digital Signature */}
-              <div className="border border-foreground/15 rounded-2xl p-6 sm:p-8 bg-card shadow-sm space-y-6">
-                <div className="flex items-center gap-3 pb-4 border-b border-foreground/10">
-                  <div className="w-9 h-9 rounded-lg bg-foreground/5 flex items-center justify-center text-foreground shrink-0">
+              <div className="border-2 border-zinc-800 rounded-3xl p-6 sm:p-8 bg-zinc-900/70 backdrop-blur-md shadow-2xl space-y-6">
+                <div className="flex items-center gap-3 pb-4 border-b border-zinc-800">
+                  <div className="w-10 h-10 rounded-xl bg-[#DFB76C]/15 border border-[#DFB76C]/30 flex items-center justify-center text-[#DFB76C] shrink-0">
                     <ShieldCheck className="w-5 h-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-display font-medium text-foreground">7. Regulatory Attestation &amp; Digital Signature</h2>
-                    <p className="text-xs text-muted-foreground">Legally binding confirmation of telephony compliance and execution</p>
+                    <h2 className="text-xl font-display font-medium text-white">7. Regulatory Attestation &amp; Digital Signature</h2>
+                    <p className="text-xs text-zinc-400">Legally binding confirmation of telephony compliance and execution</p>
                   </div>
                 </div>
 
                 <div className="space-y-4">
-                  <label className="flex items-start gap-3 p-3.5 rounded-xl border border-foreground/10 bg-foreground/[0.01] cursor-pointer">
+                  <label className="flex items-start gap-3.5 p-4 rounded-2xl border-2 border-zinc-800 bg-zinc-950/70 hover:border-zinc-700 cursor-pointer transition-all">
                     <input
                       type="checkbox"
                       required
                       checked={formData.stirShakenAgreed}
                       onChange={(e) => setFormData({ ...formData, stirShakenAgreed: e.target.checked })}
-                      className="mt-1 w-4 h-4 rounded border-foreground/20 text-foreground focus:ring-0"
+                      className="mt-1 w-5 h-5 rounded-md border-2 border-zinc-500 bg-zinc-950 text-[#DFB76C] focus:ring-[#DFB76C] shrink-0"
                     />
-                    <div className="text-xs text-foreground leading-relaxed">
-                      <strong>STIR/SHAKEN Caller ID Attestation:</strong> We certify that our organization maintains verified ownership or contractual authorization for all Outbound Caller IDs (CLIs) transmitted through Voice Era Tech networks, adhering to FCC STIR/SHAKEN Level-A regulations.
+                    <div className="text-xs text-zinc-200 leading-relaxed">
+                      <strong className="text-white font-bold">STIR/SHAKEN Caller ID Attestation:</strong> We certify that our organization maintains verified ownership or contractual authorization for all Outbound Caller IDs (CLIs) transmitted through Voice Era Tech networks, adhering to FCC STIR/SHAKEN Level-A regulations.
                     </div>
                   </label>
 
-                  <label className="flex items-start gap-3 p-3.5 rounded-xl border border-foreground/10 bg-foreground/[0.01] cursor-pointer">
+                  <label className="flex items-start gap-3.5 p-4 rounded-2xl border-2 border-zinc-800 bg-zinc-950/70 hover:border-zinc-700 cursor-pointer transition-all">
                     <input
                       type="checkbox"
                       required
                       checked={formData.tcpaAgreed}
                       onChange={(e) => setFormData({ ...formData, tcpaAgreed: e.target.checked })}
-                      className="mt-1 w-4 h-4 rounded border-foreground/20 text-foreground focus:ring-0"
+                      className="mt-1 w-5 h-5 rounded-md border-2 border-zinc-500 bg-zinc-950 text-[#DFB76C] focus:ring-[#DFB76C] shrink-0"
                     />
-                    <div className="text-xs text-foreground leading-relaxed">
-                      <strong>TCPA &amp; TSR Safe-Harbor:</strong> We acknowledge and agree to comply strictly with the Telephone Consumer Protection Act (TCPA), FTC Telemarketing Sales Rule (TSR), and National Do-Not-Call (DNC) registry requirements. No unlawful robocalls or spoofed scams are permitted.
+                    <div className="text-xs text-zinc-200 leading-relaxed">
+                      <strong className="text-white font-bold">TCPA &amp; TSR Safe-Harbor:</strong> We acknowledge and agree to comply strictly with the Telephone Consumer Protection Act (TCPA), FTC Telemarketing Sales Rule (TSR), and National Do-Not-Call (DNC) registry requirements. No unlawful robocalls or spoofed scams are permitted.
                     </div>
                   </label>
 
-                  <label className="flex items-start gap-3 p-3.5 rounded-xl border border-foreground/10 bg-foreground/[0.01] cursor-pointer">
+                  <label className="flex items-start gap-3.5 p-4 rounded-2xl border-2 border-zinc-800 bg-zinc-950/70 hover:border-zinc-700 cursor-pointer transition-all">
                     <input
                       type="checkbox"
                       required
                       checked={formData.accuracyAgreed}
                       onChange={(e) => setFormData({ ...formData, accuracyAgreed: e.target.checked })}
-                      className="mt-1 w-4 h-4 rounded border-foreground/20 text-foreground focus:ring-0"
+                      className="mt-1 w-5 h-5 rounded-md border-2 border-zinc-500 bg-zinc-950 text-[#DFB76C] focus:ring-[#DFB76C] shrink-0"
                     />
-                    <div className="text-xs text-foreground leading-relaxed">
-                      <strong>Truth-in-Application Certification:</strong> The undersigned declares under penalty of route suspension that all corporate details, tax identifiers, and contact persons provided in this KYC application are authentic, true, and legally enforceable.
+                    <div className="text-xs text-zinc-200 leading-relaxed">
+                      <strong className="text-white font-bold">Truth-in-Application Certification:</strong> The undersigned declares under penalty of route suspension that all corporate details, tax identifiers, and contact persons provided in this KYC application are authentic, true, and legally enforceable.
                     </div>
                   </label>
                 </div>
 
                 {/* Digital Signature Field */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-4 border-t border-foreground/10">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-4 border-t border-zinc-800">
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
-                      Authorized Digital Signature (Type Full Legal Name) *
+                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-2">
+                      Authorized Digital Signature (Type Full Legal Name) <span className="text-[#DFB76C]">*</span>
                     </label>
                     <input
                       type="text"
@@ -909,22 +943,22 @@ export default function KycPage() {
                       value={formData.digitalSignature}
                       onChange={(e) => setFormData({ ...formData, digitalSignature: e.target.value })}
                       placeholder="/s/ Marcus Aurelius Vance"
-                      className="w-full h-12 px-3.5 rounded-lg border border-foreground/20 bg-foreground/[0.02] font-mono text-sm text-foreground focus:outline-none focus:border-foreground"
+                      className="w-full h-14 px-4 rounded-xl border-2 border-[#DFB76C]/60 bg-zinc-950 font-serif text-lg font-bold text-[#DFB76C] placeholder:text-zinc-500 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner"
                     />
-                    <span className="text-[10px] text-muted-foreground block mt-1 font-mono">
+                    <span className="text-[11px] text-zinc-400 block mt-1.5 font-mono">
                       Acts as your legally binding electronic signature under the ESIGN Act.
                     </span>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1.5">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-2">
                       Execution Date
                     </label>
                     <input
                       type="date"
                       readOnly
                       value={formData.signatureDate}
-                      className="w-full h-12 px-3.5 rounded-lg border border-foreground/15 bg-muted/40 font-mono text-sm text-muted-foreground focus:outline-none"
+                      className="w-full h-14 px-4 rounded-xl border-2 border-zinc-800 bg-zinc-950/50 font-mono text-sm text-zinc-300 focus:outline-none"
                     />
                   </div>
                 </div>
@@ -932,15 +966,15 @@ export default function KycPage() {
 
               {/* Submit CTA */}
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground">
-                  <Lock className="w-4 h-4 text-emerald-500" />
+                <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
+                  <Lock className="w-4 h-4 text-emerald-400" />
                   <span>Submits application to kyc@voiceeratech.com with certified PDF attachment</span>
                 </div>
 
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full sm:w-auto min-w-[260px] bg-gold-gradient hover:brightness-110 text-primary-foreground font-semibold rounded-full h-14 text-sm transition-all shadow-[0_0_25px_rgba(223,183,108,0.25)] cursor-pointer"
+                  className="w-full sm:w-auto min-w-[280px] bg-gold-gradient hover:brightness-110 text-primary-foreground font-bold rounded-full h-14 text-sm transition-all shadow-[0_0_25px_rgba(223,183,108,0.35)] cursor-pointer"
                 >
                   {isSubmitting ? (
                     <span className="flex items-center gap-2">
@@ -950,7 +984,7 @@ export default function KycPage() {
                   ) : (
                     <span className="flex items-center gap-2">
                       <ShieldCheck className="w-4 h-4" />
-                      Submit Carrier KYC Application
+                      Submit End-User KYC Application
                     </span>
                   )}
                 </Button>

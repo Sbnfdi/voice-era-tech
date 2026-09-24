@@ -12,7 +12,8 @@ const footerLinks = {
     { name: "Direct CLI VoIP Routes", href: "#features" },
     { name: "Wholesale SIP Trunking", href: "#features" },
     { name: "Predictive & Power Dialers", href: "#how-it-works" },
-    { name: "Carrier KYC Onboarding", href: "/kyc" },
+    { name: "End-User KYC Onboarding", href: "/kyc" },
+    { name: "Wholesale Application", href: "/wholesale" },
     { name: "Consult with an Expert", href: "#expert" },
   ],
   Platform: [

@@ -170,12 +170,18 @@ export async function sendKycEmail(
   const fromEmail = process.env.SMTP_FROM || `"Voice Era Tech KYC" <kyc@voiceeratech.com>`;
   const transporter = getTransporter();
 
-  const services = Array.isArray(kyc.servicesRequested) ? kyc.servicesRequested.join(", ") : "Wholesale VoIP";
+  const isWholesale = kyc.category === "wholesaler";
+  const categoryLabel = isWholesale ? "Wholesale Carrier Application" : "End-User KYC Application";
+  const badgeBg = isWholesale ? "#d97706" : "#2563eb";
+  const services = Array.isArray(kyc.servicesRequested) ? kyc.servicesRequested.join(", ") : (isWholesale ? "Wholesale SIP Trunking" : "Direct VoIP Routes");
 
   const htmlBody = `
     <div style="font-family: Arial, sans-serif; max-width: 650px; margin: 0 auto; padding: 20px; color: #111; line-height: 1.6;">
       <div style="background-color: #0f172a; padding: 22px; border-radius: 8px 8px 0 0; color: #fff;">
-        <h2 style="margin: 0; font-size: 22px;">New Carrier KYC Application Received</h2>
+        <div style="display: inline-block; background-color: ${badgeBg}; color: #fff; font-size: 11px; font-weight: bold; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; margin-bottom: 8px;">
+          ${categoryLabel}
+        </div>
+        <h2 style="margin: 0; font-size: 22px;">New ${categoryLabel} Received</h2>
         <p style="margin: 6px 0 0 0; font-size: 13px; color: #94a3b8;">Ref ID: <strong>${kyc.referenceId}</strong> | Date: ${new Date(kyc.createdAt).toLocaleDateString()}</p>
       </div>
 
