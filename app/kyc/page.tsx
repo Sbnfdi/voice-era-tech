@@ -195,10 +195,6 @@ export default function KycPage() {
           </Link>
 
           <div className="flex items-center gap-4">
-            <div className="hidden md:flex items-center gap-2 text-xs font-mono text-[#DFB76C] bg-primary/10 border border-primary/20 px-3 py-1.5 rounded-full">
-              <Lock className="w-3.5 h-3.5 text-[#DFB76C]" />
-              <span>256-Bit Encrypted Carrier Vault</span>
-            </div>
             <Link
               href="/"
               className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
@@ -313,24 +309,6 @@ export default function KycPage() {
               <h1 className="text-3xl sm:text-5xl font-display tracking-tight text-white leading-[1.05]">
                 Carrier KYC &amp; Onboarding Verification
               </h1>
-              <p className="text-sm sm:text-base text-zinc-300 mt-3 leading-relaxed">
-                Voice Era Tech LLC requires verified corporate identification and network attestation for all direct VoIP routes, SIP trunking, and hosted dialer systems to guarantee STIR/SHAKEN Level-A integrity and regulatory compliance.
-              </p>
-            </div>
-
-            {/* Trust Badges Banner */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {[
-                { title: "FCC STIR/SHAKEN", desc: "Level-A Compliant Routing" },
-                { title: "TCPA & TSR Audit", desc: "Safe Harbor Verified" },
-                { title: "Sub-30ms Interconnect", desc: "Tier-1 Direct Termination" },
-                { title: "24/5 NOC Supervision", desc: "Dedicated Carrier Support" },
-              ].map((badge) => (
-                <div key={badge.title} className="p-3.5 rounded-xl border-2 border-zinc-800 bg-zinc-950/70 text-left">
-                  <div className="text-xs font-mono font-bold text-[#DFB76C]">{badge.title}</div>
-                  <div className="text-[11px] text-zinc-300 mt-0.5">{badge.desc}</div>
-                </div>
-              ))}
             </div>
 
             {errorMessage && (
@@ -772,57 +750,14 @@ export default function KycPage() {
                 </div>
               </div>
 
-              {/* SECTION 5: Network Whitelisting & SIP IPs */}
-              <div className="border-2 border-zinc-800 rounded-3xl p-6 sm:p-8 bg-zinc-900/70 backdrop-blur-md shadow-2xl space-y-6">
-                <div className="flex items-center gap-3 pb-4 border-b border-zinc-800">
-                  <div className="w-10 h-10 rounded-xl bg-[#DFB76C]/15 border border-[#DFB76C]/30 flex items-center justify-center text-[#DFB76C] shrink-0">
-                    <FileText className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h2 className="text-xl font-display font-medium text-white">5. SIP Signaling &amp; Whitelisting Details</h2>
-                    <p className="text-xs text-zinc-400">Public static IPs / FQDNs for session border controller (SBC) whitelisting</p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-2">
-                      Switch Signaling IPs / FQDN <span className="text-[#DFB76C]">*</span>
-                    </label>
-                    <textarea
-                      required
-                      rows={3}
-                      value={formData.signalingIps}
-                      onChange={(e) => setFormData({ ...formData, signalingIps: e.target.value })}
-                      placeholder="e.g. 198.51.100.24, 203.0.113.10 or sbc.yourdomain.com"
-                      className="w-full p-4 rounded-xl border-2 border-zinc-700 bg-zinc-950/90 font-mono text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all resize-none"
-                    />
-                    <span className="text-[11px] text-zinc-400 block mt-1.5 font-mono">Comma-separated or one per line</span>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-100 font-bold mb-2">
-                      Media RTP Audio IPs (If different from Signaling)
-                    </label>
-                    <textarea
-                      rows={3}
-                      value={formData.mediaIps}
-                      onChange={(e) => setFormData({ ...formData, mediaIps: e.target.value })}
-                      placeholder="Leave blank if identical to signaling switch IPs"
-                      className="w-full p-4 rounded-xl border-2 border-zinc-700 bg-zinc-950/90 font-mono text-sm font-medium text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 shadow-inner transition-all resize-none"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* SECTION 6: Supporting Documents */}
+              {/* SECTION 5: Supporting Documents */}
               <div className="border-2 border-zinc-800 rounded-3xl p-6 sm:p-8 bg-zinc-900/70 backdrop-blur-md shadow-2xl space-y-6">
                 <div className="flex items-center gap-3 pb-4 border-b border-zinc-800">
                   <div className="w-10 h-10 rounded-xl bg-[#DFB76C]/15 border border-[#DFB76C]/30 flex items-center justify-center text-[#DFB76C] shrink-0">
                     <UploadCloud className="w-5 h-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-display font-medium text-white">6. Required Verification Documents</h2>
+                    <h2 className="text-xl font-display font-medium text-white">5. Required Verification Documents</h2>
                     <p className="text-xs text-zinc-400">Upload official documentation for verification (PDF, PNG, JPG)</p>
                   </div>
                 </div>
@@ -878,14 +813,14 @@ export default function KycPage() {
                 </div>
               </div>
 
-              {/* SECTION 7: Compliance Attestation & Digital Signature */}
+              {/* SECTION 6: Compliance Attestation & Digital Signature */}
               <div className="border-2 border-zinc-800 rounded-3xl p-6 sm:p-8 bg-zinc-900/70 backdrop-blur-md shadow-2xl space-y-6">
                 <div className="flex items-center gap-3 pb-4 border-b border-zinc-800">
                   <div className="w-10 h-10 rounded-xl bg-[#DFB76C]/15 border border-[#DFB76C]/30 flex items-center justify-center text-[#DFB76C] shrink-0">
                     <ShieldCheck className="w-5 h-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-display font-medium text-white">7. Regulatory Attestation &amp; Digital Signature</h2>
+                    <h2 className="text-xl font-display font-medium text-white">6. Regulatory Attestation &amp; Digital Signature</h2>
                     <p className="text-xs text-zinc-400">Legally binding confirmation of telephony compliance and execution</p>
                   </div>
                 </div>
