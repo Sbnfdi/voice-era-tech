@@ -82,6 +82,7 @@ export default function KycPage() {
     stirShakenAgreed: false,
     tcpaAgreed: false,
     accuracyAgreed: false,
+    termsAgreed: false,
     digitalSignature: "",
     signatureDate: new Date().toISOString().split("T")[0],
   });
@@ -113,6 +114,11 @@ export default function KycPage() {
 
     if (!formData.stirShakenAgreed || !formData.tcpaAgreed || !formData.accuracyAgreed) {
       setErrorMessage("Please review and accept all regulatory attestations before submitting.");
+      return;
+    }
+
+    if (!formData.termsAgreed) {
+      setErrorMessage("Please check the box to confirm you agree to our terms before submitting.");
       return;
     }
 
@@ -897,6 +903,30 @@ export default function KycPage() {
                     />
                   </div>
                 </div>
+              </div>
+
+              {/* Mandatory Terms Agreement Checkbox */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-zinc-950/80 border-2 border-zinc-800 hover:border-[#DFB76C]/50 transition-colors">
+                <label className="flex items-center gap-3 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    required
+                    checked={formData.termsAgreed}
+                    onChange={(e) => setFormData({ ...formData, termsAgreed: e.target.checked })}
+                    className="w-5 h-5 rounded border-2 border-zinc-600 bg-zinc-900 text-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 focus:ring-offset-0 accent-[#DFB76C] cursor-pointer shrink-0"
+                  />
+                  <span className="text-sm sm:text-base text-zinc-200">
+                    Check this box to confirm you agree to our terms{" "}
+                    <Link
+                      href="/terms"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#DFB76C] underline hover:text-[#caa157] font-medium transition-colors"
+                    >
+                      (click here to read)
+                    </Link>
+                  </span>
+                </label>
               </div>
 
               {/* Submit CTA */}

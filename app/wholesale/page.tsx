@@ -191,7 +191,7 @@ export default function WholesaleKycPage() {
     signerIdDocName: "",
 
     // Agreements & Consent
-    termsAgreed: true,
+    termsAgreed: false,
     dataProcessingConsent: true,
     stirShakenAgreed: true,
     tcpaAgreed: true,
@@ -245,8 +245,12 @@ export default function WholesaleKycPage() {
       setErrorMessage("Please provide your Signaling Switch IP address(es) for interconnection.");
       return;
     }
-    if (!formData.termsAgreed || !formData.dataProcessingConsent || !formData.accuracyAgreed) {
-      setErrorMessage("Please accept the Terms Agreement, Data Processing Consent, and Verification Declarations.");
+    if (!formData.termsAgreed) {
+      setErrorMessage("Please check the box to confirm you agree to our terms before submitting.");
+      return;
+    }
+    if (!formData.dataProcessingConsent || !formData.accuracyAgreed) {
+      setErrorMessage("Please accept the Data Processing Consent and Verification Declarations.");
       return;
     }
     if (!formData.digitalSignature.trim()) {
@@ -1996,21 +2000,9 @@ export default function WholesaleKycPage() {
                 </div>
               </div>
 
-              {/* Terms Agreement & Data Processing Consent */}
+              {/* Data Processing & Truth in Application Consents */}
               <div className="space-y-4 pt-4 border-t border-zinc-700/60">
                 <div className="p-5 rounded-2xl border-2 border-zinc-700 bg-zinc-950/80 space-y-4">
-                  <label className="flex items-start gap-3 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      required
-                      checked={formData.termsAgreed}
-                      onChange={(e) => setFormData({ ...formData, termsAgreed: e.target.checked })}
-                      className="w-5 h-5 rounded border-2 border-zinc-600 bg-zinc-950 text-[#DFB76C] accent-[#DFB76C] mt-0.5 shrink-0"
-                    />
-                    <div className="text-sm text-zinc-200 leading-relaxed font-medium">
-                      <strong className="text-white font-bold">Terms Agreement:</strong> I have reviewed and agree to the Master Services Agreement (MSA), Carrier Interconnect Policies, and Acceptable Use Policy of Voice Era Tech LLC.
-                    </div>
-                  </label>
 
                   <label className="flex items-start gap-3 cursor-pointer">
                     <input
@@ -2076,6 +2068,30 @@ export default function WholesaleKycPage() {
                     />
                   </div>
                 </div>
+              </div>
+
+              {/* Mandatory Terms Agreement Checkbox */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-zinc-950/80 border-2 border-zinc-800 hover:border-[#DFB76C]/50 transition-colors">
+                <label className="flex items-center gap-3 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    required
+                    checked={formData.termsAgreed}
+                    onChange={(e) => setFormData({ ...formData, termsAgreed: e.target.checked })}
+                    className="w-5 h-5 rounded border-2 border-zinc-600 bg-zinc-900 text-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 focus:ring-offset-0 accent-[#DFB76C] cursor-pointer shrink-0"
+                  />
+                  <span className="text-sm sm:text-base text-zinc-200">
+                    Check this box to confirm you agree to our terms{" "}
+                    <Link
+                      href="/terms"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#DFB76C] underline hover:text-[#caa157] font-medium transition-colors"
+                    >
+                      (click here to read)
+                    </Link>
+                  </span>
+                </label>
               </div>
 
               {/* Submit Action */}

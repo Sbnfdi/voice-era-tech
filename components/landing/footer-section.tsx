@@ -27,7 +27,6 @@ const footerLinks = {
     { name: "Network Status (24/5)", href: "#network" },
     { name: "Consult with an Expert", href: "#expert" },
     { name: "Direct Sales & Support", href: "#contact" },
-    { name: "Admin Portal", href: "/admin" },
   ],
   Legal: [
     { name: "TCPA & FDCPA Safeguards", href: "#security" },
