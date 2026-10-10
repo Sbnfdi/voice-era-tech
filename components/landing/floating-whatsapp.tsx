@@ -81,17 +81,18 @@ export function FloatingWhatsApp() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end max-w-[calc(100vw-2rem)]">
       {/* WhatsApp Chatbox Popup */}
       {isOpen && (
         <div
           ref={chatboxRef}
           role="dialog"
           aria-labelledby="whatsapp-chat-title"
-          className="mb-4 w-[340px] sm:w-[380px] rounded-3xl overflow-hidden border border-[#DFB76C]/30 bg-zinc-950/95 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.8),0_0_30px_rgba(37,211,102,0.15)] flex flex-col animate-in fade-in slide-in-from-bottom-5 duration-200"
+          className="mb-3 sm:mb-4 w-[calc(100vw-2rem)] sm:w-[380px] max-w-[380px] rounded-3xl overflow-hidden border border-[#DFB76C]/30 bg-zinc-950/98 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.8),0_0_30px_rgba(37,211,102,0.15)] flex flex-col animate-in fade-in slide-in-from-bottom-5 duration-200"
         >
           {/* Header */}
           <div className="p-4 bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-900 border-b border-zinc-800 flex items-center justify-between">
+
             <div className="flex items-center gap-3">
               <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#DFB76C]/40 bg-black flex items-center justify-center shrink-0">
                 <Image

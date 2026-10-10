@@ -1,8 +1,14 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getInquiries, getKycList } from "@/lib/db";
 import { getMailLogs } from "@/lib/mailer";
+import { requireAdminAuth } from "@/lib/auth";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const auth = requireAdminAuth(req);
+  if (!auth.authenticated) {
+    return auth.response;
+  }
+
   try {
     const inquiries = await getInquiries();
     const kycs = await getKycList();
@@ -29,6 +35,12 @@ export async function GET() {
       process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS
     );
 
+    const tursoConfigured = Boolean(process.env.TURSO_DATABASE_URL);
+    const databaseType = tursoConfigured ? "Turso Cloud (libSQL)" : "Local SQLite (File Storage)";
+    const databaseUrlMasked = process.env.TURSO_DATABASE_URL
+      ? process.env.TURSO_DATABASE_URL.replace(/\/\/.*@/, "//***@")
+      : "file:data/voice_era_tech.db";
+
     return NextResponse.json({
       success: true,
       stats: {
@@ -36,6 +48,9 @@ export async function GET() {
         kyc: kycStats,
         mailLogsCount: mailLogs.length,
         smtpConfigured,
+        tursoConfigured,
+        databaseType,
+        databaseUrlMasked,
         supportEmail: process.env.SUPPORT_EMAIL || "support@voiceeratech.com",
         kycEmail: process.env.KYC_EMAIL || "kyc@voiceeratech.com",
       },

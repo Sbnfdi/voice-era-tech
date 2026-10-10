@@ -18,6 +18,7 @@ yarn-error.log*
 
 # env files
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -31,3 +32,8 @@ next-env.d.ts
 !/data/uploads/.gitkeep
 /data/kyc-pdfs/*
 !/data/kyc-pdfs/.gitkeep
+*.db
+*.db-journal
+/data/*.db
+/data/*.db-journal
+*.zip

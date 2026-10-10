@@ -160,8 +160,8 @@ export function HowItWorksSection() {
               </div>
 
               {/* Code content */}
-              <div className="p-8 font-mono text-sm min-h-[280px]">
-                <pre className="text-[#E2E8F0]">
+              <div className="p-4 sm:p-8 font-mono text-xs sm:text-sm min-h-[260px] sm:min-h-[280px] overflow-x-auto">
+                <pre className="text-[#E2E8F0] overflow-x-auto">
                   {steps[activeStep].code.split('\n').map((line, lineIndex) => (
                     <div 
                       key={`${activeStep}-${lineIndex}`} 

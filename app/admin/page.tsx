@@ -25,7 +25,8 @@ import {
   Check,
   Send,
   SlidersHorizontal,
-  FileSpreadsheet
+  FileSpreadsheet,
+  Database
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Inquiry, KycSubmission } from "@/lib/db";
@@ -69,15 +70,32 @@ export default function AdminPage() {
     }
   }, []);
 
+  // Helper to attach authorization header
+  const getAuthHeaders = useCallback((extra: Record<string, string> = {}) => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("vet_admin_session") : null;
+    return {
+      ...extra,
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
+  }, []);
+
   // Fetch all data
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
+      const headers = getAuthHeaders();
       const [inqRes, kycRes, statsRes] = await Promise.all([
-        fetch("/api/inquiries"),
-        fetch("/api/kyc"),
-        fetch("/api/admin/stats"),
+        fetch("/api/inquiries", { headers }),
+        fetch("/api/kyc", { headers }),
+        fetch("/api/admin/stats", { headers }),
       ]);
+
+      if (inqRes.status === 401 || kycRes.status === 401 || statsRes.status === 401) {
+        localStorage.removeItem("vet_admin_session");
+        setIsAuthenticated(false);
+        setAuthError("Session expired or unauthorized. Please log in.");
+        return;
+      }
 
       const inqData = await inqRes.json();
       const kycData = await kycRes.json();
@@ -91,7 +109,7 @@ export default function AdminPage() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [getAuthHeaders]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -123,7 +141,12 @@ export default function AdminPage() {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/admin/logout", { method: "POST" });
+    } catch {
+      // Ignore
+    }
     localStorage.removeItem("vet_admin_session");
     setIsAuthenticated(false);
     setAuthPassword("");
@@ -135,7 +158,7 @@ export default function AdminPage() {
     try {
       const res = await fetch(`/api/inquiries/${id}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: getAuthHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify({ status }),
       });
       const data = await res.json();
@@ -157,7 +180,7 @@ export default function AdminPage() {
     try {
       const res = await fetch(`/api/inquiries/${id}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: getAuthHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify({ notes: editingNotes }),
       });
       const data = await res.json();
@@ -177,7 +200,10 @@ export default function AdminPage() {
   const handleDeleteInquiry = async (id: string) => {
     if (!confirm("Are you sure you want to permanently delete this inquiry?")) return;
     try {
-      const res = await fetch(`/api/inquiries/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/inquiries/${id}`, {
+        method: "DELETE",
+        headers: getAuthHeaders(),
+      });
       const data = await res.json();
       if (data.success) {
         setInquiries((prev) => prev.filter((i) => i.id !== id));
@@ -194,7 +220,7 @@ export default function AdminPage() {
     try {
       const res = await fetch(`/api/kyc/${id}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: getAuthHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify({ status }),
       });
       const data = await res.json();
@@ -216,7 +242,7 @@ export default function AdminPage() {
     try {
       const res = await fetch(`/api/kyc/${id}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: getAuthHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify({ adminNotes: editingNotes }),
       });
       const data = await res.json();
@@ -236,7 +262,10 @@ export default function AdminPage() {
   const handleDeleteKyc = async (id: string) => {
     if (!confirm("Are you sure you want to permanently delete this KYC submission?")) return;
     try {
-      const res = await fetch(`/api/kyc/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/kyc/${id}`, {
+        method: "DELETE",
+        headers: getAuthHeaders(),
+      });
       const data = await res.json();
       if (data.success) {
         setKycs((prev) => prev.filter((k) => k.id !== id));
@@ -255,7 +284,7 @@ export default function AdminPage() {
     try {
       const res = await fetch("/api/admin/test-email", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: getAuthHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify({ targetEmail: testEmailAddress }),
       });
       const data = await res.json();
@@ -981,7 +1010,43 @@ export default function AdminPage() {
 
         {/* TAB 3: SETTINGS & DIAGNOSTICS */}
         {activeTab === "system" && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Database Engine & Turso Cloud Info */}
+            <div className="border border-foreground/15 rounded-2xl p-6 bg-card space-y-4">
+              <div className="flex items-center gap-2 text-base font-display font-medium text-foreground pb-3 border-b border-foreground/10">
+                <Database className="w-5 h-5 text-indigo-500" />
+                <span>Database Engine & Storage</span>
+              </div>
+
+              <div className="space-y-3 text-xs">
+                <div className="flex items-center justify-between p-3 rounded-lg bg-foreground/[0.02] border border-foreground/10">
+                  <span className="text-muted-foreground font-mono uppercase">Engine Status</span>
+                  <span className={`font-mono font-semibold ${systemStats?.tursoConfigured ? "text-emerald-500" : "text-amber-500"}`}>
+                    {systemStats?.tursoConfigured ? "Connected (Turso Cloud)" : "Local SQLite Fallback"}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between p-3 rounded-lg bg-foreground/[0.02] border border-foreground/10">
+                  <span className="text-muted-foreground font-mono uppercase">Driver / Engine</span>
+                  <span className="font-mono text-foreground font-semibold">{systemStats?.databaseType || "libSQL / SQLite"}</span>
+                </div>
+
+                <div className="flex items-center justify-between p-3 rounded-lg bg-foreground/[0.02] border border-foreground/10">
+                  <span className="text-muted-foreground font-mono uppercase">Target Endpoint</span>
+                  <span className="font-mono text-foreground font-semibold truncate max-w-[170px]" title={systemStats?.databaseUrlMasked}>
+                    {systemStats?.databaseUrlMasked || "file:voice_era_tech.db"}
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-foreground/[0.01] border border-foreground/10 text-xs text-muted-foreground leading-relaxed">
+                <strong>Vercel Turso Integration:</strong> Add these Environment Variables to your project:
+                <pre className="mt-2 p-2.5 rounded bg-foreground/5 font-mono text-[11px] overflow-x-auto text-foreground">
+                  TURSO_DATABASE_URL=libsql://your-db.turso.io&#10;TURSO_AUTH_TOKEN=your_auth_token
+                </pre>
+              </div>
+            </div>
+
             {/* SMTP Settings Info */}
             <div className="border border-foreground/15 rounded-2xl p-6 bg-card space-y-4">
               <div className="flex items-center gap-2 text-base font-display font-medium text-foreground pb-3 border-b border-foreground/10">

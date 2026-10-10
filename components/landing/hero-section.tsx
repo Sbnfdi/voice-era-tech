@@ -71,9 +71,9 @@ export function HeroSection() {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
-          <span className="inline-flex items-center gap-2 sm:gap-3 text-xs sm:text-sm font-mono text-muted-foreground bg-primary/5 border border-primary/20 px-3.5 py-1.5 rounded-full">
-            <span className="w-2 h-2 rounded-full bg-[#DFB76C] animate-pulse" />
-            Carrier-Grade VoIP Routes & Wholesale Voice Termination
+          <span className="inline-flex items-center gap-2 sm:gap-3 text-[10px] sm:text-xs md:text-sm font-mono text-muted-foreground bg-primary/5 border border-primary/20 px-3 sm:px-3.5 py-1.5 rounded-full max-w-full">
+            <span className="w-2 h-2 rounded-full bg-[#DFB76C] animate-pulse shrink-0" />
+            <span className="truncate sm:overflow-visible">Carrier-Grade VoIP Routes &amp; Wholesale Voice Termination</span>
           </span>
         </div>
         

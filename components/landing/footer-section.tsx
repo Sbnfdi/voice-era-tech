@@ -43,9 +43,11 @@ const footerLinks = {
     { name: "Direct Sales & Support", href: "#contact" },
   ],
   Legal: [
-    { name: "TCPA & FDCPA Safeguards", href: "#security" },
-    { name: "Privacy Policy", href: "#contact" },
-    { name: "Terms of Service", href: "/terms", isTerms: true },
+    { name: "Terms and Conditions", href: "/terms" },
+    { name: "Privacy Policy", href: "/privacy" },
+    { name: "Acceptable Use Policy (AUP)", href: "/aup" },
+    { name: "TCPA & Regulatory Compliance", href: "#security" },
+    { name: "Master SLA & Compliance", href: "/terms#section-14" },
   ],
 };
 
@@ -60,18 +62,19 @@ export function FooterSection() {
   const [isTermsOpen, setIsTermsOpen] = useState(false);
 
   return (
-    <footer className="relative border-t border-foreground/10">
+    <footer className="relative border-t border-foreground/10 overflow-hidden">
       {/* Animated wave background */}
       <div className="absolute inset-0 h-64 opacity-20 pointer-events-none overflow-hidden">
         <AnimatedWave />
       </div>
       
-      <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12">
+      <div className="relative z-10 max-w-[1400px] mx-auto px-5 sm:px-6 lg:px-12">
         {/* Main Footer */}
-        <div className="py-16 lg:py-24">
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-12 lg:gap-8">
+        <div className="py-12 sm:py-16 lg:py-24">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-8 sm:gap-10 lg:gap-8">
             {/* Brand Column */}
-            <div className="col-span-2">
+            <div className="col-span-1 sm:col-span-2">
+
               <a href="#" className="inline-flex items-center gap-3.5 mb-6 group">
                 <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-primary/30 bg-black shadow-[0_0_15px_rgba(223,183,108,0.15)] flex items-center justify-center shrink-0 group-hover:border-primary/60 transition-colors">
                   <Image 

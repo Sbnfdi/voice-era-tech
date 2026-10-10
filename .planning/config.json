@@ -1,0 +1,10 @@
+{
+  "project": "voice-era-tech",
+  "version": "1.0.0",
+  "mode": "brownfield",
+  "workflows": {
+    "auto_verify": true,
+    "require_tests": false
+  },
+  "created_at": "2026-10-09T16:47:00Z"
+}

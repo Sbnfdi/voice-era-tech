@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createInquiry, getInquiries } from "@/lib/db";
 import { sendInquiryEmail } from "@/lib/mailer";
+import { requireAdminAuth } from "@/lib/auth";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const auth = requireAdminAuth(req);
+  if (!auth.authenticated) {
+    return auth.response;
+  }
+
   try {
     const inquiries = await getInquiries();
     return NextResponse.json({ success: true, inquiries });

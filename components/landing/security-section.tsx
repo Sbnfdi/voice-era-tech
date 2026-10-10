@@ -58,12 +58,12 @@ export function SecuritySection() {
               <span className="w-8 h-px bg-primary" />
               Security &bull; STIR/SHAKEN
             </span>
-            <h2 className="text-4xl lg:text-6xl font-display tracking-tight mb-8 text-foreground">
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display tracking-tight mb-6 sm:mb-8 text-foreground">
               Trust is
               <br />
               <span className="text-gold-gradient">non-negotiable.</span>
             </h2>
-            <p className="text-xl text-muted-foreground leading-relaxed mb-12">
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground leading-relaxed mb-8 sm:mb-12">
               Carrier-grade compliance isn&apos;t optional. It&apos;s cryptographically engineered into every voice route, from Level-A STIR/SHAKEN attestation to automated National DNC scrubbing.
             </p>
 

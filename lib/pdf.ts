@@ -444,8 +444,12 @@ export async function generateKycPdf(kyc: KycSubmission): Promise<{ buffer: Buff
   const filename = `${kyc.referenceId}.pdf`;
   const filePath = path.join(PDFS_DIR, filename);
 
-  await fs.mkdir(PDFS_DIR, { recursive: true });
-  await fs.writeFile(filePath, Buffer.from(pdfBytes));
+  try {
+    await fs.mkdir(PDFS_DIR, { recursive: true });
+    await fs.writeFile(filePath, Buffer.from(pdfBytes));
+  } catch (fsErr) {
+    console.warn("[PDF Cache] Disk write skipped (serverless read-only filesystem):", fsErr);
+  }
 
   return {
     buffer: Buffer.from(pdfBytes),

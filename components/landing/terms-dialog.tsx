@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import {
   Dialog,
   DialogContent,
@@ -19,7 +20,8 @@ interface TermsDialogProps {
 export function TermsDialog({ isOpen, onClose }: TermsDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-[700px] max-h-[88vh] overflow-y-auto p-6 sm:p-8 border border-primary/30 bg-card shadow-2xl rounded-2xl">
+      <DialogContent className="sm:max-w-[700px] max-h-[88vh] overflow-y-auto p-4 sm:p-7 border border-primary/30 bg-card shadow-2xl rounded-2xl">
+
         <DialogHeader className="space-y-2 text-left pb-4 border-b border-border">
           <div className="inline-flex items-center gap-2">
             <FileText className="w-4 h-4 text-primary" />
@@ -86,10 +88,17 @@ export function TermsDialog({ isOpen, onClose }: TermsDialogProps) {
           </section>
         </div>
 
-        <div className="pt-4 border-t border-border flex justify-end">
+        <div className="pt-4 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3">
+          <Link
+            href="/terms"
+            onClick={onClose}
+            className="text-xs font-mono text-[#DFB76C] hover:underline"
+          >
+            Read Full Master Services Agreement (26 Clauses) &rarr;
+          </Link>
           <Button
             onClick={onClose}
-            className="rounded-full px-6 bg-gold-gradient text-primary-foreground font-semibold hover:brightness-110 text-xs sm:text-sm cursor-pointer shadow-[0_0_15px_rgba(223,183,108,0.2)]"
+            className="w-full sm:w-auto rounded-full px-6 bg-gold-gradient text-primary-foreground font-semibold hover:brightness-110 text-xs sm:text-sm cursor-pointer shadow-[0_0_15px_rgba(223,183,108,0.2)]"
           >
             I Understand &amp; Close
           </Button>

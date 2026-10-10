@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createSignedAdminToken } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
   try {
@@ -18,14 +19,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Generate lightweight deterministic session token for local/admin portal
-    const sessionToken = Buffer.from(
-      JSON.stringify({
-        user: expectedEmail,
-        loginAt: Date.now(),
-        secret: "vet_secure_admin_session",
-      })
-    ).toString("base64");
+    // Generate cryptographically signed HMAC token
+    const sessionToken = createSignedAdminToken(expectedEmail, 7);
 
     const response = NextResponse.json({
       success: true,
@@ -35,8 +30,9 @@ export async function POST(req: NextRequest) {
     });
 
     response.cookies.set("vet_admin_token", sessionToken, {
-      httpOnly: false,
+      httpOnly: true,
       secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
       maxAge: 60 * 60 * 24 * 7, // 7 days
       path: "/",
     });

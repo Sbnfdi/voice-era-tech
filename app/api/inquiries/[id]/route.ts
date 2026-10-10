@@ -1,10 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { updateInquiry, deleteInquiry } from "@/lib/db";
+import { requireAdminAuth } from "@/lib/auth";
 
 export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const auth = requireAdminAuth(req);
+  if (!auth.authenticated) {
+    return auth.response;
+  }
+
   try {
     const { id } = await params;
     const body = await req.json();
@@ -23,9 +29,14 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const auth = requireAdminAuth(req);
+  if (!auth.authenticated) {
+    return auth.response;
+  }
+
   try {
     const { id } = await params;
     const deleted = await deleteInquiry(id);

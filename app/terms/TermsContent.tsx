@@ -24,6 +24,7 @@ export default function TermsContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [activeSectionId, setActiveSectionId] = useState<string>("");
+  const [isMobileTocOpen, setIsMobileTocOpen] = useState(false);
 
   const filteredSections = useMemo(() => {
     return TERMS_SECTIONS.filter((section) => {
@@ -52,6 +53,7 @@ export default function TermsContent() {
 
   const scrollToSection = (id: string) => {
     setActiveSectionId(id);
+    setIsMobileTocOpen(false);
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -65,32 +67,32 @@ export default function TermsContent() {
         <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-amber-500/5 blur-[140px] rounded-full" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-10">
         {/* Top Breadcrumb & Actions */}
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+        <div className="flex flex-wrap items-center justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors font-mono"
+            className="inline-flex items-center gap-2 text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors font-mono"
           >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Homepage
+            <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            <span>Back to Homepage</span>
           </Link>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={handlePrint}
               type="button"
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border/60 bg-card/60 hover:bg-muted/80 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors"
+              className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg border border-border/60 bg-card/60 hover:bg-muted/80 text-[11px] sm:text-xs font-mono text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
               title="Print or Save as PDF"
             >
-              <Printer className="w-3.5 h-3.5" />
-              Print / Save PDF
+              <Printer className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+              <span>Print / PDF</span>
             </button>
             <Link
               href="/privacy"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border/60 bg-card/60 hover:bg-muted/80 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors"
+              className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border border-border/60 bg-card/60 hover:bg-muted/80 text-[11px] sm:text-xs font-mono text-muted-foreground hover:text-foreground transition-colors"
             >
-              Privacy Policy
+              <span>Privacy Policy</span>
               <ChevronRight className="w-3 h-3" />
             </Link>
           </div>
@@ -114,7 +116,7 @@ export default function TermsContent() {
             trunking, predictive dialers, carrier routes, or telephony cloud infrastructure.
           </p>
 
-          <div className="flex flex-wrap items-center gap-y-2 gap-x-6 pt-2 text-xs font-mono text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-y-2 gap-x-4 sm:gap-x-6 pt-2 text-xs font-mono text-muted-foreground">
             <span>Effective Date: 2026</span>
             <span>&bull;</span>
             <span>Governing Law: State of Delaware &amp; FCC Regulations</span>
@@ -124,14 +126,14 @@ export default function TermsContent() {
         </header>
 
         {/* CRITICAL INFRASTRUCTURE WARNING BANNER */}
-        <div className="mt-8 p-6 rounded-2xl border-2 border-amber-500/30 bg-amber-500/[0.05] space-y-3">
+        <div className="mt-8 p-5 sm:p-6 rounded-2xl border-2 border-amber-500/30 bg-amber-500/[0.05] space-y-3">
           <div className="flex items-center gap-2.5 text-foreground font-medium">
             <ShieldAlert className="w-5 h-5 text-amber-500 shrink-0" />
-            <h2 className="font-display text-lg sm:text-xl tracking-tight text-amber-500">
+            <h2 className="font-display text-base sm:text-xl tracking-tight text-amber-500">
               Server &amp; Infrastructure Provisioning: Strictly No Money-Back Guarantee
             </h2>
           </div>
-          <p className="text-sm text-muted-foreground leading-relaxed">
+          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
             <strong className="text-foreground">
               All dedicated server infrastructure purchases, hosted dialer cluster deployments, and
               telecom interconnect setups come with strictly NO MONEY-BACK GUARANTEE.
@@ -144,24 +146,37 @@ export default function TermsContent() {
         </div>
 
         {/* Search & Category Filter Bar */}
-        <div className="mt-8 sticky top-4 z-20 p-4 rounded-xl bg-card/90 backdrop-blur-md border border-border/80 shadow-lg space-y-3">
-          <div className="relative">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search across all clauses (e.g. 911 emergency, refund, CLI whitelisting, robocalling, indemnity)..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-background border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground hover:text-foreground font-mono"
-              >
-                Clear
-              </button>
-            )}
+        <div className="mt-8 sticky top-3 sm:top-4 z-20 p-3 sm:p-4 rounded-xl bg-card/95 backdrop-blur-md border border-border/80 shadow-lg space-y-3">
+          <div className="flex items-center gap-2">
+            <div className="relative flex-1">
+              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search across all clauses (e.g. 911 emergency, refund, CLI whitelisting, robocalling, indemnity)..."
+                className="w-full pl-10 pr-16 py-2 rounded-lg bg-background border border-border text-xs sm:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground hover:text-foreground font-mono"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+
+            {/* Mobile TOC Trigger Button */}
+            <button
+              type="button"
+              onClick={() => setIsMobileTocOpen((prev) => !prev)}
+              className="lg:hidden shrink-0 inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-background border border-border text-xs font-mono text-muted-foreground hover:text-foreground cursor-pointer"
+              aria-label="Table of contents"
+            >
+              <BookOpen className="w-3.5 h-3.5 text-amber-500" />
+              <span className="hidden xs:inline">Jump</span>
+            </button>
           </div>
 
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
@@ -170,7 +185,7 @@ export default function TermsContent() {
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
                 type="button"
-                className={`whitespace-nowrap px-3 py-1.5 rounded-lg font-mono transition-colors ${
+                className={`whitespace-nowrap px-3 py-1.5 rounded-lg font-mono transition-colors shrink-0 ${
                   selectedCategory === cat
                     ? "bg-amber-500 text-black font-semibold"
                     : "bg-background/80 border border-border/60 text-muted-foreground hover:text-foreground"
@@ -180,13 +195,40 @@ export default function TermsContent() {
               </button>
             ))}
           </div>
+
+          {/* Mobile TOC Collapsible Drawer */}
+          {isMobileTocOpen && (
+            <div className="lg:hidden p-3 rounded-lg bg-background border border-border mt-2 space-y-2 animate-in fade-in-50 duration-150 max-h-60 overflow-y-auto">
+              <div className="flex items-center justify-between pb-1 border-b border-border/60 text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+                <span>Jump to Section ({filteredSections.length})</span>
+                <button
+                  onClick={() => setIsMobileTocOpen(false)}
+                  className="p-1 text-muted-foreground hover:text-foreground"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
+              <div className="space-y-1 text-xs">
+                {filteredSections.map((sec) => (
+                  <button
+                    key={sec.id}
+                    onClick={() => scrollToSection(sec.id)}
+                    className="w-full text-left py-1 px-1.5 rounded hover:bg-muted text-muted-foreground hover:text-foreground truncate flex items-center gap-2 cursor-pointer"
+                  >
+                    <span className="font-mono text-[10px] text-amber-500 shrink-0">{sec.number}</span>
+                    <span className="truncate">{sec.title}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Main Content Layout: Sidebar + Sections */}
-        <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="mt-8 sm:mt-10 grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Desktop Table of Contents */}
           <aside className="hidden lg:block lg:col-span-4 xl:col-span-3">
-            <div className="sticky top-40 p-4 rounded-2xl border border-border/60 bg-card/40 backdrop-blur space-y-3 max-h-[calc(100vh-12rem)] overflow-y-auto">
+            <div className="sticky top-32 p-4 rounded-2xl border border-border/60 bg-card/40 backdrop-blur space-y-3 max-h-[calc(100vh-10rem)] overflow-y-auto">
               <div className="flex items-center gap-2 pb-2 border-b border-border/60 text-xs font-mono uppercase tracking-wider text-muted-foreground">
                 <BookOpen className="w-3.5 h-3.5 text-amber-500" />
                 <span>Table of Contents ({filteredSections.length})</span>
@@ -197,7 +239,7 @@ export default function TermsContent() {
                     key={sec.id}
                     onClick={() => scrollToSection(sec.id)}
                     type="button"
-                    className={`w-full text-left px-2.5 py-1.5 rounded-md transition-colors line-clamp-1 flex items-center gap-2 ${
+                    className={`w-full text-left px-2.5 py-1.5 rounded-md transition-colors line-clamp-1 flex items-center gap-2 cursor-pointer ${
                       activeSectionId === sec.id
                         ? "bg-amber-500/10 text-amber-500 font-semibold"
                         : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
@@ -212,6 +254,7 @@ export default function TermsContent() {
               </nav>
             </div>
           </aside>
+
 
           {/* Sections List */}
           <main className="lg:col-span-8 xl:col-span-9 space-y-8">

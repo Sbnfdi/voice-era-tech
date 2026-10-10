@@ -71,14 +71,18 @@ export function Navigation() {
   return (
     <header
       className={`fixed z-50 transition-all duration-500 ${
-        isScrolled 
+        isMobileMenuOpen
+          ? "top-0 left-0 right-0 bottom-0"
+          : isScrolled 
           ? "top-3 sm:top-4 left-3 sm:left-4 right-3 sm:right-4" 
           : "top-0 left-0 right-0"
       }`}
     >
       <nav 
         className={`mx-auto transition-all duration-500 ${
-          isScrolled || isMobileMenuOpen
+          isMobileMenuOpen
+            ? "bg-transparent max-w-full"
+            : isScrolled
             ? "bg-background/90 backdrop-blur-xl border border-primary/20 rounded-2xl shadow-[0_10px_35px_-10px_rgba(0,0,0,0.7)] max-w-[1200px]"
             : "bg-transparent max-w-[1400px]"
         }`}
@@ -105,7 +109,7 @@ export function Navigation() {
                 <span className={`font-display font-medium tracking-tight transition-all duration-500 text-foreground ${isScrolled ? "text-lg sm:text-xl" : "text-xl sm:text-2xl"}`}>
                   Voice <span className="text-gold-gradient">Era</span> Tech
                 </span>
-                <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-[#DFB76C] bg-[#DFB76C]/10 border border-[#DFB76C]/30 rounded px-1.5 py-0.5 hidden xs:inline-block">
+                <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-[#DFB76C] bg-[#DFB76C]/10 border border-[#DFB76C]/30 rounded px-1.5 py-0.5 inline-block">
                   LLC
                 </span>
               </div>
@@ -219,7 +223,7 @@ export function Navigation() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 rounded-lg text-foreground hover:bg-foreground/5 transition-colors"
+            className="lg:hidden p-2 rounded-lg text-foreground hover:bg-foreground/5 transition-colors cursor-pointer"
             aria-label="Toggle navigation menu"
           >
             {isMobileMenuOpen ? (
@@ -234,38 +238,37 @@ export function Navigation() {
       
       {/* Mobile Menu - Full Screen Overlay */}
       <div
-        className={`lg:hidden fixed inset-0 bg-background/98 backdrop-blur-2xl z-40 transition-all duration-300 ${
+        className={`lg:hidden fixed inset-0 w-full h-[100dvh] bg-background/98 backdrop-blur-2xl z-50 transition-all duration-300 ${
           isMobileMenuOpen 
             ? "opacity-100 pointer-events-auto" 
             : "opacity-0 pointer-events-none"
         }`}
-        style={{ top: 0 }}
       >
-        <div className="flex flex-col h-full px-6 sm:px-8 pt-6 pb-8 overflow-y-auto">
+        <div className="flex flex-col h-full px-5 sm:px-8 pt-5 pb-6 overflow-y-auto">
           {/* Top Bar inside Mobile Menu */}
-          <div className="flex items-center justify-between pb-6 border-b border-foreground/10">
-            <div className="flex items-center gap-3">
-              <div className="relative w-9 h-9 rounded-xl overflow-hidden border border-primary/30 bg-black shadow-[0_0_15px_rgba(223,183,108,0.15)] flex items-center justify-center">
+          <div className="flex items-center justify-between pb-4 border-b border-foreground/10 shrink-0">
+            <div className="flex items-center gap-2.5">
+              <div className="relative w-8 h-8 rounded-xl overflow-hidden border border-primary/30 bg-black shadow-[0_0_15px_rgba(223,183,108,0.15)] flex items-center justify-center">
                 <Image 
                   src="/logo.png" 
                   alt="Voice Era Tech LLC" 
-                  width={36} 
-                  height={36} 
+                  width={32} 
+                  height={32} 
                   className="w-full h-full object-cover"
                 />
               </div>
               <div>
-                <span className="font-display text-xl font-medium tracking-tight text-foreground block">
+                <span className="font-display text-lg font-medium tracking-tight text-foreground block">
                   Voice <span className="text-gold-gradient">Era</span> Tech
                 </span>
-                <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest block">
+                <span className="text-[9px] font-mono text-muted-foreground uppercase tracking-widest block">
                   VoIP Routes & Dialers
                 </span>
               </div>
             </div>
             <button
               onClick={() => setIsMobileMenuOpen(false)}
-              className="p-2 rounded-full border border-foreground/10 text-foreground hover:bg-foreground/5"
+              className="p-2 rounded-full border border-foreground/10 text-foreground hover:bg-foreground/5 cursor-pointer"
               aria-label="Close menu"
             >
               <X className="w-5 h-5" />
@@ -273,47 +276,47 @@ export function Navigation() {
           </div>
 
           {/* Navigation Links */}
-          <div className="flex-1 flex flex-col justify-center gap-4 sm:gap-6 py-8">
+          <div className="flex-1 flex flex-col justify-center gap-3 sm:gap-5 py-6">
             {navLinks.map((link, i) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className={`text-3xl sm:text-4xl font-display text-foreground hover:text-[#DFB76C] transition-all duration-300 py-1 ${
+                className={`text-2xl sm:text-3xl font-display text-foreground hover:text-[#DFB76C] transition-all duration-300 py-0.5 ${
                   isMobileMenuOpen 
                     ? "opacity-100 translate-y-0" 
                     : "opacity-0 translate-y-4"
                 }`}
-                style={{ transitionDelay: isMobileMenuOpen ? `${i * 50}ms` : "0ms" }}
+                style={{ transitionDelay: isMobileMenuOpen ? `${i * 40}ms` : "0ms" }}
               >
                 {link.name}
               </a>
             ))}
           </div>
           
-          {/* Bottom CTAs */}
-          <div className={`flex flex-col gap-3 pt-6 border-t border-foreground/10 transition-all duration-300 ${
+          {/* Bottom CTAs & Legal Links */}
+          <div className={`flex flex-col gap-2.5 pt-4 border-t border-foreground/10 shrink-0 transition-all duration-300 ${
             isMobileMenuOpen 
               ? "opacity-100 translate-y-0" 
               : "opacity-0 translate-y-4"
           }`}
-          style={{ transitionDelay: isMobileMenuOpen ? "250ms" : "0ms" }}
+          style={{ transitionDelay: isMobileMenuOpen ? "200ms" : "0ms" }}
           >
-            <div className="text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1">
+            <div className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground mb-0.5">
               Select Onboarding Category:
             </div>
             <Link
               href="/kyc"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-zinc-900 border border-zinc-700/80 hover:border-[#DFB76C] text-left transition-all"
+              className="w-full flex items-center justify-between p-3 rounded-xl bg-zinc-900 border border-zinc-700/80 hover:border-[#DFB76C] text-left transition-all"
             >
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-[#DFB76C]/10 text-[#DFB76C] flex items-center justify-center shrink-0">
-                  <UserCheck className="w-5 h-5" />
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-[#DFB76C]/10 text-[#DFB76C] flex items-center justify-center shrink-0">
+                  <UserCheck className="w-4 h-4" />
                 </div>
                 <div>
-                  <div className="text-sm font-semibold text-white">End User KYC</div>
-                  <div className="text-xs text-zinc-400">Direct VoIP Routes &amp; Enterprise Telephony</div>
+                  <div className="text-xs sm:text-sm font-semibold text-white">End User KYC</div>
+                  <div className="text-[11px] text-zinc-400">Direct VoIP Routes &amp; Enterprise</div>
                 </div>
               </div>
               <ChevronRight className="w-4 h-4 text-zinc-400" />
@@ -322,19 +325,38 @@ export function Navigation() {
             <Link
               href="/wholesale"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-gold-gradient text-primary-foreground font-semibold shadow-[0_0_20px_rgba(223,183,108,0.25)] hover:brightness-110 transition-all"
+              className="w-full flex items-center justify-between p-3 rounded-xl bg-gold-gradient text-primary-foreground font-semibold shadow-[0_0_20px_rgba(223,183,108,0.25)] hover:brightness-110 transition-all"
             >
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-black/20 flex items-center justify-center shrink-0">
-                  <Building2 className="w-5 h-5" />
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-black/20 flex items-center justify-center shrink-0">
+                  <Building2 className="w-4 h-4" />
                 </div>
                 <div>
-                  <div className="text-sm font-bold">Wholesale Application</div>
-                  <div className="text-xs text-primary-foreground/85">Carrier Interconnect &amp; High-CPS Trunking</div>
+                  <div className="text-xs sm:text-sm font-bold">Wholesale Application</div>
+                  <div className="text-[11px] text-primary-foreground/85">Carrier Interconnect &amp; High-CPS</div>
                 </div>
               </div>
               <ChevronRight className="w-4 h-4" />
             </Link>
+
+            {/* Mobile Legal Quick Links */}
+            <div className="flex items-center justify-center gap-4 pt-2 text-[11px] font-mono text-muted-foreground">
+              <Link 
+                href="/terms" 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="hover:text-[#DFB76C] transition-colors"
+              >
+                Terms &amp; Conditions
+              </Link>
+              <span>&bull;</span>
+              <Link 
+                href="/privacy" 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="hover:text-[#DFB76C] transition-colors"
+              >
+                Privacy Policy
+              </Link>
+            </div>
           </div>
         </div>
       </div>

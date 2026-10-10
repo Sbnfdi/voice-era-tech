@@ -2,8 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { createKyc, getKycList, updateKyc } from "@/lib/db";
 import { generateKycPdf } from "@/lib/pdf";
 import { sendKycEmail } from "@/lib/mailer";
+import { requireAdminAuth } from "@/lib/auth";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const auth = requireAdminAuth(req);
+  if (!auth.authenticated) {
+    return auth.response;
+  }
+
   try {
     const list = await getKycList();
     return NextResponse.json({ success: true, kycs: list });

@@ -1,13 +1,12 @@
-import fs from "fs/promises";
 import path from "path";
+import os from "os";
+import fs from "fs/promises";
+import { getInitializedDb, resolveSafeStorageDir } from "./turso";
 
-// Data directories
-const DATA_DIR = path.join(process.cwd(), "data");
-const UPLOADS_DIR = path.join(DATA_DIR, "uploads");
-const PDFS_DIR = path.join(DATA_DIR, "kyc-pdfs");
-const INQUIRIES_FILE = path.join(DATA_DIR, "inquiries.json");
-const KYC_FILE = path.join(DATA_DIR, "kyc.json");
-const ADMIN_FILE = path.join(DATA_DIR, "admin.json");
+// Safe paths for storage across local dev, Hostinger VPS/cPanel, and serverless runtimes
+const DATA_DIR = resolveSafeStorageDir();
+const UPLOADS_DIR = resolveSafeStorageDir("uploads");
+const PDFS_DIR = resolveSafeStorageDir("kyc-pdfs");
 
 export interface Inquiry {
   id: string;
@@ -177,68 +176,149 @@ export interface KycSubmission {
   updatedAt: string;
 }
 
-// Ensure storage directories exist
-async function ensureInit() {
-  await fs.mkdir(DATA_DIR, { recursive: true });
-  await fs.mkdir(UPLOADS_DIR, { recursive: true });
-  await fs.mkdir(PDFS_DIR, { recursive: true });
+export interface MailLog {
+  id: string;
+  type: "inquiry" | "kyc";
+  to: string;
+  subject: string;
+  sentAt: string;
+  hasAttachment: boolean;
+  status: "sent" | "simulated_awaiting_smtp";
+  error?: string;
+}
+
+// Track legacy file migration once
+let migratedLegacyFiles = false;
+
+async function checkAndMigrateLegacyJson() {
+  if (migratedLegacyFiles) return;
+  migratedLegacyFiles = true;
 
   try {
-    await fs.access(INQUIRIES_FILE);
-  } catch {
-    await fs.writeFile(INQUIRIES_FILE, "[]", "utf-8");
-  }
+    const db = await getInitializedDb();
 
-  try {
-    await fs.access(KYC_FILE);
-  } catch {
-    await fs.writeFile(KYC_FILE, "[]", "utf-8");
-  }
+    // Migrate inquiries.json if present
+    const inquiriesFile = path.join(DATA_DIR, "inquiries.json");
+    try {
+      const inqData = await fs.readFile(inquiriesFile, "utf-8");
+      const list = JSON.parse(inqData);
+      if (Array.isArray(list) && list.length > 0) {
+        for (const item of list) {
+          await db.execute({
+            sql: `INSERT OR IGNORE INTO inquiries (id, name, email, phone, company, message, status, notes, created_at, updated_at)
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            args: [
+              item.id,
+              item.name,
+              item.email,
+              item.phone || "",
+              item.company || "",
+              item.message || "",
+              item.status || "new",
+              item.notes || null,
+              item.createdAt || new Date().toISOString(),
+              item.updatedAt || new Date().toISOString(),
+            ],
+          });
+        }
+      }
+    } catch {
+      // inquiries.json not found or empty
+    }
 
-  try {
-    await fs.access(ADMIN_FILE);
-  } catch {
-    await fs.writeFile(
-      ADMIN_FILE,
-      JSON.stringify(
-        {
-          supportEmail: process.env.SUPPORT_EMAIL || "support@voiceeratech.com",
-          kycEmail: process.env.KYC_EMAIL || "kyc@voiceeratech.com",
-          initializedAt: new Date().toISOString(),
-        },
-        null,
-        2
-      ),
-      "utf-8"
-    );
+    // Migrate kyc.json if present
+    const kycFile = path.join(DATA_DIR, "kyc.json");
+    try {
+      const kycData = await fs.readFile(kycFile, "utf-8");
+      const list = JSON.parse(kycData);
+      if (Array.isArray(list) && list.length > 0) {
+        for (const item of list) {
+          await db.execute({
+            sql: `INSERT OR IGNORE INTO kyc_submissions (
+              id, reference_id, category, company_name, signatory_name, signatory_email,
+              signatory_phone, status, admin_notes, pdf_path, data, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            args: [
+              item.id,
+              item.referenceId,
+              item.category || "end_user",
+              item.companyName || "",
+              item.signatoryName || "",
+              item.signatoryEmail || "",
+              item.signatoryPhone || null,
+              item.status || "pending",
+              item.adminNotes || null,
+              item.pdfPath || null,
+              JSON.stringify(item),
+              item.createdAt || new Date().toISOString(),
+              item.updatedAt || new Date().toISOString(),
+            ],
+          });
+        }
+      }
+    } catch {
+      // kyc.json not found or empty
+    }
+  } catch (err) {
+    console.error("[Turso] Note on legacy JSON migration:", err);
   }
 }
 
+// ==========================================
 // INQUIRIES
+// ==========================================
+
 export async function getInquiries(): Promise<Inquiry[]> {
-  await ensureInit();
-  const data = await fs.readFile(INQUIRIES_FILE, "utf-8");
-  try {
-    return JSON.parse(data);
-  } catch {
-    return [];
-  }
+  const db = await getInitializedDb();
+  await checkAndMigrateLegacyJson();
+
+  const res = await db.execute("SELECT * FROM inquiries ORDER BY created_at DESC");
+  return res.rows.map((row) => ({
+    id: String(row.id),
+    name: String(row.name || ""),
+    email: String(row.email || ""),
+    phone: String(row.phone || ""),
+    company: String(row.company || ""),
+    message: String(row.message || ""),
+    status: (row.status as Inquiry["status"]) || "new",
+    notes: row.notes ? String(row.notes) : undefined,
+    createdAt: String(row.created_at),
+    updatedAt: String(row.updated_at),
+  }));
 }
 
 export async function createInquiry(
   data: Omit<Inquiry, "id" | "status" | "createdAt" | "updatedAt">
 ): Promise<Inquiry> {
-  await ensureInit();
-  const inquiries = await getInquiries();
+  const db = await getInitializedDb();
+  const now = new Date().toISOString();
+  const id = `INQ-${Date.now().toString().slice(-6)}-${Math.floor(100 + Math.random() * 900)}`;
+
   const newInquiry: Inquiry = {
     ...data,
-    id: `INQ-${Date.now().toString().slice(-6)}-${Math.floor(100 + Math.random() * 900)}`,
+    id,
     status: "new",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    createdAt: now,
+    updatedAt: now,
   };
-  inquiries.unshift(newInquiry);
-  await fs.writeFile(INQUIRIES_FILE, JSON.stringify(inquiries, null, 2), "utf-8");
+
+  await db.execute({
+    sql: `INSERT INTO inquiries (id, name, email, phone, company, message, status, notes, created_at, updated_at)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    args: [
+      newInquiry.id,
+      newInquiry.name,
+      newInquiry.email,
+      newInquiry.phone || "",
+      newInquiry.company || "",
+      newInquiry.message,
+      newInquiry.status,
+      newInquiry.notes || null,
+      newInquiry.createdAt,
+      newInquiry.updatedAt,
+    ],
+  });
+
   return newInquiry;
 }
 
@@ -246,67 +326,161 @@ export async function updateInquiry(
   id: string,
   updates: Partial<Pick<Inquiry, "status" | "notes">>
 ): Promise<Inquiry | null> {
-  await ensureInit();
-  const inquiries = await getInquiries();
-  const index = inquiries.findIndex((i) => i.id === id);
-  if (index === -1) return null;
+  const db = await getInitializedDb();
+  const now = new Date().toISOString();
 
-  inquiries[index] = {
-    ...inquiries[index],
-    ...updates,
-    updatedAt: new Date().toISOString(),
+  const existingRes = await db.execute({
+    sql: "SELECT * FROM inquiries WHERE id = ? LIMIT 1",
+    args: [id],
+  });
+
+  if (existingRes.rows.length === 0) {
+    return null;
+  }
+
+  const current = existingRes.rows[0];
+  const updatedStatus = updates.status !== undefined ? updates.status : current.status;
+  const updatedNotes = updates.notes !== undefined ? updates.notes : current.notes;
+
+  await db.execute({
+    sql: `UPDATE inquiries SET status = ?, notes = ?, updated_at = ? WHERE id = ?`,
+    args: [updatedStatus, updatedNotes, now, id],
+  });
+
+  return {
+    id: String(current.id),
+    name: String(current.name || ""),
+    email: String(current.email || ""),
+    phone: String(current.phone || ""),
+    company: String(current.company || ""),
+    message: String(current.message || ""),
+    status: (updatedStatus as Inquiry["status"]) || "new",
+    notes: updatedNotes ? String(updatedNotes) : undefined,
+    createdAt: String(current.created_at),
+    updatedAt: now,
   };
-  await fs.writeFile(INQUIRIES_FILE, JSON.stringify(inquiries, null, 2), "utf-8");
-  return inquiries[index];
 }
 
 export async function deleteInquiry(id: string): Promise<boolean> {
-  await ensureInit();
-  const inquiries = await getInquiries();
-  const filtered = inquiries.filter((i) => i.id !== id);
-  if (filtered.length === inquiries.length) return false;
-  await fs.writeFile(INQUIRIES_FILE, JSON.stringify(filtered, null, 2), "utf-8");
-  return true;
+  const db = await getInitializedDb();
+  const res = await db.execute({
+    sql: "DELETE FROM inquiries WHERE id = ?",
+    args: [id],
+  });
+  return res.rowsAffected > 0;
 }
 
+// ==========================================
 // KYC SUBMISSIONS
+// ==========================================
+
 export async function getKycList(): Promise<KycSubmission[]> {
-  await ensureInit();
-  const data = await fs.readFile(KYC_FILE, "utf-8");
-  try {
-    return JSON.parse(data);
-  } catch {
-    return [];
-  }
+  const db = await getInitializedDb();
+  await checkAndMigrateLegacyJson();
+
+  const res = await db.execute("SELECT * FROM kyc_submissions ORDER BY created_at DESC");
+  return res.rows.map((row) => {
+    try {
+      const parsed = JSON.parse(String(row.data)) as KycSubmission;
+      return {
+        ...parsed,
+        id: String(row.id),
+        referenceId: String(row.reference_id),
+        status: (row.status as KycSubmission["status"]) || parsed.status || "pending",
+        adminNotes: row.admin_notes !== null ? String(row.admin_notes) : parsed.adminNotes,
+        pdfPath: row.pdf_path !== null ? String(row.pdf_path) : parsed.pdfPath,
+        createdAt: String(row.created_at || parsed.createdAt),
+        updatedAt: String(row.updated_at || parsed.updatedAt),
+      };
+    } catch {
+      return {
+        id: String(row.id),
+        referenceId: String(row.reference_id),
+        category: (row.category as any) || "end_user",
+        companyName: String(row.company_name || ""),
+        signatoryName: String(row.signatory_name || ""),
+        signatoryEmail: String(row.signatory_email || ""),
+        signatoryPhone: String(row.signatory_phone || ""),
+        status: (row.status as KycSubmission["status"]) || "pending",
+        adminNotes: row.admin_notes ? String(row.admin_notes) : undefined,
+        pdfPath: row.pdf_path ? String(row.pdf_path) : undefined,
+        createdAt: String(row.created_at),
+        updatedAt: String(row.updated_at),
+      } as unknown as KycSubmission;
+    }
+  });
 }
 
 export async function getKycById(id: string): Promise<KycSubmission | null> {
-  const list = await getKycList();
-  return list.find((k) => k.id === id || k.referenceId === id) || null;
+  const db = await getInitializedDb();
+  const res = await db.execute({
+    sql: "SELECT * FROM kyc_submissions WHERE id = ? OR reference_id = ? LIMIT 1",
+    args: [id, id],
+  });
+
+  if (res.rows.length === 0) return null;
+  const row = res.rows[0];
+
+  try {
+    const parsed = JSON.parse(String(row.data)) as KycSubmission;
+    return {
+      ...parsed,
+      id: String(row.id),
+      referenceId: String(row.reference_id),
+      status: (row.status as KycSubmission["status"]) || parsed.status || "pending",
+      adminNotes: row.admin_notes !== null ? String(row.admin_notes) : parsed.adminNotes,
+      pdfPath: row.pdf_path !== null ? String(row.pdf_path) : parsed.pdfPath,
+      createdAt: String(row.created_at || parsed.createdAt),
+      updatedAt: String(row.updated_at || parsed.updatedAt),
+    };
+  } catch {
+    return null;
+  }
 }
 
 export async function createKyc(
   data: Omit<KycSubmission, "id" | "referenceId" | "status" | "createdAt" | "updatedAt">
 ): Promise<KycSubmission> {
-  await ensureInit();
-  const list = await getKycList();
+  const db = await getInitializedDb();
+  const now = new Date().toISOString();
   const timestamp = Date.now().toString().slice(-5);
   const randomSuffix = Math.floor(1000 + Math.random() * 9000);
   const prefix = data.category === "wholesaler" ? "VET-WHL" : "VET-KYC";
   const refId = `${prefix}-${new Date().getFullYear()}-${timestamp}${randomSuffix}`;
+  const id = `kyc_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
 
   const newKyc: KycSubmission = {
     category: data.category || "end_user",
     ...data,
-    id: `kyc_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+    id,
     referenceId: refId,
     status: "pending",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    createdAt: now,
+    updatedAt: now,
   };
 
-  list.unshift(newKyc);
-  await fs.writeFile(KYC_FILE, JSON.stringify(list, null, 2), "utf-8");
+  await db.execute({
+    sql: `INSERT INTO kyc_submissions (
+      id, reference_id, category, company_name, signatory_name, signatory_email,
+      signatory_phone, status, admin_notes, pdf_path, data, created_at, updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    args: [
+      newKyc.id,
+      newKyc.referenceId,
+      newKyc.category,
+      newKyc.companyName,
+      newKyc.signatoryName,
+      newKyc.signatoryEmail,
+      newKyc.signatoryPhone || null,
+      newKyc.status,
+      newKyc.adminNotes || null,
+      newKyc.pdfPath || null,
+      JSON.stringify(newKyc),
+      newKyc.createdAt,
+      newKyc.updatedAt,
+    ],
+  });
+
   return newKyc;
 }
 
@@ -314,27 +488,102 @@ export async function updateKyc(
   id: string,
   updates: Partial<Pick<KycSubmission, "status" | "adminNotes" | "pdfPath">>
 ): Promise<KycSubmission | null> {
-  await ensureInit();
-  const list = await getKycList();
-  const index = list.findIndex((k) => k.id === id || k.referenceId === id);
-  if (index === -1) return null;
+  const db = await getInitializedDb();
+  const current = await getKycById(id);
+  if (!current) return null;
 
-  list[index] = {
-    ...list[index],
+  const now = new Date().toISOString();
+  const updatedKyc: KycSubmission = {
+    ...current,
     ...updates,
-    updatedAt: new Date().toISOString(),
+    updatedAt: now,
   };
-  await fs.writeFile(KYC_FILE, JSON.stringify(list, null, 2), "utf-8");
-  return list[index];
+
+  await db.execute({
+    sql: `UPDATE kyc_submissions SET
+      status = ?,
+      admin_notes = ?,
+      pdf_path = ?,
+      data = ?,
+      updated_at = ?
+    WHERE id = ? OR reference_id = ?`,
+    args: [
+      updatedKyc.status,
+      updatedKyc.adminNotes || null,
+      updatedKyc.pdfPath || null,
+      JSON.stringify(updatedKyc),
+      now,
+      current.id,
+      current.referenceId,
+    ],
+  });
+
+  return updatedKyc;
 }
 
 export async function deleteKyc(id: string): Promise<boolean> {
-  await ensureInit();
-  const list = await getKycList();
-  const filtered = list.filter((k) => k.id !== id && k.referenceId !== id);
-  if (filtered.length === list.length) return false;
-  await fs.writeFile(KYC_FILE, JSON.stringify(filtered, null, 2), "utf-8");
-  return true;
+  const db = await getInitializedDb();
+  const res = await db.execute({
+    sql: "DELETE FROM kyc_submissions WHERE id = ? OR reference_id = ?",
+    args: [id, id],
+  });
+  return res.rowsAffected > 0;
+}
+
+// ==========================================
+// MAIL LOGS (Persisted in Turso SQLite)
+// ==========================================
+
+export async function recordMailLog(log: Omit<MailLog, "id" | "sentAt">): Promise<MailLog> {
+  const db = await getInitializedDb();
+  const id = `mail_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+  const sentAt = new Date().toISOString();
+  const entry: MailLog = {
+    ...log,
+    id,
+    sentAt,
+  };
+
+  try {
+    await db.execute({
+      sql: `INSERT INTO mail_logs (id, type, recipient, subject, sent_at, has_attachment, status, error)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      args: [
+        entry.id,
+        entry.type,
+        entry.to,
+        entry.subject,
+        entry.sentAt,
+        entry.hasAttachment ? 1 : 0,
+        entry.status,
+        entry.error || null,
+      ],
+    });
+  } catch (err) {
+    console.error("[Turso] Failed to record mail log:", err);
+  }
+
+  return entry;
+}
+
+export async function getMailLogs(): Promise<MailLog[]> {
+  try {
+    const db = await getInitializedDb();
+    const res = await db.execute("SELECT * FROM mail_logs ORDER BY sent_at DESC LIMIT 100");
+    return res.rows.map((row) => ({
+      id: String(row.id),
+      type: row.type as "inquiry" | "kyc",
+      to: String(row.recipient),
+      subject: String(row.subject),
+      sentAt: String(row.sent_at),
+      hasAttachment: Boolean(row.has_attachment),
+      status: row.status as "sent" | "simulated_awaiting_smtp",
+      error: row.error ? String(row.error) : undefined,
+    }));
+  } catch (err) {
+    console.error("[Turso] Failed to fetch mail logs:", err);
+    return [];
+  }
 }
 
 export { DATA_DIR, UPLOADS_DIR, PDFS_DIR };

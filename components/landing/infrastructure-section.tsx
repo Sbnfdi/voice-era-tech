@@ -88,8 +88,8 @@ export function InfrastructureSection() {
           >
             <div className="border border-primary/20 rounded-2xl bg-card/60 shadow-[0_0_30px_rgba(0,0,0,0.5)] overflow-hidden">
               {/* Header */}
-              <div className="px-6 py-4 border-b border-border bg-primary/5 flex items-center justify-between">
-                <span className="text-sm font-mono text-[#DFB76C]">Voice Era Global Voice Network</span>
+              <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-border bg-primary/5 flex flex-wrap items-center justify-between gap-2">
+                <span className="text-xs sm:text-sm font-mono text-[#DFB76C]">Voice Era Global Voice Network</span>
                 <span className="flex items-center gap-2 text-xs font-mono text-emerald-400">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                   All carrier routes active
@@ -101,22 +101,22 @@ export function InfrastructureSection() {
                 {locations.map((location, index) => (
                   <div
                     key={location.city}
-                    className={`px-6 py-5 border-b border-border/50 last:border-b-0 flex items-center justify-between transition-all duration-300 ${
+                    className={`px-4 sm:px-6 py-3.5 sm:py-5 border-b border-border/50 last:border-b-0 flex items-center justify-between gap-3 transition-all duration-300 ${
                       activeLocation === index ? "bg-primary/5" : ""
                     }`}
                   >
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                       <span 
-                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                        className={`w-2 h-2 rounded-full shrink-0 transition-all duration-300 ${
                           activeLocation === index ? "bg-[#DFB76C] shadow-[0_0_8px_#DFB76C]" : "bg-muted-foreground/30"
                         }`}
                       />
-                      <div>
-                        <div className="font-medium text-foreground">{location.city}</div>
-                        <div className="text-sm text-muted-foreground">{location.region}</div>
+                      <div className="min-w-0">
+                        <div className="font-medium text-xs sm:text-base text-foreground truncate">{location.city}</div>
+                        <div className="text-[11px] sm:text-sm text-muted-foreground truncate">{location.region}</div>
                       </div>
                     </div>
-                    <span className={`font-mono text-sm transition-colors duration-300 ${
+                    <span className={`font-mono text-xs sm:text-sm shrink-0 transition-colors duration-300 ${
                       activeLocation === index ? "text-[#DFB76C] font-semibold" : "text-muted-foreground"
                     }`}>
                       {location.latency}

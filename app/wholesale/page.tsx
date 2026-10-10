@@ -2081,15 +2081,24 @@ export default function WholesaleKycPage() {
                     className="w-5 h-5 rounded border-2 border-zinc-600 bg-zinc-900 text-[#DFB76C] focus:ring-2 focus:ring-[#DFB76C]/30 focus:ring-offset-0 accent-[#DFB76C] cursor-pointer shrink-0"
                   />
                   <span className="text-sm sm:text-base text-zinc-200">
-                    Check this box to confirm you agree to our terms{" "}
+                    I confirm that I have reviewed and agree to the{" "}
                     <Link
                       href="/terms"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[#DFB76C] underline hover:text-[#caa157] font-medium transition-colors"
                     >
-                      (click here to read)
-                    </Link>
+                      Terms and Conditions
+                    </Link>{" "}
+                    and{" "}
+                    <Link
+                      href="/privacy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#DFB76C] underline hover:text-[#caa157] font-medium transition-colors"
+                    >
+                      Privacy Policy
+                    </Link>.
                   </span>
                 </label>
               </div>

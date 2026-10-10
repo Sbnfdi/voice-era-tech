@@ -38,11 +38,12 @@ function AnimatedCounter({ end, suffix = "", prefix = "" }: { end: number; suffi
   }, [end, hasAnimated]);
 
   return (
-    <div ref={ref} className="text-6xl lg:text-8xl font-display tracking-tight text-gold-gradient">
+    <div ref={ref} className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-display tracking-tight text-gold-gradient">
       {prefix}{count.toLocaleString()}{suffix}
     </div>
   );
 }
+
 
 const metrics = [
   { 
@@ -130,7 +131,7 @@ export function MetricsSection() {
           {metrics.map((metric, index) => (
             <div
               key={metric.label}
-              className={`bg-card p-8 lg:p-12 transition-all duration-700 hover:bg-card/70 ${
+              className={`bg-card p-5 sm:p-8 lg:p-12 transition-all duration-700 hover:bg-card/70 ${
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}

@@ -85,11 +85,13 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html, body {
+    max-width: 100%;
+    overflow-x: clip;
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-background text-foreground;
-  }
-  html {
-    scroll-behavior: smooth;
   }
 }
 

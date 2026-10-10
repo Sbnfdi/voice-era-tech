@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { requireAdminAuth } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
+  const auth = requireAdminAuth(req);
+  if (!auth.authenticated) {
+    return auth.response;
+  }
   try {
     const { targetEmail } = await req.json();
     const recipient = targetEmail || process.env.SUPPORT_EMAIL || "support@voiceeratech.com";
