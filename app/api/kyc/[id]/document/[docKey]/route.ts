@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getKycDocument } from "@/lib/db";
 import { requireAdminAuth } from "@/lib/auth";
 
+export const maxDuration = 60;
+
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string; docKey: string }> }

@@ -27,6 +27,7 @@ import {
   ChevronRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { processAndCompressFile, ProcessedDocument } from "@/lib/file-compressor";
 
 export default function WholesaleKycPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -202,9 +203,7 @@ export default function WholesaleKycPage() {
     signatureDate: new Date().toISOString().split("T")[0],
   });
 
-  const [uploadedFiles, setUploadedFiles] = useState<
-    Record<string, { name: string; type: string; size: number; data: string }>
-  >({});
+  const [uploadedFiles, setUploadedFiles] = useState<Record<string, ProcessedDocument>>({});
 
   const toggleProtocol = (proto: string) => {
     setFormData((prev) => {
@@ -218,35 +217,25 @@ export default function WholesaleKycPage() {
     });
   };
 
-  const handleFileChange = (field: string, e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (field: string, e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      // Size check (max 8MB)
-      if (file.size > 8 * 1024 * 1024) {
-        setErrorMessage(`File "${file.name}" exceeds the 8MB size limit. Please upload a smaller file.`);
-        return;
+      try {
+        setErrorMessage("");
+        setFormData((prev) => ({
+          ...prev,
+          [field]: file.name,
+        }));
+
+        const processed = await processAndCompressFile(file);
+        setUploadedFiles((prev) => ({
+          ...prev,
+          [field]: processed,
+        }));
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : `Failed to process ${file.name}`;
+        setErrorMessage(msg);
       }
-
-      setFormData((prev) => ({
-        ...prev,
-        [field]: file.name,
-      }));
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (typeof reader.result === "string") {
-          setUploadedFiles((prev) => ({
-            ...prev,
-            [field]: {
-              name: file.name,
-              type: file.type || "application/octet-stream",
-              size: file.size,
-              data: reader.result as string,
-            },
-          }));
-        }
-      };
-      reader.readAsDataURL(file);
     }
   };
 
@@ -309,7 +298,19 @@ export default function WholesaleKycPage() {
         }),
       });
 
-      const data = await res.json();
+      const responseText = await res.text();
+      let data: any = null;
+      try {
+        data = JSON.parse(responseText);
+      } catch {
+        if (res.status === 413) {
+          throw new Error(
+            "The uploaded document files exceed the server request size limit. Please upload smaller or compressed files."
+          );
+        }
+        throw new Error(responseText || `Server responded with status ${res.status}`);
+      }
+
       if (!res.ok || !data.success) {
         throw new Error(data.error || "Failed to process Wholesale Application.");
       }
