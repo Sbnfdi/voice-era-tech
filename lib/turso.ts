@@ -175,6 +175,20 @@ export async function getInitializedDb(): Promise<Client> {
           );
         `);
 
+        // Table 4: KYC Documents (Persistent binary assets / Base64 storage)
+        await client.execute(`
+          CREATE TABLE IF NOT EXISTS kyc_documents (
+            id TEXT PRIMARY KEY,
+            kyc_id TEXT NOT NULL,
+            doc_key TEXT NOT NULL,
+            file_name TEXT NOT NULL,
+            file_type TEXT NOT NULL,
+            file_size INTEGER NOT NULL,
+            data TEXT NOT NULL,
+            created_at TEXT NOT NULL
+          );
+        `);
+
         // Indexes for high-performance lookups
         await client.execute(`
           CREATE INDEX IF NOT EXISTS idx_kyc_reference ON kyc_submissions(reference_id);
@@ -187,6 +201,12 @@ export async function getInitializedDb(): Promise<Client> {
         `);
         await client.execute(`
           CREATE INDEX IF NOT EXISTS idx_mail_logs_sent ON mail_logs(sent_at DESC);
+        `);
+        await client.execute(`
+          CREATE INDEX IF NOT EXISTS idx_kyc_docs_kyc ON kyc_documents(kyc_id);
+        `);
+        await client.execute(`
+          CREATE INDEX IF NOT EXISTS idx_kyc_docs_lookup ON kyc_documents(kyc_id, doc_key);
         `);
 
         return client;

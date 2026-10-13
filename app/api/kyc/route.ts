@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createKyc, getKycList, updateKyc } from "@/lib/db";
+import { createKyc, getKycList, updateKyc, saveKycDocument } from "@/lib/db";
 import { generateKycPdf } from "@/lib/pdf";
 import { sendKycEmail } from "@/lib/mailer";
 import { requireAdminAuth } from "@/lib/auth";
@@ -201,6 +201,41 @@ export async function POST(req: NextRequest) {
       digitalSignature: String(digitalSignature).trim(),
       signatureDate: String(signatureDate || new Date().toISOString().split("T")[0]).trim(),
     });
+
+    // 1.5. Persist attached verification documents (Base64 data payloads)
+    const uploadedDocs = body.uploadedDocuments;
+    if (uploadedDocs && typeof uploadedDocs === "object") {
+      const allowedMimes = ["image/jpeg", "image/png", "image/webp", "image/jpg", "application/pdf"];
+      for (const [docKey, fileObj] of Object.entries(uploadedDocs)) {
+        if (!fileObj || typeof fileObj !== "object") continue;
+        const { name, type, size, data } = fileObj as {
+          name?: string;
+          type?: string;
+          size?: number;
+          data?: string;
+        };
+        if (data && typeof data === "string" && data.startsWith("data:")) {
+          const mime = (type || "").toLowerCase();
+          const isAllowed = allowedMimes.some(
+            (m) => mime.includes(m.split("/")[1]) || mime === m || mime.includes("image")
+          );
+          if (isAllowed) {
+            try {
+              await saveKycDocument({
+                kycId: kyc.id,
+                docKey: String(docKey),
+                fileName: String(name || `${docKey}.bin`),
+                fileType: String(type || "application/octet-stream"),
+                fileSize: Number(size || Math.round(data.length * 0.75)),
+                data,
+              });
+            } catch (docSaveErr) {
+              console.error(`[KYC Upload] Failed to save document ${docKey}:`, docSaveErr);
+            }
+          }
+        }
+      }
+    }
 
     // 2. Generate Certified PDF
     let pdfBuffer: Buffer | null = null;

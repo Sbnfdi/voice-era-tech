@@ -172,8 +172,23 @@ export interface KycSubmission {
   // Review Status
   status: "pending" | "under_review" | "approved" | "rejected" | "info_requested";
   adminNotes?: string;
+  attachedDocuments?: KycDocumentMeta[];
   createdAt: string;
   updatedAt: string;
+}
+
+export interface KycDocumentMeta {
+  id: string;
+  kycId: string;
+  docKey: string;
+  fileName: string;
+  fileType: string;
+  fileSize: number;
+  createdAt: string;
+}
+
+export interface KycDocument extends KycDocumentMeta {
+  data: string; // Base64 Data URL
 }
 
 export interface MailLog {
@@ -378,23 +393,50 @@ export async function getKycList(): Promise<KycSubmission[]> {
   const db = await getInitializedDb();
   await checkAndMigrateLegacyJson();
 
+  // Fetch all document metadata in a single indexed query
+  const docsByKyc = new Map<string, KycDocumentMeta[]>();
+  try {
+    const docsRes = await db.execute(
+      "SELECT id, kyc_id, doc_key, file_name, file_type, file_size, created_at FROM kyc_documents ORDER BY created_at ASC"
+    );
+    for (const d of docsRes.rows) {
+      const kycId = String(d.kyc_id);
+      const list = docsByKyc.get(kycId) || [];
+      list.push({
+        id: String(d.id),
+        kycId,
+        docKey: String(d.doc_key),
+        fileName: String(d.file_name),
+        fileType: String(d.file_type),
+        fileSize: Number(d.file_size),
+        createdAt: String(d.created_at),
+      });
+      docsByKyc.set(kycId, list);
+    }
+  } catch (docErr) {
+    console.warn("[Turso] Could not fetch attached documents meta:", docErr);
+  }
+
   const res = await db.execute("SELECT * FROM kyc_submissions ORDER BY created_at DESC");
   return res.rows.map((row) => {
+    const rowId = String(row.id);
+    const attached = docsByKyc.get(rowId) || [];
     try {
       const parsed = JSON.parse(String(row.data)) as KycSubmission;
       return {
         ...parsed,
-        id: String(row.id),
+        id: rowId,
         referenceId: String(row.reference_id),
         status: (row.status as KycSubmission["status"]) || parsed.status || "pending",
         adminNotes: row.admin_notes !== null ? String(row.admin_notes) : parsed.adminNotes,
         pdfPath: row.pdf_path !== null ? String(row.pdf_path) : parsed.pdfPath,
+        attachedDocuments: attached.length > 0 ? attached : parsed.attachedDocuments,
         createdAt: String(row.created_at || parsed.createdAt),
         updatedAt: String(row.updated_at || parsed.updatedAt),
       };
     } catch {
       return {
-        id: String(row.id),
+        id: rowId,
         referenceId: String(row.reference_id),
         category: (row.category as any) || "end_user",
         companyName: String(row.company_name || ""),
@@ -404,6 +446,7 @@ export async function getKycList(): Promise<KycSubmission[]> {
         status: (row.status as KycSubmission["status"]) || "pending",
         adminNotes: row.admin_notes ? String(row.admin_notes) : undefined,
         pdfPath: row.pdf_path ? String(row.pdf_path) : undefined,
+        attachedDocuments: attached,
         createdAt: String(row.created_at),
         updatedAt: String(row.updated_at),
       } as unknown as KycSubmission;
@@ -420,16 +463,19 @@ export async function getKycById(id: string): Promise<KycSubmission | null> {
 
   if (res.rows.length === 0) return null;
   const row = res.rows[0];
+  const rowId = String(row.id);
+  const attached = await getKycDocumentsMeta(rowId);
 
   try {
     const parsed = JSON.parse(String(row.data)) as KycSubmission;
     return {
       ...parsed,
-      id: String(row.id),
+      id: rowId,
       referenceId: String(row.reference_id),
       status: (row.status as KycSubmission["status"]) || parsed.status || "pending",
       adminNotes: row.admin_notes !== null ? String(row.admin_notes) : parsed.adminNotes,
       pdfPath: row.pdf_path !== null ? String(row.pdf_path) : parsed.pdfPath,
+      attachedDocuments: attached.length > 0 ? attached : parsed.attachedDocuments,
       createdAt: String(row.created_at || parsed.createdAt),
       updatedAt: String(row.updated_at || parsed.updatedAt),
     };
@@ -523,6 +569,10 @@ export async function updateKyc(
 
 export async function deleteKyc(id: string): Promise<boolean> {
   const db = await getInitializedDb();
+  await db.execute({
+    sql: "DELETE FROM kyc_documents WHERE kyc_id = ? OR kyc_id IN (SELECT id FROM kyc_submissions WHERE reference_id = ?)",
+    args: [id, id],
+  });
   const res = await db.execute({
     sql: "DELETE FROM kyc_submissions WHERE id = ? OR reference_id = ?",
     args: [id, id],
@@ -583,6 +633,105 @@ export async function getMailLogs(): Promise<MailLog[]> {
   } catch (err) {
     console.error("[Turso] Failed to fetch mail logs:", err);
     return [];
+  }
+}
+
+// ==========================================
+// KYC DOCUMENTS (Persistent in Turso SQLite)
+// ==========================================
+
+export async function saveKycDocument(doc: {
+  kycId: string;
+  docKey: string;
+  fileName: string;
+  fileType: string;
+  fileSize: number;
+  data: string;
+}): Promise<KycDocument> {
+  const db = await getInitializedDb();
+  const id = `doc_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+  const now = new Date().toISOString();
+
+  // Remove previous document under same docKey for this KYC submission if replacing
+  await db.execute({
+    sql: "DELETE FROM kyc_documents WHERE kyc_id = ? AND doc_key = ?",
+    args: [doc.kycId, doc.docKey],
+  });
+
+  await db.execute({
+    sql: `INSERT INTO kyc_documents (id, kyc_id, doc_key, file_name, file_type, file_size, data, created_at)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    args: [
+      id,
+      doc.kycId,
+      doc.docKey,
+      doc.fileName,
+      doc.fileType,
+      doc.fileSize,
+      doc.data,
+      now,
+    ],
+  });
+
+  return {
+    id,
+    kycId: doc.kycId,
+    docKey: doc.docKey,
+    fileName: doc.fileName,
+    fileType: doc.fileType,
+    fileSize: doc.fileSize,
+    data: doc.data,
+    createdAt: now,
+  };
+}
+
+export async function getKycDocumentsMeta(kycId: string): Promise<KycDocumentMeta[]> {
+  try {
+    const db = await getInitializedDb();
+    const res = await db.execute({
+      sql: `SELECT id, kyc_id, doc_key, file_name, file_type, file_size, created_at
+            FROM kyc_documents WHERE kyc_id = ? ORDER BY created_at ASC`,
+      args: [kycId],
+    });
+    return res.rows.map((row) => ({
+      id: String(row.id),
+      kycId: String(row.kyc_id),
+      docKey: String(row.doc_key),
+      fileName: String(row.file_name),
+      fileType: String(row.file_type),
+      fileSize: Number(row.file_size),
+      createdAt: String(row.created_at),
+    }));
+  } catch (err) {
+    console.error("[Turso] Failed to get KYC documents meta:", err);
+    return [];
+  }
+}
+
+export async function getKycDocument(kycId: string, docKey: string): Promise<KycDocument | null> {
+  try {
+    const db = await getInitializedDb();
+    const res = await db.execute({
+      sql: `SELECT id, kyc_id, doc_key, file_name, file_type, file_size, data, created_at
+            FROM kyc_documents WHERE (kyc_id = ? OR kyc_id IN (SELECT id FROM kyc_submissions WHERE reference_id = ?))
+            AND (doc_key = ? OR id = ?) LIMIT 1`,
+      args: [kycId, kycId, docKey, docKey],
+    });
+    if (res.rows.length === 0) return null;
+    const row = res.rows[0];
+    return {
+      id: String(row.id),
+      kycId: String(row.kyc_id),
+      docKey: String(row.doc_key),
+      fileName: String(row.file_name),
+      fileType: String(row.file_type),
+      fileSize: Number(row.file_size),
+      data: String(row.data),
+      createdAt: String(row.created_at),
+    };
+  } catch (err) {
+    console.error("[Turso] Failed to get KYC document:", err);
+    return null;
   }
 }
 

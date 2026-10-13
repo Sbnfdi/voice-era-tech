@@ -87,6 +87,10 @@ export default function KycPage() {
     signatureDate: new Date().toISOString().split("T")[0],
   });
 
+  const [uploadedFiles, setUploadedFiles] = useState<
+    Record<string, { name: string; type: string; size: number; data: string }>
+  >({});
+
   const toggleService = (service: string) => {
     setFormData((prev) => {
       const exists = prev.servicesRequested.includes(service);
@@ -99,12 +103,37 @@ export default function KycPage() {
     });
   };
 
-  const handleFileChange = (field: "incorporationDocName" | "taxDocName" | "signerIdDocName", e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (
+    field: "incorporationDocName" | "taxDocName" | "signerIdDocName",
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      if (file.size > 8 * 1024 * 1024) {
+        setErrorMessage(`File "${file.name}" exceeds the 8MB limit. Please upload a smaller file.`);
+        return;
+      }
+
       setFormData((prev) => ({
         ...prev,
-        [field]: e.target.files![0].name,
+        [field]: file.name,
       }));
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === "string") {
+          setUploadedFiles((prev) => ({
+            ...prev,
+            [field]: {
+              name: file.name,
+              type: file.type || "application/octet-stream",
+              size: file.size,
+              data: reader.result as string,
+            },
+          }));
+        }
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -140,6 +169,7 @@ export default function KycPage() {
         body: JSON.stringify({
           category: "end_user",
           ...formData,
+          uploadedDocuments: uploadedFiles,
           documents: {
             incorporationDocName: formData.incorporationDocName || "Uploaded via Portal",
             taxDocName: formData.taxDocName || "Uploaded via Portal",

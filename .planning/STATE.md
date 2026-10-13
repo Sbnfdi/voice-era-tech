@@ -18,7 +18,7 @@
 - **Target Hosting:** Vercel Serverless (with Turso Cloud persistence & dynamic safe storage fallbacks).
 - **Security Hardening (Phase 1):** Completed. Protected endpoints (`/api/kyc`, `/api/inquiries`, `/api/admin/stats`), implemented signed HMAC tokens with `httpOnly` cookies.
 - **Admin Authentication:** Live with `requireAdminAuth(req)`, `POST /api/admin/logout`, and Bearer header support.
+- **KYC Document Persistence (Phase 2):** Completed & Verified. Persistent binary asset storage in Turso SQLite (`kyc_documents`), secure streaming & download endpoint `/api/kyc/[id]/document/[docKey]`, interactive lightbox with pan/zoom/rotate in `/admin`.
 
 ## Next Action
-- Deploy to Vercel following [VERCEL_DEPLOYMENT_GUIDE.md](file:///g:/voice-era-tech/VERCEL_DEPLOYMENT_GUIDE.md) with `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN`.
-- Initiate **Phase 2 (Input Sanitization & Rate Limiting)** or continue roadmap milestones.
+- Initiate **Phase 3: Input Sanitization & Rate Limiting** or proceed with Milestone 3 (Component Modularization).

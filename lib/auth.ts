@@ -105,6 +105,11 @@ export function requireAdminAuth(req: NextRequest):
     }
   }
 
+  // 3. Fallback to ?token= query parameter (for direct file downloads or image previews in new tabs)
+  if (!token && req.nextUrl) {
+    token = req.nextUrl.searchParams.get("token") || undefined;
+  }
+
   if (!token) {
     return {
       authenticated: false,

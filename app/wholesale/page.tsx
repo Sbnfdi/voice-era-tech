@@ -202,6 +202,10 @@ export default function WholesaleKycPage() {
     signatureDate: new Date().toISOString().split("T")[0],
   });
 
+  const [uploadedFiles, setUploadedFiles] = useState<
+    Record<string, { name: string; type: string; size: number; data: string }>
+  >({});
+
   const toggleProtocol = (proto: string) => {
     setFormData((prev) => {
       const exists = prev.interconnectProtocols.includes(proto);
@@ -217,10 +221,32 @@ export default function WholesaleKycPage() {
   const handleFileChange = (field: string, e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+      // Size check (max 8MB)
+      if (file.size > 8 * 1024 * 1024) {
+        setErrorMessage(`File "${file.name}" exceeds the 8MB size limit. Please upload a smaller file.`);
+        return;
+      }
+
       setFormData((prev) => ({
         ...prev,
         [field]: file.name,
       }));
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === "string") {
+          setUploadedFiles((prev) => ({
+            ...prev,
+            [field]: {
+              name: file.name,
+              type: file.type || "application/octet-stream",
+              size: file.size,
+              data: reader.result as string,
+            },
+          }));
+        }
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -272,6 +298,7 @@ export default function WholesaleKycPage() {
         body: JSON.stringify({
           category: "wholesaler",
           ...formData,
+          uploadedDocuments: uploadedFiles,
           documents: {
             incorporationDocName: formData.incorporationDocName || "Incorporation_Cert_Verified.pdf",
             proofOfAddressDocName: formData.proofOfAddressDocName || "Proof_Of_Address_Verified.pdf",

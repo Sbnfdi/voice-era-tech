@@ -26,7 +26,13 @@ import {
   Send,
   SlidersHorizontal,
   FileSpreadsheet,
-  Database
+  Database,
+  Eye,
+  ZoomIn,
+  ZoomOut,
+  RotateCw,
+  X,
+  Paperclip
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Inquiry, KycSubmission } from "@/lib/db";
@@ -56,6 +62,117 @@ export default function AdminPage() {
   // Admin notes & status editing
   const [editingNotes, setEditingNotes] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
+
+  // Document Lightbox & Preview State
+  const [lightboxImage, setLightboxImage] = useState<{
+    url: string;
+    title: string;
+    fileName: string;
+    downloadUrl: string;
+  } | null>(null);
+  const [lightboxZoom, setLightboxZoom] = useState(1);
+  const [lightboxRotation, setLightboxRotation] = useState(0);
+
+  // Helper to render interactive document cards
+  const renderDocumentCard = (
+    title: string,
+    docKey: string,
+    fallbackFileName?: string
+  ) => {
+    // Look up in attachedDocuments
+    const attached = selectedKyc?.attachedDocuments?.find(
+      (d) =>
+        d.docKey === docKey ||
+        d.docKey === fallbackFileName ||
+        (fallbackFileName && d.fileName === fallbackFileName)
+    );
+
+    const fileName = attached?.fileName || fallbackFileName || null;
+    const sessionToken = typeof window !== "undefined" ? localStorage.getItem("vet_admin_session") : "";
+    const isImage = attached
+      ? attached.fileType.startsWith("image/")
+      : fileName
+      ? /\.(png|jpe?g|webp|gif)$/i.test(fileName)
+      : false;
+
+    // Endpoint paths
+    const viewUrl = attached && selectedKyc
+      ? `/api/kyc/${selectedKyc.id}/document/${attached.docKey}?token=${encodeURIComponent(sessionToken || "")}`
+      : null;
+    const downloadUrl = attached && selectedKyc
+      ? `/api/kyc/${selectedKyc.id}/document/${attached.docKey}?download=1&token=${encodeURIComponent(sessionToken || "")}`
+      : null;
+
+    return (
+      <div className="p-3 rounded-xl border border-foreground/10 bg-card/90 hover:border-primary/40 transition-all flex flex-col justify-between gap-2.5">
+        <div>
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[10px] font-mono uppercase font-bold text-muted-foreground truncate">{title}</span>
+            {attached ? (
+              <span className="inline-flex items-center gap-1 text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-500 border border-emerald-500/30">
+                <Check className="w-2.5 h-2.5" />
+                {attached.fileType.includes("pdf") ? "PDF" : "IMG"} &bull; {Math.round(attached.fileSize / 1024)} KB
+              </span>
+            ) : fileName ? (
+              <span className="text-[9px] font-mono text-amber-400/90 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">
+                Legacy Name Only
+              </span>
+            ) : (
+              <span className="text-[9px] font-mono text-zinc-500">Not Provided</span>
+            )}
+          </div>
+          <div className="font-mono text-xs text-foreground font-semibold truncate mt-1 flex items-center gap-1.5">
+            <Paperclip className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+            <span className="truncate" title={fileName || "No document uploaded"}>
+              {fileName || "Not uploaded"}
+            </span>
+          </div>
+        </div>
+
+        {attached && viewUrl && downloadUrl ? (
+          <div className="flex items-center gap-2 pt-1.5 border-t border-foreground/5">
+            <button
+              type="button"
+              onClick={() => {
+                if (isImage) {
+                  setLightboxImage({
+                    url: viewUrl,
+                    title,
+                    fileName: attached.fileName,
+                    downloadUrl,
+                  });
+                  setLightboxZoom(1);
+                  setLightboxRotation(0);
+                } else {
+                  window.open(viewUrl, "_blank", "noopener,noreferrer");
+                }
+              }}
+              className="flex-1 inline-flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg bg-foreground/10 hover:bg-foreground/20 text-foreground text-[11px] font-semibold transition-all cursor-pointer"
+            >
+              <Eye className="w-3.5 h-3.5 text-primary" />
+              <span>{isImage ? "View Image" : "Open PDF"}</span>
+            </button>
+            <a
+              href={downloadUrl}
+              download={attached.fileName}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-lg bg-primary text-black hover:bg-primary/90 text-[11px] font-bold transition-all shadow-sm cursor-pointer"
+              title="Download file"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Download</span>
+            </a>
+          </div>
+        ) : fileName ? (
+          <div className="text-[10px] text-zinc-400 italic pt-1 border-t border-foreground/5 flex items-center gap-1">
+            <AlertTriangle className="w-3 h-3 text-amber-400 shrink-0" />
+            <span>Legacy submission without binary attachment</span>
+          </div>
+        ) : null}
+      </div>
+    );
+  };
 
   // Test Email
   const [testEmailAddress, setTestEmailAddress] = useState("");
@@ -1347,22 +1464,22 @@ export default function AdminPage() {
                     </div>
 
                     {/* Identity Document */}
-                    <div className="p-3.5 rounded-xl border border-foreground/10 bg-card space-y-1.5">
+                    <div className="p-3.5 rounded-xl border border-foreground/10 bg-card space-y-2">
                       <div className="font-mono text-[11px] font-bold text-foreground uppercase border-b border-foreground/10 pb-1">
                         Identity Document
                       </div>
-                      <div><strong>Document Type:</strong> {selectedKyc.idDocType || "Government Passport / ID"}</div>
-                      <div><strong>Document ID Number:</strong> <span className="font-mono font-semibold">{selectedKyc.idDocNumber || selectedKyc.signatoryIdNumber || "Verified"}</span></div>
-                      <div><strong>Issuing Country:</strong> {selectedKyc.idDocIssuingCountry || selectedKyc.country}</div>
-                      <div><strong>Expiry Date:</strong> {selectedKyc.idDocExpiryDate || "Verified"}</div>
-                      <div className="pt-1 text-[11px] text-muted-foreground font-mono">
-                        Front File: {selectedKyc.idDocFileName || selectedKyc.documents?.signerIdDocName || "Uploaded"}
+                      <div className="grid grid-cols-2 gap-2 text-[11px]">
+                        <div><strong>Type:</strong> {selectedKyc.idDocType || "Government Passport / ID"}</div>
+                        <div><strong>ID Number:</strong> <span className="font-mono font-semibold">{selectedKyc.idDocNumber || selectedKyc.signatoryIdNumber || "Verified"}</span></div>
+                        <div><strong>Issuing Country:</strong> {selectedKyc.idDocIssuingCountry || selectedKyc.country}</div>
+                        <div><strong>Expiry Date:</strong> {selectedKyc.idDocExpiryDate || "Verified"}</div>
                       </div>
-                      {selectedKyc.idDocBackFileName && (
-                        <div className="text-[11px] text-muted-foreground font-mono">
-                          Back File: {selectedKyc.idDocBackFileName}
-                        </div>
-                      )}
+                      <div className="space-y-2 pt-1 border-t border-foreground/5">
+                        {renderDocumentCard("Government ID (Front)", "idDocFront", selectedKyc.idDocFileName || selectedKyc.documents?.signerIdDocName)}
+                        {(selectedKyc.idDocBackFileName || selectedKyc.attachedDocuments?.some(d => d.docKey === "idDocBack" || d.docKey === "idDocBackFileName")) &&
+                          renderDocumentCard("Government ID (Back)", "idDocBack", selectedKyc.idDocBackFileName)
+                        }
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1557,18 +1674,9 @@ export default function AdminPage() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                    <div className="p-3 rounded-xl border border-foreground/10 bg-card">
-                      <div className="text-[10px] font-mono text-muted-foreground uppercase">Incorporation Certificate</div>
-                      <div className="font-medium text-foreground mt-0.5 truncate">{selectedKyc.documents?.incorporationDocName || "Incorporation_Cert_Verified.pdf"}</div>
-                    </div>
-                    <div className="p-3 rounded-xl border border-foreground/10 bg-card">
-                      <div className="text-[10px] font-mono text-muted-foreground uppercase">Proof of Address</div>
-                      <div className="font-medium text-foreground mt-0.5 truncate">{selectedKyc.documents?.proofOfAddressDocName || "Proof_Of_Address_Verified.pdf"}</div>
-                    </div>
-                    <div className="p-3 rounded-xl border border-foreground/10 bg-card">
-                      <div className="text-[10px] font-mono text-muted-foreground uppercase">ITG / RMD Screenshots</div>
-                      <div className="font-medium text-foreground mt-0.5 truncate">{selectedKyc.documents?.itgScreenshotDocName || "ITG_RMD_Record_Verified.png"}</div>
-                    </div>
+                    {renderDocumentCard("Incorporation Certificate", "incorporationDoc", selectedKyc.documents?.incorporationDocName || selectedKyc.incorporationDocName)}
+                    {renderDocumentCard("Proof of Address", "proofOfAddressDoc", selectedKyc.documents?.proofOfAddressDocName || selectedKyc.proofOfAddressDocName)}
+                    {renderDocumentCard("ITG / RMD Screenshots", "itgScreenshotDoc", selectedKyc.documents?.itgScreenshotDocName || selectedKyc.itgScreenshotDocName)}
                   </div>
 
                   <div className="p-4 rounded-xl border border-foreground/10 bg-card space-y-1.5 text-xs">
@@ -1640,18 +1748,9 @@ export default function AdminPage() {
                     5. Submitted Document Manifest
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
-                    <div className="p-2.5 rounded-lg border border-foreground/10 bg-card">
-                      <div className="text-[10px] font-mono text-muted-foreground uppercase">Certificate of Incorporation</div>
-                      <div className="font-medium text-foreground mt-0.5 truncate">{selectedKyc.documents?.incorporationDocName || "Verified"}</div>
-                    </div>
-                    <div className="p-2.5 rounded-lg border border-foreground/10 bg-card">
-                      <div className="text-[10px] font-mono text-muted-foreground uppercase">Tax Form / W-9</div>
-                      <div className="font-medium text-foreground mt-0.5 truncate">{selectedKyc.documents?.taxDocName || "Verified"}</div>
-                    </div>
-                    <div className="p-2.5 rounded-lg border border-foreground/10 bg-card">
-                      <div className="text-[10px] font-mono text-muted-foreground uppercase">Signatory Photo ID</div>
-                      <div className="font-medium text-foreground mt-0.5 truncate">{selectedKyc.documents?.signerIdDocName || "Verified"}</div>
-                    </div>
+                    {renderDocumentCard("Certificate of Incorporation", "incorporationDoc", selectedKyc.documents?.incorporationDocName || selectedKyc.incorporationDocName)}
+                    {renderDocumentCard("Tax Document / W-9", "taxDoc", selectedKyc.documents?.taxDocName || selectedKyc.taxDocName)}
+                    {renderDocumentCard("Signatory Photo ID", "signerIdDoc", selectedKyc.documents?.signerIdDocName || selectedKyc.idDocFileName)}
                   </div>
                 </div>
 
@@ -1708,6 +1807,92 @@ export default function AdminPage() {
                 Close Inspector
               </Button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Interactive Document Image Lightbox */}
+      {lightboxImage && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md flex flex-col items-center justify-between p-4 sm:p-6"
+          onClick={() => setLightboxImage(null)}
+        >
+          {/* Top Bar Controls */}
+          <div
+            className="w-full max-w-5xl flex items-center justify-between gap-4 py-2.5 px-4 rounded-2xl bg-zinc-900/95 border border-zinc-800 text-white shadow-2xl z-10"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-3 truncate">
+              <span className="font-mono text-xs font-bold uppercase text-primary shrink-0">{lightboxImage.title}</span>
+              <span className="text-xs text-zinc-400 truncate font-mono">({lightboxImage.fileName})</span>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => setLightboxZoom((prev) => Math.max(0.5, prev - 0.25))}
+                className="p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 transition-all cursor-pointer"
+                title="Zoom Out"
+              >
+                <ZoomOut className="w-4 h-4" />
+              </button>
+              <span className="text-xs font-mono text-zinc-400 w-10 text-center">{Math.round(lightboxZoom * 100)}%</span>
+              <button
+                type="button"
+                onClick={() => setLightboxZoom((prev) => Math.min(3, prev + 0.25))}
+                className="p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 transition-all cursor-pointer"
+                title="Zoom In"
+              >
+                <ZoomIn className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setLightboxRotation((prev) => (prev + 90) % 360)}
+                className="p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 transition-all cursor-pointer"
+                title="Rotate 90°"
+              >
+                <RotateCw className="w-4 h-4" />
+              </button>
+              <a
+                href={lightboxImage.downloadUrl}
+                download={lightboxImage.fileName}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-black font-bold text-xs hover:bg-primary/90 transition-all ml-1 cursor-pointer shadow-sm"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Download</span>
+              </a>
+              <button
+                type="button"
+                onClick={() => setLightboxImage(null)}
+                className="p-1.5 rounded-lg bg-zinc-800 hover:bg-red-500/20 hover:text-red-400 text-zinc-400 transition-all cursor-pointer ml-1"
+                title="Close Lightbox"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* Central Image Viewer */}
+          <div
+            className="flex-1 w-full flex items-center justify-center overflow-auto p-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={lightboxImage.url}
+              alt={lightboxImage.fileName}
+              style={{
+                transform: `scale(${lightboxZoom}) rotate(${lightboxRotation}deg)`,
+                transition: "transform 0.15s ease-out",
+                maxHeight: "80vh",
+                maxWidth: "90vw",
+              }}
+              className="object-contain rounded-lg shadow-2xl border border-zinc-800 select-none bg-black/40"
+            />
           </div>
         </div>
       )}
