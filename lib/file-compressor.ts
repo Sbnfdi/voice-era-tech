@@ -56,7 +56,12 @@ export async function processAndCompressFile(
         const base64Content = compressedDataUrl.substring(compressedDataUrl.indexOf(",") + 1);
         const approxSize = Math.round((base64Content.length * 3) / 4);
 
-        const newName = file.name.replace(/\.[^.]+$/, ".jpg");
+        const extMatch = file.name.match(/\.([^.]+)$/);
+        const originalExt = extMatch ? extMatch[1].toLowerCase() : "";
+        const newName =
+          originalExt === "jpg" || originalExt === "jpeg"
+            ? file.name
+            : `${file.name.replace(/\.[^.]+$/, "")}.jpg`;
 
         resolve({
           name: newName,

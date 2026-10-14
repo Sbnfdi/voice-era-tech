@@ -711,11 +711,32 @@ export async function getKycDocumentsMeta(kycId: string): Promise<KycDocumentMet
 export async function getKycDocument(kycId: string, docKey: string): Promise<KycDocument | null> {
   try {
     const db = await getInitializedDb();
+
+    const KEY_ALIASES: Record<string, string[]> = {
+      signerIdDoc: ["signerIdDoc", "signerIdDocName", "idDocFront", "idDocFileName", "idDoc", "idDocName"],
+      signerIdDocName: ["signerIdDocName", "signerIdDoc", "idDocFront", "idDocFileName", "idDoc"],
+      idDocFront: ["idDocFront", "idDocFileName", "signerIdDoc", "signerIdDocName", "idDoc"],
+      idDocBack: ["idDocBack", "idDocBackFileName"],
+      idDocFileName: ["idDocFileName", "idDocFront", "signerIdDoc", "signerIdDocName", "idDoc"],
+      idDocBackFileName: ["idDocBackFileName", "idDocBack"],
+      incorporationDoc: ["incorporationDoc", "incorporationDocName", "incorporationCert"],
+      incorporationDocName: ["incorporationDocName", "incorporationDoc", "incorporationCert"],
+      taxDoc: ["taxDoc", "taxDocName", "taxIdDoc", "taxDocFileName"],
+      taxDocName: ["taxDocName", "taxDoc", "taxIdDoc"],
+      proofOfAddressDoc: ["proofOfAddressDoc", "proofOfAddressDocName", "proofOfAddress"],
+      proofOfAddressDocName: ["proofOfAddressDocName", "proofOfAddressDoc", "proofOfAddress"],
+      itgScreenshotDoc: ["itgScreenshotDoc", "itgScreenshotDocName", "itgScreenshot"],
+      itgScreenshotDocName: ["itgScreenshotDocName", "itgScreenshotDoc", "itgScreenshot"],
+    };
+
+    const searchKeys = Array.from(new Set([docKey, ...(KEY_ALIASES[docKey] || [])]));
+    const placeholders = searchKeys.map(() => "?").join(", ");
+
     const res = await db.execute({
       sql: `SELECT id, kyc_id, doc_key, file_name, file_type, file_size, data, created_at
             FROM kyc_documents WHERE (kyc_id = ? OR kyc_id IN (SELECT id FROM kyc_submissions WHERE reference_id = ?))
-            AND (doc_key = ? OR id = ?) LIMIT 1`,
-      args: [kycId, kycId, docKey, docKey],
+            AND (doc_key IN (${placeholders}) OR id = ? OR file_name = ?) LIMIT 1`,
+      args: [kycId, kycId, ...searchKeys, docKey, docKey],
     });
     if (res.rows.length === 0) return null;
     const row = res.rows[0];

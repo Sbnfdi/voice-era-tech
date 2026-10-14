@@ -73,19 +73,55 @@ export default function AdminPage() {
   const [lightboxZoom, setLightboxZoom] = useState(1);
   const [lightboxRotation, setLightboxRotation] = useState(0);
 
-  // Helper to render interactive document cards
+  // Helper to render interactive document cards with robust key aliasing and filename resolution
   const renderDocumentCard = (
     title: string,
     docKey: string,
     fallbackFileName?: string
   ) => {
-    // Look up in attachedDocuments
-    const attached = selectedKyc?.attachedDocuments?.find(
-      (d) =>
-        d.docKey === docKey ||
-        d.docKey === fallbackFileName ||
-        (fallbackFileName && d.fileName === fallbackFileName)
-    );
+    // Normalization helper for extensions & punctuation
+    const normalize = (str?: string | null) =>
+      (str || "").toLowerCase().replace(/\.[a-z0-9]+$/i, "").replace(/[^a-z0-9]/g, "");
+
+    const KEY_ALIASES: Record<string, string[]> = {
+      signerIdDoc: ["signerIdDoc", "signerIdDocName", "idDocFront", "idDocFileName", "idDoc", "idDocName"],
+      idDocFront: ["idDocFront", "idDocFileName", "signerIdDoc", "signerIdDocName", "idDoc", "idDocName"],
+      idDocBack: ["idDocBack", "idDocBackFileName"],
+      idDocFileName: ["idDocFileName", "idDocFront", "signerIdDoc", "signerIdDocName", "idDoc"],
+      incorporationDoc: ["incorporationDoc", "incorporationDocName", "incorporationCert"],
+      incorporationDocName: ["incorporationDocName", "incorporationDoc", "incorporationCert"],
+      taxDoc: ["taxDoc", "taxDocName", "taxIdDoc", "taxDocFileName"],
+      taxDocName: ["taxDocName", "taxDoc", "taxIdDoc"],
+      proofOfAddressDoc: ["proofOfAddressDoc", "proofOfAddressDocName", "proofOfAddress"],
+      proofOfAddressDocName: ["proofOfAddressDocName", "proofOfAddressDoc", "proofOfAddress"],
+      itgScreenshotDoc: ["itgScreenshotDoc", "itgScreenshotDocName", "itgScreenshot"],
+      itgScreenshotDocName: ["itgScreenshotDocName", "itgScreenshotDoc", "itgScreenshot"],
+    };
+
+    const targetAliases = KEY_ALIASES[docKey] || [docKey];
+
+    // Look up in attachedDocuments with multiple fallbacks
+    const attached = selectedKyc?.attachedDocuments?.find((d) => {
+      // 1. Direct key match or alias match
+      if (targetAliases.includes(d.docKey)) return true;
+
+      // 2. Normalized key match (e.g. "signeriddoc" vs "signeriddocname")
+      const normDKey = normalize(d.docKey);
+      const normTargetKey = normalize(docKey);
+      if (normDKey === normTargetKey || normDKey.startsWith(normTargetKey) || normTargetKey.startsWith(normDKey)) {
+        return true;
+      }
+
+      // 3. Exact filename match
+      if (fallbackFileName && d.fileName === fallbackFileName) return true;
+
+      // 4. Filename match ignoring extension differences (e.g. .jpeg vs .jpg)
+      if (fallbackFileName && normalize(d.fileName) === normalize(fallbackFileName)) {
+        return true;
+      }
+
+      return false;
+    });
 
     const fileName = attached?.fileName || fallbackFileName || null;
     const sessionToken = typeof window !== "undefined" ? localStorage.getItem("vet_admin_session") : "";
@@ -95,12 +131,13 @@ export default function AdminPage() {
       ? /\.(png|jpe?g|webp|gif)$/i.test(fileName)
       : false;
 
-    // Endpoint paths
+    // Endpoint paths (use attached.id or attached.docKey for direct streaming)
+    const activeDocKey = attached ? attached.docKey || attached.id : docKey;
     const viewUrl = attached && selectedKyc
-      ? `/api/kyc/${selectedKyc.id}/document/${attached.docKey}?token=${encodeURIComponent(sessionToken || "")}`
+      ? `/api/kyc/${selectedKyc.id}/document/${encodeURIComponent(activeDocKey)}?token=${encodeURIComponent(sessionToken || "")}`
       : null;
     const downloadUrl = attached && selectedKyc
-      ? `/api/kyc/${selectedKyc.id}/document/${attached.docKey}?download=1&token=${encodeURIComponent(sessionToken || "")}`
+      ? `/api/kyc/${selectedKyc.id}/document/${encodeURIComponent(activeDocKey)}?download=1&token=${encodeURIComponent(sessionToken || "")}`
       : null;
 
     return (

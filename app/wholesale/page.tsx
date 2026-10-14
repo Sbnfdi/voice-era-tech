@@ -222,12 +222,11 @@ export default function WholesaleKycPage() {
       const file = e.target.files[0];
       try {
         setErrorMessage("");
+        const processed = await processAndCompressFile(file);
         setFormData((prev) => ({
           ...prev,
-          [field]: file.name,
+          [field]: processed.name,
         }));
-
-        const processed = await processAndCompressFile(file);
         setUploadedFiles((prev) => ({
           ...prev,
           [field]: processed,
