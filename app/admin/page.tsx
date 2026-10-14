@@ -610,7 +610,7 @@ export default function AdminPage() {
                 placeholder="••••••••••••"
                 className="w-full h-11 px-3.5 rounded-lg border border-foreground/15 bg-foreground/[0.02] text-sm text-foreground focus:outline-none focus:border-foreground"
               />
-              <span className="text-[10px] text-muted-foreground block mt-1">Default: voiceera2026</span>
+              <span className="text-[10px] text-muted-foreground block mt-1">Default</span>
             </div>
 
             <Button
